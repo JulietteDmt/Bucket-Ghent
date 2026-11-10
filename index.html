@@ -168,7 +168,7 @@ nav.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);bord
 .b-ico{width:36px;height:36px;display:inline-flex}
 .b-n{font-family:var(--mono);font-size:11px;color:color-mix(in srgb, var(--cc) 75%, var(--ink))}
 .b-string{width:1px;height:22px;background:linear-gradient(var(--line),transparent)}
-.b-side{display:flex;flex-direction:column;gap:7px;min-width:0}
+.b-side{display:flex;flex-direction:column;gap:7px;min-width:0;max-width:280px}
 .b-photo{position:relative;display:block;width:100%;aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:linear-gradient(135deg,color-mix(in srgb,var(--cc) 22%,var(--surface)),color-mix(in srgb,var(--cc) 8%,var(--surface)));border:1px solid var(--line)}
 .b-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s ease;z-index:1}
 .b-ph-ico{position:absolute;inset:0;margin:auto;width:44px;height:44px;color:var(--cc);opacity:.6}
@@ -336,8 +336,8 @@ const CATS = [
    intro:"Politici en opiniemakers op campus: het Groot Kopstukkendebat met de partijkopstukken, openingscolleges, lezingen en debatten van alle strekkingen. Ga luisteren, stel je vragen en vorm je eigen mening."},
   {id:"ver",  n:"10", name:"Verenigingen", short:"Studentenverenigingen en hun events", c:"--c10",
    intro:"Gent telt meer dan 140 studentenverenigingen. De grote namen, met hun events en prijzen waar die gekend zijn."},
-  {id:"new", n:"13", name:"NEW", short:"Pop-ups, nieuwe zaken en wat eraan komt", c:"--c13", isNew:true,
-   intro:"Vers van de pers: wat net open is in Gent, wat eraan komt en welke pop-ups je niet mag missen. Na een week is iets niet meer nieuw en verdwijnt het vanzelf uit NEW."},
+  {id:"new", n:"13", name:"New", short:"Pop-ups, nieuwe zaken en wat eraan komt", c:"--c13", isNew:true,
+   intro:"Vers van de pers: wat net open is in Gent, wat eraan komt en welke pop-ups je niet mag missen. Na een week is iets niet meer nieuw en verdwijnt het vanzelf uit New."},
   {id:"ugent",n:"11", name:"Campus", short:"UGent, HOGENT, Artevelde, KU Leuven, Odisee, LUCA, Vlerick", c:"--c11", isNew:true,
    intro:"Wat de Gentse universiteiten en hogescholen zelf organiseren: lezingen, festivals, open dagen en studentenvoorzieningen. Tik bij 'Per organisatie' op je instelling. Plus waar en wanneer je je boeken en cursussen haalt."}
 ];
@@ -1939,7 +1939,7 @@ function card(it, dateLabel){
     ${it.img?`<img class="cover" src="${it.img}" alt="${esc(it.title)}" loading="lazy">`:""}
     <div class="row1">
       <div style="min-width:0">
-        <div class="chip">${it.fresh&&it.cat!=="new"?`<span class="newb">NEW</span> `:""}${c.name}${it.sub?" · "+esc(it.sub):""}${it.aud?` <span class="aud">${esc(it.aud)}</span>`:""}</div>
+        <div class="chip">${it.fresh&&it.cat!=="new"?`<span class="newb">New</span> `:""}${c.name}${it.sub?" · "+esc(it.sub):""}${it.aud?` <span class="aud">${esc(it.aud)}</span>`:""}</div>
         <h3>${esc(it.title)}</h3>
       </div>
       <div class="side">
@@ -2049,7 +2049,7 @@ function renderCats(){
     const grads=[["#ff5f6d","#ffc371"],["#7f5af0","#2cb67d"],["#f72585","#7209b7"],["#00b4d8","#90e0ef"],["#f9c80e","#f86624"],["#06d6a0","#118ab2"],["#ef476f","#ffd166"]];
     const cnt=k=>sorted.filter(i=>k==="pop"?i.sub==="Pop-up":kind(i)===k).length;
     $view.innerHTML=`<button class="back" id="back">← Alle onderdelen</button>
-      <div class="newhero"><div class="nh-word" aria-hidden="true">NEW</div><div class="nh-txt"><h2>Nieuw in Gent</h2><p>${c.intro}</p></div>
+      <div class="newhero"><div class="nh-word" aria-hidden="true">New</div><div class="nh-txt"><h2>Nieuw in Gent</h2><p>${c.intro}</p></div>
 </div>
       <div class="subs nfilt" style="--cc:var(${c.c})">${[["","Alles",sorted.length],["now","Nu bezig",cnt("now")],["open","Net open",cnt("open")],["soon","Binnenkort",cnt("soon")],["pop","Pop-ups",cnt("pop")]].map(([v,t,n])=>`<button data-nf="${v}" aria-pressed="${f===v}">${t} <small>${n}</small></button>`).join("")}</div>
       <div class="ngrid">${shown.length?shown.map((i,ix)=>{const st=status(i); const g=grads[(i.id.length+ix)%grads.length]; return `<div class="ntile" style="--g1:${g[0]};--g2:${g[1]}"><div class="nhead"><span class="nstick ${st.k}">${esc(st.t)}</span></div>${card(i)}</div>`;}).join(""):`<div class="empty">Niets in deze selectie. Kijk morgen opnieuw: NEW wordt elke dag bijgewerkt.</div>`}</div>`;
