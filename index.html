@@ -2154,7 +2154,7 @@ function renderDeadlines(){
   $view.innerHTML=`<p class="dl-intro">Alle inschrijvingsdeadlines op één plek. Tik op een deadline om de activiteit met alle info te openen.</p>
     <h2 class="sec-title">Komende deadlines<small>${up.length}</small></h2>
     <div class="dl-list dl-up">${up.length?up.map(i=>{const d=parse(i.deadline.date),n=days(d);return row(i,"",fmt(d)+" "+d.getFullYear(),n===0?"vandaag!":n===1?"morgen":"nog "+n+" dagen");}).join(""):`<div class="empty">Geen komende deadlines.</div>`}</div>
-    <h2 class="sec-title">Verstreken<small>${past.length}</small></h2>
+    <h2 class="sec-title">Verstreken deadlines<small>${past.length}</small></h2>
     <div class="dl-list">${past.map(i=>{const d=parse(i.deadline.date);return row(i,"past",fmt(d)+" "+d.getFullYear(),"verstreken");}).join("")}</div>`;
 }
 
