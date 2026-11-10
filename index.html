@@ -51,7 +51,7 @@ header.top{display:flex;align-items:flex-end;justify-content:space-between;gap:1
 .nfilt button small{opacity:.6;font-family:var(--mono)}
 .ngrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
 .ntile{border-radius:18px;overflow:hidden;background:var(--surface);box-shadow:0 1px 0 var(--line)}
-.ntile .nhead{display:flex;justify-content:space-between;align-items:flex-start;padding:14px 14px 22px;background:linear-gradient(135deg,var(--g1),var(--g2))}
+.ntile .nhead{display:flex;justify-content:flex-end;align-items:flex-start;padding:10px 12px 18px;background:linear-gradient(135deg,var(--g1),var(--g2))}
 .ntile .nemo{font-size:44px;line-height:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,.2));transform:rotate(-8deg)}
 .ntile .nstick{font-size:12px;font-weight:700;padding:5px 10px;border-radius:999px;background:#fff;color:#111;box-shadow:0 2px 6px rgba(0,0,0,.15);transform:rotate(3deg)}
 .ntile .nstick.now{background:#111;color:#fff}.ntile .nstick.soon{background:#fff3b0}
@@ -238,9 +238,9 @@ const CATS = [
    intro:"Kies eerst je sector, dan de organisatie. Recruitment-events, dinners, trips naar het buitenland en jobbeurzen in heel België. Strategy consultants zoals McKinsey, BCG en Bain nemen studenten mee op volledig betaalde weekends in Rome, Parijs of Amsterdam. Veel events zijn op selectie (cv + motivatie), dus let op de deadlines. Bij jobbeurzen van andere universiteiten staat voor wie ze open zijn."},
   {id:"food", n:"08", name:"Eten in Gent", short:"Nieuwe en originele zaakjes om te proberen", c:"--c8",
    intro:"De food-bucketlist: nieuwe of originele zaken. Elke kaart linkt naar de zaak zodat je menu en openingsuren kan bekijken."},
-  {id:"sport",n:"09", name:"Sport", short:"Faciliteiten, studentenprijzen en specials", c:"--c9",
+  {id:"sport",n:"09", name:"Zelf sporten", short:"Faciliteiten, studentenprijzen en specials", c:"--c9",
    intro:"Sportfaciliteiten in Gent met prijzen voor studenten. Bij 'Meer info' staan speciale edities, zoals outdoor-lessen of lessen met DJ, als die er zijn."},
-  {id:"match", n:"14", name:"Matches", short:"Enkel de grote: voetbaltoppers, Champions League, Rode Duivels, koersen en crossen", c:"--c14",
+  {id:"match", n:"14", name:"Sport", short:"Enkel de grote: voetbaltoppers, Champions League, Rode Duivels, koersen en crossen", c:"--c14",
    intro:"Enkel de grote matchen en koersen, in België, Europa en de wereld: Belgische toppers, Champions League en Europese finales, de Rode Duivels, de Zesdaagse in 't Kuipke, de grote crossen en de voorjaarsklassiekers. Uren van voetbalmatchen kunnen nog schuiven door de tv-planning."},
   {id:"pol", n:"15", name:"Politiek", short:"Debatten en lezingen met politici op campus", c:"--c15",
    intro:"Politici en opiniemakers op campus: het Groot Kopstukkendebat met de partijkopstukken, openingscolleges, lezingen en debatten van alle strekkingen. Ga luisteren, stel je vragen en vorm je eigen mening."},
@@ -1893,9 +1893,9 @@ function renderCats(){
     const cnt=k=>sorted.filter(i=>k==="pop"?i.sub==="Pop-up":kind(i)===k).length;
     $view.innerHTML=`<button class="back" id="back">← Alle onderdelen</button>
       <div class="newhero"><div class="nh-word" aria-hidden="true">NEW</div><div class="nh-txt"><h2>Nieuw in Gent</h2><p>${c.intro}</p></div>
-        <div class="nh-ticker" aria-hidden="true"><span>${sorted.map(i=>(i.emoji||"✨")+" "+esc(i.title)).join("  •  ")}  •  </span><span>${sorted.map(i=>(i.emoji||"✨")+" "+esc(i.title)).join("  •  ")}  •  </span></div></div>
-      <div class="subs nfilt" style="--cc:var(${c.c})">${[["","✨ Alles",sorted.length],["now","🔥 Nu bezig",cnt("now")],["open","🆕 Net open",cnt("open")],["soon","⏳ Binnenkort",cnt("soon")],["pop","🎪 Pop-ups",cnt("pop")]].map(([v,t,n])=>`<button data-nf="${v}" aria-pressed="${f===v}">${t} <small>${n}</small></button>`).join("")}</div>
-      <div class="ngrid">${shown.length?shown.map((i,ix)=>{const st=status(i); const g=grads[(i.id.length+ix)%grads.length]; return `<div class="ntile" style="--g1:${g[0]};--g2:${g[1]}"><div class="nhead"><span class="nemo">${i.emoji||"✨"}</span><span class="nstick ${st.k}">${esc(st.t)}</span></div>${card(i)}</div>`;}).join(""):`<div class="empty">Niets in deze selectie. Kijk morgen opnieuw: NEW wordt elke dag bijgewerkt.</div>`}</div>`;
+</div>
+      <div class="subs nfilt" style="--cc:var(${c.c})">${[["","Alles",sorted.length],["now","Nu bezig",cnt("now")],["open","Net open",cnt("open")],["soon","Binnenkort",cnt("soon")],["pop","Pop-ups",cnt("pop")]].map(([v,t,n])=>`<button data-nf="${v}" aria-pressed="${f===v}">${t} <small>${n}</small></button>`).join("")}</div>
+      <div class="ngrid">${shown.length?shown.map((i,ix)=>{const st=status(i); const g=grads[(i.id.length+ix)%grads.length]; return `<div class="ntile" style="--g1:${g[0]};--g2:${g[1]}"><div class="nhead"><span class="nstick ${st.k}">${esc(st.t)}</span></div>${card(i)}</div>`;}).join(""):`<div class="empty">Niets in deze selectie. Kijk morgen opnieuw: NEW wordt elke dag bijgewerkt.</div>`}</div>`;
     document.getElementById("back").onclick=()=>{state.cat=null;state.nf="";render();};
     return;
   }
@@ -1936,7 +1936,7 @@ function renderCats(){
     <div class="cat-hero"><div class="chip" style="color:var(${c.c})">${sec?c.name+" · sector":grp?c.name+" · groepje":c.n}</div><h2>${sec?esc(sec.name):grp?esc(grp):c.name}</h2><p>${sec?esc(sec.short):grp?esc(([...SHOP_GROUPS,...DEAL_GROUPS].find(g=>g.id===grp)||{}).short||""):c.intro}</p></div>
     ${orgsHere.length&&!["food","deal","sport","new","shop","match","pol"].includes(c.id)?`<div class="grp-title">Per organisatie</div><div class="orgs" style="--cc:var(${c.c})">${orgsHere.map(x=>`<button class="org" data-org="${esc(x.o.id)}"><b>${esc(x.o.name)}</b><span>${x.n?x.n+" activiteit"+(x.n===1?"":"en"):"Info & links"}</span></button>`).join("")}</div>`:""}
     ${(()=>{const hide=["food","deal","sport","new","shop","match","pol"].includes(c.id); const tileIds=hide?[]:orgsHere.map(x=>x.o.id); const loose=profHere.filter(p=>!p.orgs.some(o=>tileIds.includes(o)));
-      return loose.length?`<details class="orginfo"><summary>ℹ️ ${c.id==="ver"?"Alle kringen & verenigingen":c.id==="ugent"?"Hogescholen & agenda's":"Organisaties & handige links"} (${loose.length})</summary>${infoRows(loose)}</details>`:"";})()}
+      return loose.length?`<details class="orginfo"><summary>${c.id==="ver"?"Alle kringen & verenigingen":c.id==="ugent"?"Hogescholen & agenda's":"Organisaties & handige links"} (${loose.length})</summary>${infoRows(loose)}</details>`:"";})()}
     ${grp?"":`<div class="grp-title">Alles in ${sec?esc(sec.name):c.name}</div>`}
     ${c.id==="food"||c.id==="match"||grp?"":`<div class="subs" style="--cc:var(${c.c})"><button data-sub="" aria-pressed="${!state.sub}">Alles (${items.length})</button>${subs.map(s=>`<button data-sub="${esc(s)}" aria-pressed="${state.sub===s}">${esc(s)} (${items.filter(i=>i.sub===s).length})</button>`).join("")}</div>`}
     ${c.id==="match"?[["mlvl","Niveau",[["","Alle"],["be","🇧🇪 België"],["eu","🇪🇺 Europa"],["world","🌍 Wereld"]]],["msport","Sport",[["","Alle"],["Voetbal","⚽ Voetbal"],["Wielrennen","🚴 Wielrennen"],["Veldrijden","🚵 Veldrijden"]]],["mwatch","Kijken",[["","Alle"],["gent","📍 Live in Gent"],["be","🚆 Live in België"],["tv","📺 Op tv / café"]]]].map(([k,l,opts])=>`<div class="subs" style="--cc:var(${c.c})"><span class="flt">${l}</span>${opts.map(([v,t])=>`<button data-mf="${k}" data-mv="${v}" aria-pressed="${state[k]===v}">${t}</button>`).join("")}</div>`).join(""):""}
