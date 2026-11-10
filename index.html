@@ -135,8 +135,10 @@ nav.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);bord
 .dl-row .d{font-family:var(--mono);font-size:12.5px;color:var(--dl);white-space:nowrap;font-weight:500}
 .dl-row .t{font-weight:600;min-width:0}
 .dl-row .cd{margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--dl);white-space:nowrap}
-.dl-row.past{background:var(--surface);border:1px solid var(--line)}
-.dl-row.past .d,.dl-row.past .cd{color:var(--muted)}
+.dl-row.past{background:var(--dl-bg);border:1px solid color-mix(in srgb,var(--dl) 18%,transparent)}
+.dl-up .dl-row{background:var(--ok-bg);border:1px solid color-mix(in srgb,var(--ok) 18%,transparent)}
+.dl-up .dl-row .d,.dl-up .dl-row .cd{color:var(--ok)}
+.dl-row.past .d,.dl-row.past .cd{color:var(--dl)}
 .dl-row.soft{background:var(--surface);border:1px solid var(--line)}
 .dl-intro{margin:0 0 14px;color:var(--muted);max-width:65ch;font-size:14px}
 .orgbtn{font-size:13px;font-weight:600;border:1px dashed var(--cc);color:var(--cc);background:transparent;border-radius:999px;padding:5px 11px;cursor:pointer}
@@ -155,22 +157,29 @@ nav.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);bord
 .sweek[open]>summary{margin-bottom:4px}
 .sfull{color:var(--dl);font-weight:600}
 .sn{font-size:12px;color:var(--muted)}
-.balloons{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:26px 14px;padding:10px 0 20px}
-.balloon{background:none;border:0;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--ink);font:inherit;animation:bfloat var(--t) ease-in-out var(--d) infinite}
-.balloon:nth-child(even){margin-top:28px}
+.balloons{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:22px 18px;padding:6px 0 10px}
+.bitem{background:none;border:0;padding:0;cursor:pointer;display:grid;grid-template-columns:132px 1fr;gap:14px;align-items:center;color:var(--ink);font:inherit;text-align:left}
+.balloon{display:flex;flex-direction:column;align-items:center;gap:6px;animation:bfloat var(--t) ease-in-out var(--d) infinite}
 .b-title{font-family:var(--display);font-weight:700;font-size:15px;text-align:center}
-.b-ball{width:118px;height:132px;border-radius:50% 50% 48% 48% / 55% 55% 45% 45%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+.b-ball{width:112px;height:126px;border-radius:50% 50% 48% 48% / 55% 55% 45% 45%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
   background:radial-gradient(circle at 32% 28%, color-mix(in srgb, var(--cc) 6%, #fff) 0 12%, color-mix(in srgb, var(--cc) 20%, var(--surface)) 45%, color-mix(in srgb, var(--cc) 34%, var(--surface)) 100%);
   border:1px solid color-mix(in srgb, var(--cc) 30%, var(--line));color:var(--cc);position:relative;transition:transform .2s ease, box-shadow .2s ease;box-shadow:0 8px 20px color-mix(in srgb, var(--cc) 14%, transparent)}
 .b-ball::after{content:"";position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:color-mix(in srgb, var(--cc) 34%, var(--surface));border-bottom:0}
-.b-ico{width:38px;height:38px;display:inline-flex}
+.b-ico{width:36px;height:36px;display:inline-flex}
 .b-n{font-family:var(--mono);font-size:11px;color:color-mix(in srgb, var(--cc) 75%, var(--ink))}
-.b-string{width:1px;height:26px;background:linear-gradient(var(--line),transparent);margin-top:2px}
-.b-next{font-size:11.5px;color:var(--muted);text-align:center;max-width:150px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.balloon:hover .b-ball{transform:scale(1.05);box-shadow:0 12px 26px color-mix(in srgb, var(--cc) 22%, transparent)}
-@keyframes bfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.b-string{width:1px;height:22px;background:linear-gradient(var(--line),transparent)}
+.b-side{display:flex;flex-direction:column;gap:7px;min-width:0}
+.b-photo{position:relative;display:block;width:100%;aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:linear-gradient(135deg,color-mix(in srgb,var(--cc) 22%,var(--surface)),color-mix(in srgb,var(--cc) 8%,var(--surface)));border:1px solid var(--line)}
+.b-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s ease;z-index:1}
+.b-ph-ico{position:absolute;inset:0;margin:auto;width:44px;height:44px;color:var(--cc);opacity:.6}
+.b-next{font-size:12px;color:var(--muted);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.b-next b{color:var(--cc);font-weight:600}
+.bitem:hover .b-ball{transform:scale(1.05);box-shadow:0 12px 26px color-mix(in srgb, var(--cc) 22%, transparent)}
+.bitem:hover .b-photo img{transform:scale(1.04)}
+.b-credit{font-size:11px;color:var(--muted);text-align:right;margin:4px 0 0}
+@keyframes bfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 @media (prefers-reduced-motion: reduce){.balloon{animation:none}}
-@media (max-width:480px){.balloons{grid-template-columns:repeat(2,1fr)} .b-ball{width:104px;height:116px}}
+@media (max-width:480px){.balloons{grid-template-columns:1fr} .bitem{grid-template-columns:118px 1fr;gap:12px} .b-ball{width:100px;height:112px}}
 .orginfo{background:var(--surface);border:1px dashed var(--line);border-radius:12px;padding:12px 14px;margin:0 0 18px}
 .orginfo summary{cursor:pointer;font-weight:600;font-size:14px}
 .info-list{display:flex;flex-direction:column;gap:2px;margin-top:8px}
@@ -565,11 +574,17 @@ const ITEMS = [
   extras:["Gentse cateraars o.a. Aardig (Kammerstraat), Le Botaniste (Hoornstraat), Lokaal (Brabantdam), Soul Kitchen (Godshuizenlaan), Greenway (Nederkouter), Vegamuze (Eedverbondkaai), KAROOT (Phoenixstraat)","Je kan je eigen plantaardige event delen op hun site"],
   links:[["Vind een cateraar","https://durfplantaardig.be/vind-een-cateraar/",1]]},
  {id:"ug-klimaatactivisme",cat:"duur",sub:"Lezing",title:"Lezing: Klimaatactivisme als ritueel?",when:{once:"2026-11-10",time:"20:00"},where:"Liberas, Kramersplein 23",price:"Zie UGent",ok:true,
-  desc:"Onderzoek bij radicale klimaatactivisten (UGent-agenda).",links:[["UGent-agenda",UGAG,1]]},
+  desc:"Is klimaatactie een soort ritueel? Seppe Ponnet stelt zijn masterproef voor over de band tussen religie en radicaal klimaatactivisme in Vlaanderen.",
+  what:"Ponnet interviewde radicale klimaatactivisten en onderzocht of hun acties (blokkades, samenkomsten) werken zoals religieuze rituelen: met symbolen, gemeenschap en zingeving. "+"Deel van de lezingenreeks 'Religie, mens en natuur' van het UGent-centrum voor christelijke tradities (CSCT), samen met Liberas en het Geuzenhuis. Elke dinsdagavond in de Blauwe zaal; de lezingen worden ook op YouTube gezet.",
+  who:"Iedereen. Lezing in het Nederlands, 20:00–21:30.",links:[["UGent-agenda","https://www.ugent.be/nl/agenda/klimaatactivisme",1]]},
  {id:"ug-klimaatrituelen",cat:"duur",sub:"Lezing",title:"Lezing: Klimaatrituelen",when:{once:"2026-11-17",time:"20:00"},where:"Liberas, Kramersplein 23",price:"Zie UGent",ok:true,
-  desc:"Herdenken in tijden van ecologische crisis (UGent-agenda).",links:[["UGent-agenda",UGAG,1]]},
+  desc:"Stef Craps over hoe nieuwe klimaatrituelen, zoals herdenkingen voor verdwenen gletsjers of 'klimaathuwelijken', mensen helpen omgaan met de ecologische crisis.",
+  what:"Craps onderzoekt hoe we rouwen om natuurverlies en welke rol rituelen daarin spelen, ook buiten religie. "+"Deel van de lezingenreeks 'Religie, mens en natuur' van het UGent-centrum voor christelijke tradities (CSCT), samen met Liberas en het Geuzenhuis. Elke dinsdagavond in de Blauwe zaal; de lezingen worden ook op YouTube gezet.",
+  who:"Iedereen. Lezing in het Nederlands, 20:00–21:30.",links:[["UGent-agenda","https://www.ugent.be/nl/agenda/klimaatrituelen",1]]},
  {id:"ug-groeneprofeten",cat:"duur",sub:"Lezing",title:"Lezing: Groene profeten",when:{once:"2026-12-01",time:"20:00"},where:"Liberas, Kramersplein 23",price:"Zie UGent",ok:true,
-  desc:"Christendom en de wortels van het moderne milieudenken (UGent-agenda).",links:[["UGent-agenda",UGAG,1]]},
+  desc:"Historicus Christophe Verbruggen over hoe christelijke ideeën in de 19e eeuw mee aan de basis lagen van het moderne milieudenken.",
+  what:"Een historische kijk op de vraag of religie onze kijk op natuur en milieu heeft gevormd, en hoe 19e-eeuwse 'groene profeten' dachten over de mens tegenover de natuur. "+"Deel van de lezingenreeks 'Religie, mens en natuur' van het UGent-centrum voor christelijke tradities (CSCT), samen met Liberas en het Geuzenhuis. Elke dinsdagavond in de Blauwe zaal; de lezingen worden ook op YouTube gezet.",
+  who:"Iedereen. Lezing in het Nederlands, 20:00–21:30.",links:[["UGent-agenda","https://www.ugent.be/nl/agenda/groene-profeten",1]]},
  {id:"ug-sustain",cat:"duur",sub:"Symposium",title:"Critical and Transformative Perspectives on Sustainability",when:{once:"2027-02-01",time:"09:00"},where:"Green Hub, Sint-Pietersnieuwstraat 45",price:"Zie UGent",ok:true,
   desc:"UGent-symposium over duurzaamheid.",links:[["UGent-agenda",UGAG,1]]},
  {id:"febduur",cat:"duur",sub:"Commissie",title:"Commissie Duurzaamheid FEB",when:{expect:"Events via Insta"},where:"FEB, Gent",price:"Gratis",ok:false,
@@ -928,25 +943,37 @@ const ITEMS = [
  {id:"ug-topsport",cat:"ugent",sub:"Sport",title:"Infosessie Topsport en Studies + Prijs Benny Vansteelant",when:{once:"2026-11-10",time:"19:00"},where:"GUSB, Watersportlaan 3",price:"Zie UGent",ok:true,
   desc:"Hoe combineer je topsport met studeren?",links:[["UGent-agenda",UGAG,1]]},
  {id:"ug-eugenify",cat:"ugent",sub:"Lezing",title:"Lezing: Eugenifying race",when:{once:"2026-11-10",time:"19:00"},where:"Auditorium 4, Blandijnberg 2",price:"Zie UGent",ok:true,
-  desc:"Avondlezing aan de Blandijn.",links:[["UGent-agenda",UGAG,1]]},
+  desc:"De Australische filosoof Robert A. Wilson (University of Western Australia) over 'eugenificatie': hoe denken in termen van 'soorten mensen' blijft doorwerken, ook nu de eugenetica als beweging voorbij is.",
+  what:"Wilson toont hoe die manier van denken nog altijd meespeelt in hoe we naar ras en racialisering kijken. De lezing komt uit een hoofdstuk van zijn nieuwe boek 'Creating Others: Eugenics and the Social World'. Georganiseerd door de vakgroep Wijsbegeerte en Moraalwetenschap.",
+  who:"Studenten, personeel en publiek. In het Engels, 19:00–21:00.",links:[["UGent-agenda","https://www.ugent.be/nl/agenda/eugenifying-race",1]]},
  {id:"ug-feminist",cat:"ugent",sub:"Lezing",title:"Boekvoorstelling: The Value of Feminist Rage",when:{once:"2026-11-12",time:"19:30"},where:"Auditorium 4, Blandijnberg 2",price:"Zie UGent",ok:true,
-  desc:"Boekvoorstelling met gesprek.",links:[["UGent-agenda",UGAG,1]]},
+  desc:"Voorstelling van het boek 'The Value of Feminist Rage' van filosofe Sigrid Wallaert, met een gesprek erover.",
+  what:"Het boek verdedigt dat woede van vrouwen over onrecht waardevol kan zijn: als bron van kennis en als signaal dat er iets mis is, in plaats van iets dat je moet wegduwen. Wallaert koppelt dat aan 'epistemisch' en 'affectief' onrecht, wanneer iemand niet geloofd of niet serieus genomen wordt.",
+  who:"Iedereen.",links:[["UGent-agenda",UGAG,1]]},
  {id:"ug-swiping",cat:"ugent",sub:"Cultuur",title:"Theater: Swiping Right (lecture performance)",when:{once:"2026-11-12",time:"20:00"},where:"GUM, K.L. Ledeganckstraat 35",price:"Zie UGent",ok:true,
-  desc:"Lecture performance in het Gents Universiteitsmuseum.",links:[["UGent-agenda",UGAG,1]]},
+  desc:"Kunnen links en rechts op elkaar verliefd worden? Sophie Anna Veelenturf, zelf links, ging op date met rechts-conservatieve mannen en maakte er een grappige theatervoorstelling van.",
+  what:"Een 'lecture performance': half lezing, half theater. Ze speelt gesprekken na met haar dates, met koppels die politiek verschillen en met academici, en zoekt uit of tegengestelde meningen samen kunnen in de liefde.",
+  who:"Iedereen. In het Engels, 90 minuten. Tickets via de registratielink.",links:[["UGent-agenda","https://www.ugent.be/nl/agenda/swiping-right",1]]},
  {id:"ug-panamarenko",cat:"ugent",sub:"Cultuur",title:"Kruip in het hoofd van Panamarenko",when:{once:"2026-11-15",time:"10:00"},where:"GUM, K.L. Ledeganckstraat 35",price:"Zie UGent",ok:true,
   desc:"Happening in het GUM rond de kunstenaar Panamarenko.",links:[["UGent-agenda",UGAG,1]]},
  {id:"ug-wetenschap",cat:"ugent",sub:"Wetenschap",title:"Dag van de Wetenschap",when:{once:"2026-11-15",time:"10:00"},where:"Overal in Vlaanderen",price:"Gratis",ok:true,
   desc:"Labo's en onderzoekscentra zetten hun deuren open.",links:[["UGent-agenda",UGAG,1]]},
  {id:"ug-nostalgia",cat:"ugent",sub:"Lezing",title:"Lezing: Nostalgia as a Propaganda Tool",when:{once:"2026-11-16",time:"16:30"},where:"Campus Aula, Voldersstraat 3",price:"Zie UGent",ok:true,
-  desc:"Lezing in de Faculty Board Room.",links:[["UGent-agenda",UGAG,1]]},
+  desc:"Lezing over hoe nostalgie, het verlangen naar een 'beter verleden', ingezet wordt als propaganda.",
+  what:"Denk aan politieke slogans en campagnes die beloven dat alles terug wordt 'zoals vroeger'. De lezing bekijkt hoe zo'n beeld van het verleden gebruikt wordt om mensen te overtuigen. In de Faculty Board Room van de Campus Aula.",
+  who:"Studenten en geïnteresseerden.",links:[["Agenda PS","https://www.ugent.be/ps/nl/actueel/agenda",1]]},
  {id:"ug-homes",cat:"ugent",sub:"Wonen",title:"Bezoekdag UGent-homes",when:{once:"2026-11-21",time:"11:00"},where:"Verschillende homes",price:"Gratis",ok:true,
   desc:"Bekijk de studentenhomes van de UGent van binnen.",links:[["UGent-agenda",UGAG,1]]},
  {id:"ug-machines",cat:"ugent",sub:"Lezing",aud:"Economie-studenten",title:"Talking to Machines: consumers & generative AI",when:{once:"2026-11-24",time:"13:00"},where:"Auditorium H, T2, Campus Ufo",price:"Zie UGent",ok:true,
-  desc:"Recente trends in hoe consumenten met technologie en AI omgaan.",links:[["UGent-agenda",UGAG,1]]},
+  desc:"Lezing over hoe chatbots en AI-agents ons koopgedrag veranderen: van klantendienst en advies tot AI die zelf voor jou zoekt en koopt.",
+  what:"Wie is verantwoordelijk als AI de mist ingaat? Hoe bescherm je kwetsbare consumenten tegen overtuigende AI, bijvoorbeeld met de Europese AI Act? En hoe verandert AI het onderzoek zelf (AI-interviews, 'synthetische' respondenten)? Georganiseerd door de vakgroep Communicatiewetenschappen; vooral bedoeld voor onderzoekers in communicatie, marketing en psychologie.",
+  who:"Studenten en personeel. In het Engels, 13:00–15:00.",links:[["UGent-agenda","https://www.ugent.be/nl/agenda/talking-to-machines",1]]},
  {id:"ug-wcafe",cat:"ugent",sub:"Wetenschap",title:"Wetenschapscafé: Chips, spitstechnologie in je binnenzak",when:{once:"2026-11-24",time:"19:45"},where:"Eetcafé Toreke, Vlotstraat 22",price:"Zie UGent",ok:true,
   desc:"Wetenschap uitgelegd op café.",links:[["UGent-agenda",UGAG,1]]},
  {id:"ug-mandela",cat:"ugent",sub:"Lezing",title:"Nelson Mandela Lecture",when:{once:"2026-12-08",time:"19:30"},where:"De Blauwe Vogel, De Krook",price:"Zie UGent",ok:true,
-  desc:"Van de Soweto-opstand van 1976 tot een constitutionele democratie: de toekomst van jongeren.",links:[["UGent-agenda",UGAG,1]]},
+  desc:"Jaarlijkse lezing ter ere van Nelson Mandela, dit jaar door prof. Tshepo Madlingozi, Zuid-Afrikaans mensenrechtencommissaris, samen met jongeren van het Nelson Mandela Children's Fund.",
+  what:"Een gesprek tussen generaties: 50 jaar na de Soweto-opstand van 1976 en 30 jaar na de Zuid-Afrikaanse grondwet. Is er hoop voor de jongeren van Zuid-Afrika? Georganiseerd door het Afrika Platform van de Associatie UGent, in De Krook.",
+  who:"Iedereen. In het Engels, 19:30–22:00.",how:"Gratis registreren via event.ugent.be.",links:[["UGent-agenda","https://www.ugent.be/nl/agenda/mandela-lecture",1]]},
  {id:"ug-borders",cat:"ugent",sub:"Symposium",title:"Bridging Borders: international academic collaboration",when:{once:"2027-01-04",time:"15:00"},where:"Wintercircus, Lammerstraat 13",price:"Zie UGent",ok:true,
   desc:"Symposium in het Wintercircus.",links:[["UGent-agenda",UGAG,1]]},
  {id:"ug-stress",cat:"ugent",sub:"Welzijn",title:"Connecting expertise on stress and wellbeing",when:{once:"2027-02-02",time:"09:00"},where:"GUM, Ledeganckstraat 35",price:"Zie UGent",ok:true,
@@ -1299,10 +1326,14 @@ const ITEMS = [
   desc:"Onderzoekssymposium van de Faculteit Ingenieurswetenschappen en Architectuur, met bedrijven, alumni en studenten.",
   what:"Wetenschappelijke presentaties, interactieve sessies en netwerken tussen disciplines. Ideaal om onderzoek en bedrijven te leren kennen als je een thesis of doctoraat overweegt. Voertaal Engels.",
   extras:["Netwerken met bedrijven en onderzoekers","Inspiratie voor je masterproef"],links:[["UGent agenda","https://www.ugent.be/nl/agenda/fears",1]]},
- {id:"aig-ai-ruimte",cat:"corp",sub:"Lezing",sectors:["ind","tech"],aud:"Ingenieurs (studenten welkom)",title:"AIG lezing: artificiële intelligentie en ruimtevaart",when:{once:"2026-11-25",time:"19:30"},where:"Gebouw S2 (Faculteitsraadzaal), Campus Sterre",price:"Zie AIG",ok:true,
-  desc:"Lezing van AIG, de alumnivereniging van de UGent-ingenieurs, over AI in de ruimtevaart.",links:[["AIG","https://aig.ugent.be/category/event/",1]]},
- {id:"aig-energie",cat:"corp",sub:"Lezing",sectors:["ind"],aud:"Ingenieurs (studenten welkom)",title:"AIG lezing: energietransitie en duurzaamheid",when:{once:"2026-12-03",time:"20:00"},where:"Lakenmetershuis, Gent",price:"Zie AIG",ok:true,
-  desc:"Lezing van de ingenieursalumni over de energietransitie.",links:[["AIG","https://aig.ugent.be/category/event/",1]]},
+ {id:"aig-ai-ruimte",cat:"corp",sub:"Lezing",sectors:["ind","tech"],aud:"Ingenieurs (studenten welkom)",title:"AIG lezing: artificiële intelligentie en ruimtevaart",when:{once:"2026-11-25",time:"19:30"},where:"Gebouw S2 (Faculteitsraadzaal), Campus Sterre",ok:true,
+  desc:"Wouter Benoot, medeoprichter en CTO van de Belgische spacetech-startup EDGX, over AI-chips in satellieten.",
+  what:"Satellieten verzamelen meer data dan ze naar de aarde kunnen sturen, dus moet de AI aan boord rekenen. Benoot legt uit wat er nodig is om moderne AI-chips in de ruimte te laten werken, hoe satellieten 'te huur' worden in plaats van zelf gelanceerd, en of datacenters in de ruimte realistisch zijn.",
+  price:"€20 (AIG-leden €5)",deadline:{date:"2026-11-22"},how:"Inschrijven via AIG tot zondag 22 november; max. 50 plaatsen.",links:[["Inschrijven","https://aig.ugent.be/event-2026/lezing-lucht-en-ruimtevaart/",1]]},
+ {id:"aig-energie",cat:"corp",sub:"Lezing",sectors:["ind"],aud:"Ingenieurs (studenten welkom)",title:"AIG lezing: energietransitie en duurzaamheid",when:{once:"2026-12-03",time:"20:00"},where:"Lakenmetershuis, Gent",ok:true,
+  desc:"Zijn elektrische auto's echt duurzaam? Prof. em. Alex Van den Bossche (UGent, Energy & Systems Lab) zet de feiten op een rij.",
+  what:"Over de impact op het stroomnet, hernieuwbare energie en grondstoffen, en over batterijen, recyclage, laadgewoonten en levensduur. Niet voor of tegen, wel een eerlijke afweging. Met vragenronde en receptie om 21:30.",
+  price:"€10 (AIG-leden €5)",deadline:{date:"2026-11-30"},how:"Inschrijven via AIG tot maandag 30 november; max. 60 plaatsen.",links:[["Inschrijven","https://aig.ugent.be/event-2026/energievoordracht-2/",1]]},
  {id:"arcelor-visit",cat:"corp",sub:"Bedrijfsbezoek",sectors:["ind"],aud:"Technische opleidingen hoger onderwijs",title:"ArcelorMittal Gent: bedrijfsbezoek staalfabriek",when:{expect:"Op aanvraag (weekdagen); open bedrijvendag 1e zondag van oktober"},where:"ArcelorMittal Gent",price:"Gratis",ok:true,
   desc:"Rondleiding van ongeveer 3 uur op een van de grootste industriële sites van België.",
   what:"Presentatie, film over staalproductie, bustour over de site en bezoek aan geselecteerde afdelingen.",
@@ -2090,18 +2121,27 @@ function renderOrg(){
   document.getElementById("back").onclick=()=>{state.org=null;render();window.scrollTo({top:0});};
 }
 
+/* Sfeerfoto's per onderdeel: gratis foto's van Unsplash (Unsplash-licentie), rechtstreeks van images.unsplash.com */
+const CAT_PHOTO={"corp": "photo-1517048676732-d65bc937f952", "intl": "photo-1516483638261-f4dbaf036963", "biz": "photo-1557804506-669a67965ba0", "ugent": "photo-1606755767976-498efc6c5a4e", "cert": "photo-1540575467063-178a50c2df87", "duur": "photo-1623136299195-570a06bdae6b", "food": "photo-1504754524776-8f4f37790ca0", "new": "photo-1544212415-85fec3f52087", "pol": "photo-1577563908411-5077b6dc7624", "run": "photo-1571008887538-b36bb32f4571", "match": "photo-1522778119026-d647f0596c20", "sport": "photo-1747239069226-55382c570116", "ver": "photo-1645730826845-cd2ddec9984f", "deal": "photo-1606066889831-35faf6fa6ff6"};
+const catPhoto=id=>CAT_PHOTO[id]?`https://images.unsplash.com/${CAT_PHOTO[id]}?w=520&h=390&fit=crop&q=70&auto=format`:"";
 function renderIdee(){
   const up=i=>isEv(i)&&!isPast(i);
   const next=c=>{ const l=sortItems(ITEMS.filter(i=>up(i)&&(c.id==="new"?i.fresh:i.cat===c.id)&&(i.when.once||i.when.dates))); return l[0]; };
   const cats=CATS.slice();
   $view.innerHTML=`<p class="dl-intro">Even rondkijken? Elke ballon is een onderdeel. Tik erop om alles te zien.</p>
-    <div class="balloons">${cats.map((c,ix)=>{ const n=ITEMS.filter(i=>up(i)&&(c.id==="new"?i.fresh:i.cat===c.id)).length; const nx=next(c);
-      return `<button class="balloon" data-goc="${c.id}" style="--cc:var(${c.c});--d:${(ix%5)*0.7}s;--t:${5+(ix%3)}s">
-        <span class="b-title">${esc(c.name)}</span>
-        <span class="b-ball"><span class="b-ico">${ico(c.id)}</span><span class="b-n">${n} ${n===1?"item":"items"}</span></span>
-        <span class="b-string" aria-hidden="true"></span>
-        ${nx?`<span class="b-next">Eerstvolgend: ${esc(nx.title)}</span>`:`<span class="b-next">${esc(c.short)}</span>`}
-      </button>`;}).join("")}</div>`;
+    <div class="balloons">${cats.map((c,ix)=>{ const n=ITEMS.filter(i=>up(i)&&(c.id==="new"?i.fresh:i.cat===c.id)).length; const nx=next(c); const ph=catPhoto(c.id);
+      return `<button class="bitem" data-goc="${c.id}" style="--cc:var(${c.c});--d:${(ix%5)*0.7}s;--t:${5+(ix%3)}s">
+        <span class="balloon">
+          <span class="b-title">${esc(c.name)}</span>
+          <span class="b-ball"><span class="b-ico">${ico(c.id)}</span><span class="b-n">${n} ${n===1?"item":"items"}</span></span>
+          <span class="b-string" aria-hidden="true"></span>
+        </span>
+        <span class="b-side">
+          <span class="b-photo">${ph?`<img src="${ph}" alt="" loading="lazy" onerror="this.remove()">`:""}<span class="b-ph-ico">${ico(c.id)}</span></span>
+          <span class="b-next">${nx?`<b>Eerstvolgend</b> ${esc(nx.title)}`:esc(c.short)}</span>
+        </span>
+      </button>`;}).join("")}</div>
+    <p class="b-credit">Sfeerfoto's: Unsplash</p>`;
 }
 
 function renderDeadlines(){
@@ -2113,10 +2153,8 @@ function renderDeadlines(){
   const row=(i,cls,dLbl,cd)=>`<button class="dl-row ${cls}" data-goto="${i.id}"><span class="d">${dLbl}</span><span class="t">${esc(i.title)}${cls==="soft"?` <span style="font-weight:400;color:var(--muted)">· ${esc(i.deadline.text)}</span>`:""}</span>${cd?`<span class="cd">${cd}</span>`:""}</button>`;
   $view.innerHTML=`<p class="dl-intro">Alle inschrijvingsdeadlines op één plek. Tik op een deadline om de activiteit met alle info te openen.</p>
     <h2 class="sec-title">Komende deadlines<small>${up.length}</small></h2>
-    <div class="dl-list">${up.length?up.map(i=>{const d=parse(i.deadline.date),n=days(d);return row(i,"",fmt(d)+" "+d.getFullYear(),n===0?"vandaag!":n===1?"morgen":"nog "+n+" dagen");}).join(""):`<div class="empty">Geen komende deadlines.</div>`}</div>
-    <h2 class="sec-title">Geen vaste deadline, wel snel inschrijven<small>${soft.length}</small></h2>
-    <div class="dl-list">${soft.map(i=>row(i,"soft",i.when.once?fmt(parse(i.when.once)):"verwacht","")).join("")}</div>
-    <h2 class="sec-title">Verstreken sinds 21 september<small>volgend jaar opnieuw</small></h2>
+    <div class="dl-list dl-up">${up.length?up.map(i=>{const d=parse(i.deadline.date),n=days(d);return row(i,"",fmt(d)+" "+d.getFullYear(),n===0?"vandaag!":n===1?"morgen":"nog "+n+" dagen");}).join(""):`<div class="empty">Geen komende deadlines.</div>`}</div>
+    <h2 class="sec-title">Verstreken<small>${past.length}</small></h2>
     <div class="dl-list">${past.map(i=>{const d=parse(i.deadline.date);return row(i,"past",fmt(d)+" "+d.getFullYear(),"verstreken");}).join("")}</div>`;
 }
 
