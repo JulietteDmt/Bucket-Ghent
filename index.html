@@ -79,20 +79,35 @@ nav.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);bord
 .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
 .dow{font-family:var(--mono);font-size:11px;color:var(--muted);text-align:center;padding-bottom:4px;text-transform:uppercase}
 .day{aspect-ratio:1/1;max-width:100%;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:5px;cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0;overflow:hidden;color:var(--ink);transition:transform .12s, box-shadow .12s}
-.day.has{background:color-mix(in srgb, var(--tc) 7%, var(--surface));border-color:color-mix(in srgb, var(--tc) 22%, var(--line))}
+.day.l1{background:color-mix(in srgb, var(--hc) 8%, var(--surface))}
+.day.l2{background:color-mix(in srgb, var(--hc) 17%, var(--surface))}
+.day.l3{background:color-mix(in srgb, var(--hc) 30%, var(--surface))}
+.day.l4{background:color-mix(in srgb, var(--hc) 45%, var(--surface))}
+.day.has{border-color:color-mix(in srgb, var(--hc) 25%, var(--line))}
+.day .dlpip{position:absolute;top:6px;right:6px;width:6px;height:6px;border-radius:50%;background:var(--dl)}
+.calf{display:flex;gap:6px;overflow-x:auto;padding:2px 0 10px;margin-bottom:4px;scrollbar-width:none}
+.calf::-webkit-scrollbar{display:none}
+.calf button{flex:none;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:99px;padding:6px 11px;font:inherit;font-size:12.5px;cursor:pointer;transition:background .15s,border-color .15s}
+.calf button .ci{width:15px;height:15px;color:var(--lc)}
+.calf button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.calf button[data-calcat][aria-pressed="true"]{background:var(--lc);border-color:var(--lc);color:#fff}
+.calf button[aria-pressed="true"] .ci{color:inherit}
+.calf .cl{white-space:nowrap}
+.calf button[data-calcat=""][aria-pressed="true"]{color:var(--bg)}
+@media (min-width:640px){.calf{flex-wrap:wrap;overflow:visible}}
+.calnote{font-size:12px;color:var(--muted);margin:10px 0 0}
 .day:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.06)}
 .day.out{opacity:.38}
 .day.wk:not(.has){background:color-mix(in srgb, var(--accent) 3%, var(--surface))}
 .day .n{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums;min-width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;border-radius:99px;margin:-1px 0 0 -1px}
 .day.is-today .n{background:var(--accent);color:var(--accent-ink);font-weight:700}
-.day.sel{border:2px solid var(--tc,var(--accent));box-shadow:0 0 0 3px color-mix(in srgb, var(--tc,var(--accent)) 18%, transparent)}
+.day.sel{border:2px solid var(--ink);box-shadow:0 0 0 3px color-mix(in srgb, var(--ink) 12%, transparent)}
 .dots{display:flex;flex-wrap:wrap;gap:3px;align-items:center}
 .dot{width:7px;height:7px;border-radius:50%;display:inline-block}
 .dots .more{font-family:var(--mono);font-size:9.5px;color:var(--muted);line-height:1}
 .day{position:relative}
-.day .cnt{display:none;position:absolute;font-family:var(--mono);color:var(--muted)}
-.dots .ci:nth-child(n+4){display:none}
-@media (min-width:640px){ .day{aspect-ratio:auto;min-height:74px;padding:8px} .dot{width:8px;height:8px} .day .n{font-size:13px} .day .cnt{display:block;font-size:11px;right:8px;bottom:6px} .dots .ci:nth-child(n+4){display:inline-flex} .ci .ico{width:16px;height:16px} }
+.day .cnt{position:absolute;right:5px;bottom:3px;font-family:var(--mono);font-size:10px;font-weight:600;color:color-mix(in srgb, var(--hc) 70%, var(--ink))}
+@media (min-width:640px){ .day{aspect-ratio:auto;min-height:70px;padding:8px} .day .n{font-size:13px} .day .cnt{font-size:12px;right:9px;bottom:6px} .day .dlpip{top:9px;right:9px} }
 .cal-head h2 small{display:block;text-align:center;font-family:var(--mono);font-size:11px;font-weight:500;color:var(--muted);text-transform:none;margin-top:2px}
 .dow.we{color:var(--accent);font-weight:600}
 .legend span{background:color-mix(in srgb, var(--lc) 12%, var(--surface));color:var(--ink);border-radius:99px;padding:3px 9px 3px 7px;font-size:11.5px}
@@ -1819,7 +1834,7 @@ function toast(msg,undo){ let t=document.getElementById("toast"); if(!t){ t=docu
   clearTimeout(toastTimer); toastTimer=setTimeout(()=>{t.className="";},5000); }
 function changeBucket(fn,msg){ const before=JSON.stringify(bucket); fn(); saveBucket(); render(); toast(msg,()=>{ bucket=JSON.parse(before); saveBucket(); render(); }); }
 
-const state = { view:"cal", month:new Date(TODAY.getFullYear(),TODAY.getMonth(),1), sel:new Date(TODAY), cat:null, sub:null, org:null, sector:null, q:"", price:0, mlvl:"", msport:"", mwatch:"", diet:"", ftype:"" };
+const state = { view:"cal", month:new Date(TODAY.getFullYear(),TODAY.getMonth(),1), sel:new Date(TODAY), cat:null, sub:null, org:null, sector:null, q:"", price:0, mlvl:"", msport:"", mwatch:"", diet:"", ftype:"", calCat:"" };
 
 const $view = document.getElementById("view");
 document.getElementById("todayLbl").textContent = DOWL[TODAY.getDay()]+" "+TODAY.getDate()+" "+MON[TODAY.getMonth()]+" "+TODAY.getFullYear();
@@ -1872,34 +1887,36 @@ function card(it, dateLabel){
 }
 
 function renderCal(){
+  const evOn=d=>eventsOn(d).filter(e=>!state.calCat||e.cat===state.calCat);
+  const fc=state.calCat?catById[state.calCat].c:"--accent";
   const m=state.month, y=m.getFullYear(), mo=m.getMonth();
   const first=new Date(y,mo,1); const start=new Date(first); start.setDate(1-((first.getDay()+6)%7));
   let cells="";
   for(let i=0;i<42;i++){
     const d=new Date(start); d.setDate(start.getDate()+i);
-    const rank=e=>{const w=e.when; if(w.once&&!w.to) return 0; if(w.dates) return 1; if(w.once&&w.to) return (parse(w.to)-parse(w.once))/86400000>3?4:1; return 3;};
-    const evs=eventsOn(d).sort((a,b)=>rank(a)-rank(b)), dls=deadlinesOn(d); const cls=["day"];
-    const key=evs.filter(e=>rank(e)<3); const tally={}; (key.length?key:evs).forEach(e=>tally[e.cat]=(tally[e.cat]||0)+1); const top=Object.keys(tally).sort((a,b)=>tally[b]-tally[a])[0];
-    if(evs.length) cls.push("has"); if(d.getDay()===0||d.getDay()===6) cls.push("wk");
+    const evs=evOn(d), dls=state.calCat?[]:deadlinesOn(d); const cls=["day"]; const n=evs.length;
+    const lvl=n===0?0:n<=2?1:n<=5?2:n<=9?3:4;
+    if(n) cls.push("has","l"+lvl); if(d.getDay()===0||d.getDay()===6) cls.push("wk");
     if(d.getMonth()!==mo)cls.push("out"); if(ymd(d)===ymd(TODAY))cls.push("is-today"); if(ymd(d)===ymd(state.sel))cls.push("sel");
-    cells+=`<button class="${cls.join(" ")}"${top?` style="--tc:var(${catById[top].c})"`:""} data-day="${ymd(d)}" aria-label="${d.getDate()} ${MON[d.getMonth()]}, ${evs.length} activiteiten${dls.length?", "+dls.length+" deadline":""}"><span class="n">${d.getDate()}</span><span class="dots">${[...new Set(evs.map(e=>e.cat))].slice(0,4).map(cid=>`<span class="ci" style="color:var(${catById[cid].c})" title="${esc(catById[cid].name)}">${ico(cid)}</span>`).join("")}${dls.length?`<i class="dot dlm"></i>`:""}</span>${evs.length?`<span class="cnt">${evs.length}</span>`:""}</button>`;
+    cells+=`<button class="${cls.join(" ")}" data-day="${ymd(d)}" aria-label="${d.getDate()} ${MON[d.getMonth()]}, ${n} activiteiten${dls.length?", "+dls.length+" deadline":""}"><span class="n">${d.getDate()}</span>${dls.length?`<i class="dlpip" title="Deadline"></i>`:""}${n?`<span class="cnt">${n}</span>`:""}</button>`;
   }
   const usedCats=[...new Set(dated.map(i=>i.cat))].sort((a,b)=>catById[a].name.localeCompare(catById[b].name,"nl"));
-  let monthCount=0; for(let dd=1; dd<=new Date(y,mo+1,0).getDate(); dd++) monthCount+=eventsOn(new Date(y,mo,dd)).length;
-  const selEvs=eventsOn(state.sel), selDl=deadlinesOn(state.sel);
+  let monthCount=0; for(let dd=1; dd<=new Date(y,mo+1,0).getDate(); dd++) monthCount+=evOn(new Date(y,mo,dd)).length;
+  const selEvs=evOn(state.sel), selDl=state.calCat?[]:deadlinesOn(state.sel);
   let up="";
-  for(let i=0;i<14;i++){ const d=new Date(TODAY); d.setDate(TODAY.getDate()+i); eventsOn(d).forEach(e=>{ up+=card(e, fmt(d)+(e.when.time?" · "+e.when.time:"")); }); }
+  for(let i=0;i<14;i++){ const d=new Date(TODAY); d.setDate(TODAY.getDate()+i); evOn(d).forEach(e=>{ up+=card(e, fmt(d)+(e.when.time?" · "+e.when.time:"")); }); }
   const dlUp=ITEMS.filter(i=>i.deadline&&i.deadline.date&&parse(i.deadline.date)>=TODAY).sort((a,b)=>a.deadline.date.localeCompare(b.deadline.date));
   const dlSoft=ITEMS.filter(i=>i.deadline&&!i.deadline.date&&!isPast(i)&&(i.when.once?true:false));
   const expected=ITEMS.filter(i=>isEv(i)&&i.when.expect && /20(26|27)|januari|februari|maart|april|mei|augustus|november|voorjaar|najaar/i.test(i.when.expect));
   $view.innerHTML = `
     <div class="cal-head">
       <button class="iconbtn" id="prev" aria-label="Vorige maand">‹</button>
-      <h2>${MON[mo]} ${y}<small>${monthCount} activiteiten deze maand</small></h2>
+      <h2>${MON[mo]} ${y}<small>${monthCount} ${state.calCat?esc(catById[state.calCat].name.toLowerCase()):"activiteiten"} deze maand</small></h2>
       <button class="iconbtn" id="next" aria-label="Volgende maand">›</button>
     </div>
-    <div class="grid">${["ma","di","wo","do","vr","za","zo"].map(x=>`<div class="dow${x==="za"||x==="zo"?" we":""}">${x}</div>`).join("")}${cells}</div>
-    <div class="legend">${usedCats.map(id=>`<span style="--lc:var(${catById[id].c})"><span class="ci" style="color:var(${catById[id].c})">${ico(id)}</span>${catById[id].name}</span>`).join("")}<span style="--lc:var(--dl)"><i class="dot dlm"></i>Deadline</span></div>
+    <div class="calf"><button data-calcat="" aria-pressed="${!state.calCat}" style="--lc:var(--ink)">Alles</button>${usedCats.map(id=>`<button data-calcat="${id}" aria-pressed="${state.calCat===id}" style="--lc:var(${catById[id].c})" title="${esc(catById[id].name)}"><span class="ci">${ico(id)}</span><span class="cl">${esc(catById[id].name)}</span></button>`).join("")}</div>
+    <div class="grid" style="--hc:var(${fc})">${["ma","di","wo","do","vr","za","zo"].map(x=>`<div class="dow${x==="za"||x==="zo"?" we":""}">${x}</div>`).join("")}${cells}</div>
+    <p class="calnote">Hoe donkerder de dag, hoe meer er te doen is${state.calCat?"":" · rood puntje = deadline"}. Tik op een logo om enkel dat onderdeel te zien.</p>
     <h2 class="sec-title">${DOWL[state.sel.getDay()]} ${state.sel.getDate()} ${MON[state.sel.getMonth()]}<small>${selEvs.length} activiteit${selEvs.length===1?"":"en"}${selDl.length?" · "+selDl.length+" deadline":""}</small></h2>
     <div class="list">${selDl.map(e=>card(e,"Deadline vandaag: "+whenText(e))).join("")}${selEvs.length?selEvs.map(e=>card(e, fmt(state.sel)+(e.when.time?" · "+e.when.time:""))).join(""):(selDl.length?"":`<div class="empty">Niets gepland op deze dag. Kies een dag met gekleurde bolletjes, of kijk bij Onderdelen.</div>`)}</div>
     ${dlUp.length?`<p style="margin:14px 0 0;font-size:14px">⏰ Eerstvolgende deadline: <b>${esc(dlUp[0].title)}</b> op ${fmt(parse(dlUp[0].deadline.date))}. <button class="linkbtn" data-view-go="dl">Alle deadlines</button></p>`:""}
@@ -2086,6 +2103,7 @@ function gotoItem(id){
 
 document.querySelector("nav.tabs").addEventListener("click",e=>{const b=e.target.closest("button[data-view]");if(!b)return;state.view=b.dataset.view;render();window.scrollTo({top:0});});
 $view.addEventListener("click",e=>{
+  const cc=e.target.closest("[data-calcat]"); if(cc){ state.calCat=cc.dataset.calcat; render(); return; }
   const day=e.target.closest("[data-day]"); if(day){ state.sel=parse(day.dataset.day); if(state.sel.getMonth()!==state.month.getMonth()) state.month=new Date(state.sel.getFullYear(),state.sel.getMonth(),1); render(); return; }
   const go=e.target.closest("[data-goto]"); if(go){ gotoItem(go.dataset.goto); return; }
   const vg=e.target.closest("[data-view-go]"); if(vg){ state.view=vg.dataset.viewGo; render(); window.scrollTo({top:0}); return; }
