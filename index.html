@@ -90,7 +90,7 @@ nav.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);bord
 .calf button[aria-pressed="true"] .ci{color:inherit}
 .calf .cl{white-space:nowrap}
 .calf button[data-calcat=""][aria-pressed="true"]{color:var(--bg)}
-@media (min-width:640px){.calf{flex-wrap:wrap;overflow:visible}}
+@media (min-width:640px){.calf{flex-wrap:wrap;overflow:visible;justify-content:center}}
 .calnote{font-size:12px;color:var(--muted);margin:10px 0 0}
 .day:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.06)}
 .day.out{opacity:.38}
@@ -289,8 +289,8 @@ details.more[open] summary::after{transform:rotate(180deg)}
   </header>
 
   <nav class="tabs" role="tablist">
-    <button role="tab" id="tab-cal" aria-selected="true" data-view="cal">Kalender</button>
     <button role="tab" id="tab-idee" aria-selected="false" data-view="idee">Ontdek</button>
+    <button role="tab" id="tab-cal" aria-selected="true" data-view="cal">Kalender</button>
     <button role="tab" id="tab-cat" aria-selected="false" data-view="cat">Onderdelen</button>
     <button role="tab" id="tab-dl" aria-selected="false" data-view="dl">Deadlines<span class="count" id="dlCount"></span></button>
     <button role="tab" id="tab-bucket" aria-selected="false" data-view="bucket">Mijn lijst<span class="count" id="bkCount"></span></button>
