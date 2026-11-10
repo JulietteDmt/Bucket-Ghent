@@ -79,11 +79,7 @@ nav.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);bord
 .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
 .dow{font-family:var(--mono);font-size:11px;color:var(--muted);text-align:center;padding-bottom:4px;text-transform:uppercase}
 .day{aspect-ratio:1/1;max-width:100%;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:5px;cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0;overflow:hidden;color:var(--ink);transition:transform .12s, box-shadow .12s}
-.day.l1{background:color-mix(in srgb, var(--hc) 8%, var(--surface))}
-.day.l2{background:color-mix(in srgb, var(--hc) 17%, var(--surface))}
-.day.l3{background:color-mix(in srgb, var(--hc) 30%, var(--surface))}
-.day.l4{background:color-mix(in srgb, var(--hc) 45%, var(--surface))}
-.day.has{border-color:color-mix(in srgb, var(--hc) 25%, var(--line))}
+.day.has{background:color-mix(in srgb, var(--tc) 7%, var(--surface));border-color:color-mix(in srgb, var(--tc) 22%, var(--line))}
 .day .dlpip{position:absolute;top:6px;right:6px;width:6px;height:6px;border-radius:50%;background:var(--dl)}
 .calf{display:flex;gap:6px;overflow-x:auto;padding:2px 0 10px;margin-bottom:4px;scrollbar-width:none}
 .calf::-webkit-scrollbar{display:none}
@@ -106,8 +102,21 @@ nav.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);bord
 .dot{width:7px;height:7px;border-radius:50%;display:inline-block}
 .dots .more{font-family:var(--mono);font-size:9.5px;color:var(--muted);line-height:1}
 .day{position:relative}
-.day .cnt{position:absolute;right:5px;bottom:3px;font-family:var(--mono);font-size:10px;font-weight:600;color:color-mix(in srgb, var(--hc) 70%, var(--ink))}
-@media (min-width:640px){ .day{aspect-ratio:auto;min-height:70px;padding:8px} .day .n{font-size:13px} .day .cnt{font-size:12px;right:9px;bottom:6px} .day .dlpip{top:9px;right:9px} }
+.calgrid .day{aspect-ratio:auto;min-height:86px;padding:4px;gap:3px}
+.evl{display:flex;flex-direction:column;gap:2px;width:100%;min-width:0}
+.ev{display:flex;align-items:center;gap:3px;min-width:0;font-size:9px;line-height:1.2;color:var(--ink);text-align:left}
+.ev .ci{width:10px;height:10px;color:var(--ec)}
+.ev .et{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.evm{font-family:var(--mono);font-size:9px;color:var(--muted);text-align:left}
+@media (max-width:639px){ .calgrid .day{min-height:64px} .evl{flex-direction:row;flex-wrap:wrap;gap:3px} .ev .et{display:none} .ev .ci{width:13px;height:13px} .evm{width:100%} }
+@media (min-width:640px){
+  .calgrid{width:min(1120px, calc(100vw - 48px));margin-left:calc(50% - min(560px, 50vw - 24px))}
+  .calgrid .day{min-height:112px;padding:8px;gap:5px} .day .n{font-size:13px}
+  .ev{font-size:12px;gap:6px;padding:2px 6px 2px 4px;border-radius:6px;background:color-mix(in srgb, var(--ec) 10%, var(--surface))}
+  .ev .ci{width:14px;height:14px}
+  .evm{font-size:11px;padding-left:4px}
+  .day .dlpip{top:10px;right:10px}
+}
 .cal-head h2 small{display:block;text-align:center;font-family:var(--mono);font-size:11px;font-weight:500;color:var(--muted);text-transform:none;margin-top:2px}
 .dow.we{color:var(--accent);font-weight:600}
 .legend span{background:color-mix(in srgb, var(--lc) 12%, var(--surface));color:var(--ink);border-radius:99px;padding:3px 9px 3px 7px;font-size:11.5px}
@@ -1894,17 +1903,16 @@ function renderCal(){
   let cells="";
   for(let i=0;i<42;i++){
     const d=new Date(start); d.setDate(start.getDate()+i);
-    const evs=evOn(d), dls=state.calCat?[]:deadlinesOn(d); const cls=["day"]; const n=evs.length;
-    const lvl=n===0?0:n<=2?1:n<=5?2:n<=9?3:4;
-    if(n) cls.push("has","l"+lvl); if(d.getDay()===0||d.getDay()===6) cls.push("wk");
+    const rank=e=>{const w=e.when; if(w.once&&!w.to) return 0; if(w.dates) return 1; if(w.once&&w.to) return (parse(w.to)-parse(w.once))/86400000>3?4:1; return 3;};
+    const evs=evOn(d).sort((a,b)=>rank(a)-rank(b)), dls=state.calCat?[]:deadlinesOn(d); const cls=["day"]; const n=evs.length;
+    const key=evs.filter(e=>rank(e)<3); const tally={}; (key.length?key:evs).forEach(e=>tally[e.cat]=(tally[e.cat]||0)+1); const top=Object.keys(tally).sort((a,b)=>tally[b]-tally[a])[0];
+    if(n) cls.push("has"); if(d.getDay()===0||d.getDay()===6) cls.push("wk");
     if(d.getMonth()!==mo)cls.push("out"); if(ymd(d)===ymd(TODAY))cls.push("is-today"); if(ymd(d)===ymd(state.sel))cls.push("sel");
-    cells+=`<button class="${cls.join(" ")}" data-day="${ymd(d)}" aria-label="${d.getDate()} ${MON[d.getMonth()]}, ${n} activiteiten${dls.length?", "+dls.length+" deadline":""}"><span class="n">${d.getDate()}</span>${dls.length?`<i class="dlpip" title="Deadline"></i>`:""}${n?`<span class="cnt">${n}</span>`:""}</button>`;
+    cells+=`<button class="${cls.join(" ")}"${top?` style="--tc:var(${catById[top].c})"`:""} data-day="${ymd(d)}" aria-label="${d.getDate()} ${MON[d.getMonth()]}, ${n} activiteiten${dls.length?", "+dls.length+" deadline":""}"><span class="n">${d.getDate()}</span>${dls.length?`<i class="dlpip" title="Deadline"></i>`:""}<span class="evl">${evs.slice(0,3).map(e=>`<span class="ev" style="--ec:var(${catById[e.cat].c})"><span class="ci">${ico(e.cat)}</span><span class="et">${esc(e.title)}</span></span>`).join("")}${n>3?`<span class="evm">+${n-3}</span>`:""}</span></button>`;
   }
   const usedCats=[...new Set(dated.map(i=>i.cat))].sort((a,b)=>catById[a].name.localeCompare(catById[b].name,"nl"));
   let monthCount=0; for(let dd=1; dd<=new Date(y,mo+1,0).getDate(); dd++) monthCount+=evOn(new Date(y,mo,dd)).length;
   const selEvs=evOn(state.sel), selDl=state.calCat?[]:deadlinesOn(state.sel);
-  let up="";
-  for(let i=0;i<14;i++){ const d=new Date(TODAY); d.setDate(TODAY.getDate()+i); evOn(d).forEach(e=>{ up+=card(e, fmt(d)+(e.when.time?" · "+e.when.time:"")); }); }
   const dlUp=ITEMS.filter(i=>i.deadline&&i.deadline.date&&parse(i.deadline.date)>=TODAY).sort((a,b)=>a.deadline.date.localeCompare(b.deadline.date));
   const dlSoft=ITEMS.filter(i=>i.deadline&&!i.deadline.date&&!isPast(i)&&(i.when.once?true:false));
   const expected=ITEMS.filter(i=>isEv(i)&&i.when.expect && /20(26|27)|januari|februari|maart|april|mei|augustus|november|voorjaar|najaar/i.test(i.when.expect));
@@ -1915,13 +1923,11 @@ function renderCal(){
       <button class="iconbtn" id="next" aria-label="Volgende maand">›</button>
     </div>
     <div class="calf"><button data-calcat="" aria-pressed="${!state.calCat}" style="--lc:var(--ink)">Alles</button>${usedCats.map(id=>`<button data-calcat="${id}" aria-pressed="${state.calCat===id}" style="--lc:var(${catById[id].c})" title="${esc(catById[id].name)}"><span class="ci">${ico(id)}</span><span class="cl">${esc(catById[id].name)}</span></button>`).join("")}</div>
-    <div class="grid" style="--hc:var(${fc})">${["ma","di","wo","do","vr","za","zo"].map(x=>`<div class="dow${x==="za"||x==="zo"?" we":""}">${x}</div>`).join("")}${cells}</div>
-    <p class="calnote">Hoe donkerder de dag, hoe meer er te doen is${state.calCat?"":" · rood puntje = deadline"}. Tik op een logo om enkel dat onderdeel te zien.</p>
+    <div class="grid calgrid">${["ma","di","wo","do","vr","za","zo"].map(x=>`<div class="dow${x==="za"||x==="zo"?" we":""}">${x}</div>`).join("")}${cells}</div>
+    <p class="calnote">Tik op een dag om alles eronder te zien${state.calCat?"":" · rood puntje = deadline"}. Tik bovenaan op een onderdeel om enkel dat te zien.</p>
     <h2 class="sec-title">${DOWL[state.sel.getDay()]} ${state.sel.getDate()} ${MON[state.sel.getMonth()]}<small>${selEvs.length} activiteit${selEvs.length===1?"":"en"}${selDl.length?" · "+selDl.length+" deadline":""}</small></h2>
     <div class="list">${selDl.map(e=>card(e,"Deadline vandaag: "+whenText(e))).join("")}${selEvs.length?selEvs.map(e=>card(e, fmt(state.sel)+(e.when.time?" · "+e.when.time:""))).join(""):(selDl.length?"":`<div class="empty">Niets gepland op deze dag. Kies een dag met gekleurde bolletjes, of kijk bij Onderdelen.</div>`)}</div>
     ${dlUp.length?`<p style="margin:14px 0 0;font-size:14px">⏰ Eerstvolgende deadline: <b>${esc(dlUp[0].title)}</b> op ${fmt(parse(dlUp[0].deadline.date))}. <button class="linkbtn" data-view-go="dl">Alle deadlines</button></p>`:""}
-    <h2 class="sec-title">Komende 14 dagen</h2>
-    <div class="list">${up||`<div class="empty">Geen activiteiten in de komende 14 dagen.</div>`}</div>
     <details class="exp-more"><summary>Verwacht, nog zonder vaste datum<small>${expected.length}</small></summary>
     <div class="list" style="margin-top:10px">${expected.map(e=>card(e)).join("")}</div></details>`;
   document.getElementById("prev").onclick=()=>{state.month=new Date(y,mo-1,1);render();};
