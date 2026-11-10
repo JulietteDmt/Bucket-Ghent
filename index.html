@@ -40,6 +40,22 @@ button{font:inherit;color:inherit}
 header.top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
 .brand h1{font-size:clamp(28px,7vw,40px);font-weight:800;letter-spacing:-.02em;line-height:1}
 .brand p{margin:6px 0 0;color:var(--muted);font-size:14px;max-width:62ch;line-height:1.5}
+.newhero{position:relative;overflow:hidden;border-radius:22px;padding:22px 20px 0;margin:6px 0 16px;color:#fff;background:linear-gradient(120deg,#ff3d77,#7b2ff7 45%,#00c2ff);background-size:200% 200%;animation:nhbg 12s ease infinite}
+@keyframes nhbg{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.nh-word{position:absolute;right:-8px;top:-18px;font-family:var(--display);font-weight:800;font-size:120px;line-height:1;opacity:.18;letter-spacing:-.04em;transform:rotate(-6deg)}
+.nh-txt{position:relative}.nh-txt h2{margin:0 0 6px;font-family:var(--display);font-size:32px;line-height:1.05}.nh-txt p{margin:0 0 16px;max-width:52ch;font-size:15px;line-height:1.45;opacity:.95}
+.nh-ticker{display:flex;white-space:nowrap;margin:0 -20px;padding:9px 0;background:rgba(0,0,0,.18);font-size:13px;font-weight:600}
+.nh-ticker span{flex:none;padding-right:8px;animation:nhtick 40s linear infinite}
+@keyframes nhtick{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+@media (prefers-reduced-motion: reduce){.newhero,.nh-ticker span{animation:none}}
+.nfilt button small{opacity:.6;font-family:var(--mono)}
+.ngrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.ntile{border-radius:18px;overflow:hidden;background:var(--surface);box-shadow:0 1px 0 var(--line)}
+.ntile .nhead{display:flex;justify-content:space-between;align-items:flex-start;padding:14px 14px 22px;background:linear-gradient(135deg,var(--g1),var(--g2))}
+.ntile .nemo{font-size:44px;line-height:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,.2));transform:rotate(-8deg)}
+.ntile .nstick{font-size:12px;font-weight:700;padding:5px 10px;border-radius:999px;background:#fff;color:#111;box-shadow:0 2px 6px rgba(0,0,0,.15);transform:rotate(3deg)}
+.ntile .nstick.now{background:#111;color:#fff}.ntile .nstick.soon{background:#fff3b0}
+.ntile .card{margin-top:-12px;border-radius:16px 16px 18px 18px;position:relative;border:0}
 #toast{position:fixed;left:50%;bottom:18px;transform:translate(-50%,140%);background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:12px;display:flex;gap:12px;align-items:center;font-size:14px;z-index:50;transition:transform .2s;max-width:calc(100% - 32px)}
 #toast.show{transform:translate(-50%,0)}
 #toast button{background:none;border:0;color:inherit;text-decoration:underline;font:inherit;font-weight:600;cursor:pointer;padding:0}
@@ -220,9 +236,7 @@ const CATS = [
   {id:"ver",  n:"10", name:"Verenigingen", short:"Studentenverenigingen en hun events", c:"--c10",
    intro:"Gent telt meer dan 140 studentenverenigingen. De grote namen, met hun events en prijzen waar die gekend zijn."},
   {id:"new", n:"13", name:"NEW", short:"Pop-ups, nieuwe zaken en wat eraan komt", c:"--c13", isNew:true,
-   intro:"Enkel wat echt nieuw is: zaken die de afgelopen 3 maanden openden of binnenkort openen, en pop-ups die eraan komen. Na 3 maanden verdwijnt een zaak automatisch uit NEW en blijft ze gewoon in haar eigen onderdeel staan."},
-  {id:"shop", n:"12", name:"Shopping", short:"Pop-ups, stocksales, outlets, vintage en koopzondagen", c:"--c12", isNew:true,
-   intro:"Alles voor shoppers in heel Gent: stocksales en sample sales, pop-ups, kilo sales, outlets, tweedehands en vintage, markten, koopzondagen en nieuwe winkels."},
+   intro:"Vers van de pers: wat net open is in Gent, wat eraan komt en welke pop-ups je niet mag missen. Na 3 maanden is iets niet meer nieuw en verdwijnt het vanzelf uit NEW."},
   {id:"ugent",n:"11", name:"Campus", short:"UGent, HOGENT, Artevelde, KU Leuven, Odisee, LUCA, Vlerick", c:"--c11", isNew:true,
    intro:"Wat de Gentse universiteiten en hogescholen zelf organiseren: lezingen, festivals, open dagen en studentenvoorzieningen. Tik bij 'Per organisatie' op je instelling. Plus waar en wanneer je je boeken en cursussen haalt."}
 ];
@@ -674,7 +688,7 @@ const ITEMS = [
   links:[["Bekijk overzicht","https://www.student.be/nl/student-life/jobfairs-en-bedrijfsevents-in-vlaanderen-en-brussel-voor-net-afgestudeerden-in-2026/",1]]},
 
  // ───────── 08 ETEN IN GENT
- {id:"romm",cat:"food",sub:"Nieuw",newSince:"2026-11-08",title:"Romm lunchbar",when:{always:true},where:"Rommelaere-instituut, Bijlokesite",price:"Lunch",ok:true,
+ {id:"romm",cat:"food",sub:"Nieuw",emoji:"🥪",newSince:"2026-11-08",title:"Romm lunchbar",when:{always:true},where:"Rommelaere-instituut, Bijlokesite",price:"Lunch",ok:true,
   desc:"Nieuwe lunchbar van maatwerkbedrijf Mirto, waar mensen met een afstand tot de arbeidsmarkt werken. Opent dit najaar.",
   links:[["Route",maps("Rommelaere instituut Bijloke Gent"),1]]},
  {id:"arno",cat:"food",sub:"Nieuw",title:"Arno",when:{always:true},where:"Akkerhage 2B",price:"€€€",ok:true,
@@ -930,7 +944,7 @@ const ITEMS = [
   desc:"Interactieve workshop basis-salestechnieken.",links:[["Kalender","https://www.gentrepreneur.be/kalender",1]]},
  {id:"gtp-online",cat:"biz",sub:"Ondernemen",title:"Gentrepreneur: Verhoog je online zichtbaarheid",when:{once:"2026-12-10"},where:"Wintercircus",price:"Gratis",ok:true,
   desc:"SEO, SEA, GEO en sociale media.",links:[["Kalender","https://www.gentrepreneur.be/kalender",1]]},
- {id:"gtp-popup",cat:"new",sub:"Pop-up",alsoShop:true,title:"Gentrepreneur: The Pop-Up",when:{once:"2026-12-12",to:"2026-12-13"},where:"Wintercircus",price:"Gratis bezoek",ok:true,
+ {id:"gtp-popup",cat:"new",sub:"Pop-up",emoji:"🛍️",alsoShop:true,title:"Gentrepreneur: The Pop-Up",when:{once:"2026-12-12",to:"2026-12-13"},where:"Wintercircus",price:"Gratis bezoek",ok:true,
   desc:"Markt waar jonge ondernemers hun producten verkopen. Za 12–19u, zo 10–17u.",
   what:"Kom shoppen bij student-ondernemers, of reserveer zelf een standje.",
   deadline:{date:"2026-11-15"},how:"Standje reserveren tot 15 november.",
@@ -1051,7 +1065,7 @@ const ITEMS = [
   desc:"Business school met open lezingen en events, o.a. over geopolitiek en finance.",links:[["Website","https://www.vlerick.com/nl",1]]},
 
  // ───────── NIEUW: NEW (pop-ups en openingen)
- {id:"new-winterbars",cat:"new",sub:"Pop-up",title:"Winter pop-up bars",when:{expect:"December – begin januari"},where:"Centrum Gent",price:"",ok:false,
+ {id:"new-winterbars",cat:"new",sub:"Pop-up",emoji:"🍷",title:"Winter pop-up bars",when:{expect:"December – begin januari"},where:"Centrum Gent",price:"",ok:false,
   desc:"Elke winter openen tijdelijke bars in de stad.",
   extras:["Vorig jaar o.a.: Chez Babette, Zebrawoods (winterfestival met concerten in de Zebrastraat), RAY als winterbar, Holy Aperoly aan het reuzenrad en een champagne- en oesterbar op het Emile Braunplein","Bevestigd voor 2026: de winterbar in het Gravensteen (4/12–3/1)"],
   links:[["Visit Gent","https://visit.gent.be/en/winter-pop-bars-ghent",1]]},
@@ -1215,18 +1229,6 @@ const ITEMS = [
  {id:"evolv",cat:"corp",sub:"Jobbeurs",sectors:["alle"],aud:"Alle studenten & starters",title:"Evolv Gent",when:{expect:"Maart 2027 (vorige editie: 26 maart 2026)"},where:"Flanders Expo, Gent",price:"Gratis",ok:true,
   desc:"Grote jobbeurs in Flanders Expo voor alle sectoren.",links:[["Evolv","https://evolv.gent/",1]]},
  // ───────── SHOPPING: extra tweedehands & markten
- {id:"sh-oxfam",cat:"shop",sub:"Tweedehands",title:"Oxfam Shop Gent",when:{always:true},where:"Steendam 73 (bij Sint-Jacobs)",price:"€",ok:true,
-  desc:"Kringloopwinkel van Oxfam met een aanbod dat elke dag wisselt: kleding, schoenen, accessoires, boeken, interieur en meer.",extras:["Je aankoop steunt Oxfam-projecten wereldwijd"],links:[["Water Challenge","https://waterchallenge.be/papier-kledij/hotspots-de-leukste-tweedehands-kledingwinkels-in-gent/",1]]},
- {id:"sh-circuflair",cat:"shop",sub:"Tweedehands",title:"Circuflair",when:{always:true},where:"Gent",price:"€€",ok:true,
-  desc:"Gezellige preloved boetiek voor vrouwenkleding, van basics tot opvallende stukken.",extras:["Je kan er ook je eigen kleren in consignatie verkopen","Onverkoopbare stukken worden scrunchies en accessoires"],links:[["COSH","https://cosh.eco/en/articles/second-hand-shopping-ghent",1]]},
- {id:"sh-justwaldo",cat:"shop",sub:"Tweedehands",title:"Just Waldo",when:{always:true},where:"Gent",price:"€€",ok:true,
-  desc:"Preloved boetiek met tijdloze stukken (knits, trenchcoats, Italiaanse merken) en eigen upcycled kleding uit hun atelier.",links:[["COSH","https://cosh.eco/en/articles/second-hand-shopping-ghent",1]]},
- {id:"sh-closetstories",cat:"shop",sub:"Tweedehands",title:"Closet Stories",when:{always:true},where:"Dampoortstraat 53",price:"€",ok:true,
-  desc:"Tweedehands vrouwen- en kinderkleding, speelgoed en kinderboeken; werkt met consignatie (ze verkopen jouw kleren voor jou).",links:[["Sustainable Living","https://sustainableliving.be/de-tweedehandskaart-van-oost-vlaanderen-deze-tweedehandswinkels-wil-je-kennen/",1]]},
- {id:"sh-zusse",cat:"shop",sub:"Tweedehands",title:"Zusse",when:{always:true},where:"Vlakbij de Korenmarkt",price:"€",ok:true,
-  desc:"Tweedehands kinderkleding en speelgoed, opgericht door twee zussen; elke dag nieuwe stukken.",links:[["Water Challenge","https://waterchallenge.be/papier-kledij/hotspots-de-leukste-tweedehands-kledingwinkels-in-gent/",1]]},
- {id:"sh-designmakers",cat:"shop",sub:"Markt",title:"Design Makersmarkt (Design Museum Gent)",when:{once:"2026-10-04",time:"10:00–17:00"},where:"Design Museum Gent, Drabstraat 10",price:"Gratis toegang",ok:true,
-  desc:"Markt met 60 standjes van lokaal ontwerptalent: juwelen, keramiek, illustratie, verlichting, mode en leder.",links:[["Design Museum","https://designmuseumgent.be/en/programme/design-makersmarkt",1]]},
  // ───────── POLITIEK: debatten en lezingen met politici
  {id:"pol-kopstukken",cat:"pol",sub:"Debat",aud:"Alle studenten",title:"Groot Kopstukkendebat (Politeia)",when:{expect:"Maart 2027 (vorige editie: dinsdag 3 maart 2026)"},where:"Ufo, Sint-Pietersnieuwstraat 33, Gent",price:"Gratis (met ticket)",ok:true,
   desc:"Het grote jaarlijkse debat van Politeia, de kring van Politieke en Sociale Wetenschappen, met kopstukken van de zeven grote Vlaamse partijen.",
@@ -1275,7 +1277,7 @@ const ITEMS = [
   desc:"Gastlezing van de Ierse spreker Keith Woods over 'The Endurance of Nationalism and Right-Wing Identity Politics', georganiseerd door KVHV-Gent.",links:[["Instagram",ig("kvhv_gent2.0"),1]]},
  {id:"kvhv-meganck",cat:"pol",sub:"Lezing",aud:"Alle studenten",title:"KVHV-lezing: dr. Erik Meganck over 'Religieus Atheïsme'",when:{once:"2026-11-09",time:"19:30"},where:"Auditorium C, T2 Technicum, Campus Ufo",price:"Zie Insta",ok:true,
   desc:"Theoloog en filosoof Erik Meganck over zijn boek: de tegenstelling tussen atheïsme en religie is volgens hem minder absoluut dan vaak gedacht.",links:[["Instagram",ig("kvhv_gent2.0"),1]]},
- {id:"esn-merch",cat:"intl",sub:"Netwerk",aud:"Iedereen",title:"ESN Gent: merch launch",when:{once:"2026-11-11"},where:"Gent",price:"Zie app",ok:true,
+ {id:"esn-merch",cat:"intl",sub:"Netwerk",alsoNew:true,emoji:"🧥",aud:"Iedereen",title:"ESN Gent: merch launch",when:{once:"2026-11-11"},where:"Gent",price:"Zie app",ok:true,
   desc:"Lancering van de ESN Gent-hoodie in drie kleuren met een tekening van Gent op de rug. Beperkte voorraad.",links:[["ESN-app","https://app.esngent.org/calendar",1]]},
  {id:"esn-paintsip",cat:"intl",sub:"Netwerk",aud:"Iedereen",title:"ESN Gent: Paint & Sip (tote bags)",when:{once:"2026-11-13",time:"19:00–22:00"},where:"Therminal, Hoveniersberg 24",price:"€10 met eigen tote bag, €15 met tote bag van ESN",ok:true,
   desc:"Tote bags beschilderen met onbeperkt thee en wijn en wat snacks. Beperkte plaatsen.",how:"Inschrijven via app.esngent.org.",links:[["ESN-app","https://app.esngent.org/calendar",1]]},
@@ -1341,6 +1343,21 @@ const ITEMS = [
   desc:"Koepel van de verenigingen in de UGent-homes: o.a. het Nieuwbewonersweekend om je kotgenoten te leren kennen en de jaarlijkse interhomecantus, met een wedstrijd voor het badge-ontwerp.",links:[["Instagram",ig("homekonventgent"),1]]},
  {id:"schamper-blad",cat:"ver",sub:"Media",aud:"Iedereen",title:"Schamper: studentenblad van de UGent",when:{expect:"Nieuwe editie elke paar weken (nu editie 668)"},where:"Gratis op de campussen en online",price:"Gratis",ok:true,
   desc:"Onafhankelijk studentenblad met nieuws, opinie en wetenschap over de UGent. Iedereen kan meeschrijven, tekenen of fotograferen.",links:[["Instagram",ig("schamper_gent"),1],["Website","https://schamper.ugent.be/",0]]},
+ // ───────── NEW: extra (november 2026)
+ {id:"new-designmuseum",cat:"new",sub:"Net open",emoji:"🏛️",title:"Design Museum Gent is heropend",when:{once:"2026-10-03",to:"2027-01-01"},where:"Design Museum Gent, Jan Breydelstraat 5",price:"Zie tickets",ok:true,
+  desc:"Na de grote verbouwing is het Design Museum weer open, met een nieuwe huisstijl gemaakt door studenten Grafisch Ontwerp.",
+  what:"Nieuw: 'Public Matter(s): Design and Democracy' (tot 11/4/2027), de interactieve expo CONNECT over maken en samenwerken (tot 10/1/2027), CO-LAB met sociale designprojecten, en Studio Digitaal over AI en algoritmes in het historische Louis XVI-salon.",
+  links:[["Design Museum","https://designmuseumgent.be/en",1]]},
+ {id:"new-diorama",cat:"new",sub:"Pop-up",emoji:"🎄",title:"Kerstdiorama in de Sint-Baafskathedraal",when:{once:"2026-11-14",to:"2027-01-17"},where:"Sint-Baafskathedraal",price:"Zie Visit Gent",ok:true,
+  desc:"Tijdelijke expo met miniatuurtaferelen vol kerstmagie, midden in Gent.",links:[["Visit Gent","https://visit.gent.be/en/what-can-you-currently-do-ghent",1]]},
+ {id:"new-kerstmarkt",cat:"new",sub:"Pop-up",emoji:"⛸️",title:"Gentse Winterfeesten: kerstmarkt, ijsbaan en reuzenrad",when:{once:"2026-12-03",to:"2027-01-03"},where:"Van Sint-Baafsplein via Botermarkt en Emile Braunplein tot Korenmarkt",price:"Gratis toegang; ijsbaan ±€12 met schaatsen, reuzenrad ±€9 (prijzen 2025)",ok:true,
+  desc:"Meer dan 150 chalets op een route van een halve kilometer, een echte ijsbaan onder de Stadshal en een reuzenrad op de Korenmarkt. Dit jaar loopt alles door tot het einde van de kerstvakantie.",
+  extras:["Winterbar Chez Babette naast de ijsbaan","Tip: het Belfort geeft het mooiste zicht op de kerstmarkt","Uren vorig jaar: ma–do 12–24u, vr 12–01u, za 11–01u, zo 11–24u"],
+  links:[["Info","https://hetisdemerckx.be/nl/kerstmarkt-gent/",1]]},
+ {id:"pk-ugentflying",cat:"ver",sub:"Tech",emoji:"✈️",newSince:"2026-10-22",aud:"Ingenieursstudenten",title:"UGent Flying: nieuw studententeam van PKarus",when:{always:true},where:"UGent",price:"Gratis",ok:true,
+  desc:"Na UGent Racing en UGent Sailing lanceert PKarus een nieuw team dat een autonoom model-blusvliegtuig bouwt voor de IMechE UAS Challenge 2027 in het VK.",
+  what:"Het toestel (±4 m spanwijdte, max. 10 kg) moet zelfstandig een traject vliegen en met precisie water droppen: mechanica, aerodynamica en elektronica in één project.",
+  links:[["PKarus",ig("pkarusgent"),1]]},
  // ───────── MATCHES: enkel de grote matchen en koersen
  {id:"m-gent-redstar",cat:"match",sub:"Voetbal",lvl:"eu",watch:"tv",title:"Rode Ster Belgrado – KAA Gent (Conference League)",when:{once:"2026-11-26",time:"21:00"},where:"Belgrado (kijken op tv of in een café)",price:"Op tv",ok:true,
   desc:"Europese uitmatch van Gent in een van de heetste stadions van Europa.",links:[["Speelschema","https://www.espn.com/soccer/team/fixtures/_/id/3611/kaa-gent",1]]},
@@ -1417,49 +1434,8 @@ const ITEMS = [
   who:"Alle studenten en personeel.",how:"Voor sommige activiteiten moet je inschrijven via event.ugent.be of een formulier; info via fairtrade@ugent.be.",
   links:[["UGent","https://www.ugent.be/nl/univgent/missie/duurzaamheidsbeleid/themas/fairtrade/week",1],["Gent Fair Trade","https://gentfairtrade.be/fair-trade/fair-trade-en-duurzame-week-ugent",0]]},
  // ───────── NIEUW: SHOPPING
- {id:"sh-engels",cat:"shop",sub:"Stocksale",title:"Stock- en stofverkoop Nathalie Engels",when:{dates:["2026-11-11","2026-11-14","2026-11-15"],time:"10:30–18:00"},where:"Welvaartstraat 23",price:"Tot -70%",ok:true,
-  desc:"Vorige collecties en stoffen van de Belgische ontwerpster, met een extra koopjeshoek.",links:[["Info","https://www.stockverkoopadressen.com/toon_verkoop.php?id=23795",1],["Nathalie Engels","https://www.nathalie-engels.be"]]},
- {id:"sh-paperplanes",cat:"shop",sub:"Stocksale",title:"Stockverkoop Paper Planes & L'Amuzette",when:{once:"2026-11-29"},where:"Carousel Postproduction, naast WOEST (Drongensesteenweg)",price:"Cash of Bancontact",ok:true,
-  desc:"Stockverkoop van twee Gentse merken.",links:[["Info","https://www.stockverkoopadressen.com/toon_verkoop.php?id=23881",1]]},
- {id:"sh-dok",cat:"shop",sub:"Uitverkoop",title:"Totale uitverkoop Dok Interiors",when:{once:"2026-10-27",to:"2026-11-30"},where:"Dok Noord",price:"Uitverkoop",ok:true,
-  desc:"De winkel sluit: meubels van xooon, CocoMaison en henders & hazel op ±1.000 m² gaan weg.",links:[["Info","https://www.stockverkoopadressen.com/toon_verkoop.php?id=23838",1]]},
- {id:"sh-greenpan",cat:"shop",sub:"Stocksale",title:"GreenPan stocksale",when:{once:"2026-12-04",to:"2026-12-05"},where:"Gent",price:"Stockprijzen",ok:true,
-  desc:"Potten, pannen en kookgerei van verschillende topmerken. Handig voor je kot.",links:[["Info","https://www.stockverkoopadressen.com/toon_verkoop.php?id=23729",1]]},
- {id:"sh-koopzondag",cat:"shop",sub:"Koopzondag",title:"Koopzondagen in het centrum",when:{dates:["2026-12-06","2026-12-13","2026-12-20","2026-12-27","2027-01-03"]},where:"Centrum Gent",price:"",ok:true,
-  desc:"In december is elke zondag een koopzondag; 3 januari is het soldenweekend.",
-  extras:["Niet elke winkel doet mee: check de site of socials van de winkel","Geen gratis De Lijn-ticket meer op koopzondagen"],
-  links:[["Stad Gent","https://stad.gent/nl/cultuur-vrije-tijd/nieuws-evenementen/koopzondagen",1],["December shopmaand","https://visit.gent.be/nl/agenda/eindejaarsshopping"]]},
- {id:"sh-winterfeesten",cat:"shop",sub:"Kerstmarkt",title:"Gentse Winterfeesten (kerstmarkt)",when:{once:"2026-12-03",to:"2027-01-03"},where:"Sint-Baafsplein, Botermarkt, Korenmarkt, Klein Turkije",price:"Gratis toegang",ok:false,
-  desc:"Kerstmarkt verspreid over vier pleinen, met reuzenrad en schaats- of rolschaatsbaan.",
-  extras:["Ma–do 12–24u, vr 12–1u, za 11–1u, zo 11–24u (te bevestigen)","Reuzenrad en piste betalend","Rustigst op weekdagen tussen 12 en 15u"],
-  links:[["Gids","https://www.nomadotravel.app/en/guides/ghent-christmas-market",1],["Visit Gent","https://visit.gent.be"]]},
- {id:"sh-winterbar",cat:"new",sub:"Pop-up",title:"Winterbar in het Gravensteen",when:{once:"2026-12-04",to:"2027-01-03"},where:"Gravensteen",price:"",ok:true,
+ {id:"sh-winterbar",cat:"new",sub:"Pop-up",emoji:"🏰",title:"Winterbar in het Gravensteen",when:{once:"2026-12-04",to:"2027-01-03"},where:"Gravensteen",price:"",ok:true,
   desc:"Pop-up winterbar in het kasteel. Ook andere winter pop-up bars in de stad.",links:[["Winter pop-up bars","https://visit.gent.be/en/winter-pop-bars-ghent",1]]},
- {id:"sh-kilo",cat:"shop",sub:"Kilo sale",title:"Vintage kilo sales",when:{expect:"Meerdere keren per jaar"},where:"Gent (wisselende locaties)",price:"Per kilo",ok:false,
-  desc:"Vintage kleren die je per kilo betaalt, o.a. van Golden Grams, Throwback Classics en Vinokilo.",
-  how:"Nieuwe data verschijnen op stockverkoopadressen.com en UiT in Vlaanderen.",
-  links:[["Zoek kilo sales","https://www.stockverkoopadressen.com/zoek.php?keywords=kledijverkoop+per+kilo+in+gent",1],["Golden Grams","https://www.facebook.com/Goldengramsvintage/"]]},
- {id:"sh-stockoverzicht",cat:"shop",sub:"Overzicht",title:"Alle stocksales in Gent",when:{always:true},where:"Gent",price:"",ok:true,
-  desc:"Overzicht van alle stockverkopen, sample sales en outlets in Gent.",
-  links:[["Stocksales Gent","https://www.stockverkoopadressen.com/show_verkoop_provincie.php?catid=1&land=BE&provincie=Oost-Vlaanderen&gemeente=Gent&gid=2422",1],["Outlets Gent","https://www.stockverkoopadressen.com/show_verkoop_provincie.php?catid=2&land=BE&provincie=Oost-Vlaanderen&gemeente=Gent&gid=2422"]]},
- {id:"sh-marleedoran",cat:"shop",sub:"Outlet",title:"Marleedoran",when:{always:true},where:"Gent",price:"Outlet",ok:true,desc:"Tweedehands en designer outlet: Essentiel, Margiela, Dries Van Noten, Ann Demeulemeester.",links:[["Info","https://www.stockverkoopadressen.com/toon_verkoop.php?id=7826",1]]},
- {id:"sh-katastrof",cat:"shop",sub:"Outlet",title:"Katastrof",when:{always:true},where:"Gent",price:"Outlet",ok:true,desc:"Tweedehands- en outletboetiek voor vrouwenmode.",links:[["Info","https://www.stockverkoopadressen.com/toon_verkoop.php?id=19758",1]]},
- {id:"sh-fann",cat:"shop",sub:"Tweedehands",title:"FANN",when:{always:true},where:"Gent",price:"Tweedehands",ok:true,desc:"Tweedehands merkkleding: Bellerose, Closed, Humanoid, Des Petits Hauts.",links:[["Info","https://www.stockverkoopadressen.com/toon_verkoop.php?id=20058",1]]},
- {id:"sh-zeb",cat:"shop",sub:"Outlet",title:"ZEB outlet store",when:{always:true},where:"Gent",price:"Outlet",ok:true,desc:"Outletwinkel van ZEB, ook online.",links:[["Info","https://www.stockverkoopadressen.com/toon_verkoop.php?id=17049",1]]},
- {id:"sh-thinktwice",cat:"shop",sub:"Tweedehands",title:"Think Twice (3 winkels)",when:{always:true},where:"Brabantdam, Nederkouter, Ajuinlei",price:"€",ok:true,desc:"Tweedehands kleding aan lage prijzen.",links:[["Visit Gent","https://visit.gent.be/en/see-do/ghent-paradise-fans-second-hand-and-vintage-items",1]]},
- {id:"sh-kringwinkel",cat:"shop",sub:"Tweedehands",title:"De Kringwinkel Ateljee",when:{always:true},where:"Vlaamse Kaai",price:"€",ok:true,desc:"Van alles tweedehands aan lage prijzen; ideaal om je kot in te richten.",links:[["Visit Gent","https://visit.gent.be/en/see-do/ghent-paradise-fans-second-hand-and-vintage-items",1]]},
- {id:"sh-vintagefactory",cat:"shop",sub:"Vintage",title:"Vintage Factory",when:{always:true},where:"Gent",price:"€€",ok:true,desc:"Vintage kleding, vinyl en boots.",links:[["Visit Gent","https://visit.gent.be/en/see-do/ghent-paradise-fans-second-hand-and-vintage-items",1]]},
- {id:"sh-ownit",cat:"shop",sub:"Vintage",title:"Own It Vintage",when:{always:true},where:"Gent",price:"€€",ok:true,desc:"Designer vintage en betaalbare pre-loved mode.",links:[["Visit Gent","https://visit.gent.be/en/see-do/ghent-paradise-fans-second-hand-and-vintage-items",1]]},
- {id:"sh-wunderkammer",cat:"shop",sub:"Vintage",title:"Wunderkammer Gent",when:{always:true},where:"Voormalige kerk",price:"€€",ok:true,desc:"Vintage en tweedehands design in een oude kerk.",links:[["Visit Gent","https://visit.gent.be/en/see-do/ghent-paradise-fans-second-hand-and-vintage-items",1]]},
- {id:"sh-gaston",cat:"shop",sub:"Vintage",title:"Ateliers Gaston",when:{always:true},where:"Gent",price:"€€",ok:true,desc:"Preloved jeans, trenchcoats en meer.",links:[["Visit Gent","https://visit.gent.be/en/see-do/ghent-paradise-fans-second-hand-and-vintage-items",1]]},
- {id:"sh-madam",cat:"shop",sub:"Vintage",title:"MADAM Gent",when:{always:true},where:"Gent",price:"€€€",ok:true,desc:"Tweedehands designertassen en -kleding.",links:[["Visit Gent","https://visit.gent.be/en/see-do/ghent-paradise-fans-second-hand-and-vintage-items",1]]},
- {id:"sh-moca",cat:"shop",sub:"Vintage",title:"Moca Vintage Café & Hairdresser",when:{always:true},where:"Gent",price:"€",ok:true,desc:"Koffiebar, vintagewinkel en kapper in één.",links:[["Visit Gent","https://visit.gent.be/en/see-do/ghent-paradise-fans-second-hand-and-vintage-items",1]]},
- {id:"sh-vinyl",cat:"shop",sub:"Vintage",title:"Vynilla en Vinylkitchen",when:{always:true},where:"Gent",price:"€",ok:true,desc:"Nieuwe en tweedehands platen; Vinylkitchen is populair bij verzamelaars.",links:[["Visit Gent","https://visit.gent.be/en/see-do/ghent-paradise-fans-second-hand-and-vintage-items",1]]},
- {id:"sh-prondel",cat:"shop",sub:"Markt",title:"Prondelmarkt Bij Sint-Jacobs",when:{weekly:[5,6,0],time:"Ochtend"},where:"Bij Sint-Jacobs en Beverhoutplein",price:"Gratis",ok:true,desc:"Rommel-, antiek- en vintagemarkt elke vrijdag-, zaterdag- en zondagochtend.",links:[["Visit Gent","https://visit.gent.be/en/see-do/flea-market-bij-sint-jacobs",1]]},
- {id:"sh-boekenmarkt",cat:"shop",sub:"Markt",title:"Boekenmarkt Ajuinlei",when:{weekly:[0],time:"Zondag"},where:"Ajuinlei",price:"Gratis",ok:true,desc:"Boekenmarkt in Parijse stijl, handig voor goedkope (studie)boeken.",links:[["Visit Gent","https://visit.gent.be/en/see-do/ghent-paradise-fans-second-hand-and-vintage-items",1]]},
- {id:"sh-fietsmarkt",cat:"shop",sub:"Markt",title:"Tweedehands fietsenmarkt",when:{weekly:[0],time:"Zondag"},where:"Oude Beestenmarkt",price:"Gratis",ok:true,desc:"Tweedehands fiets kopen voor je studententijd.",links:[["Visit Gent","https://visit.gent.be/en/see-do/ghent-paradise-fans-second-hand-and-vintage-items",1]]},
- {id:"sh-kavehome",cat:"shop",sub:"Nieuwe winkel",title:"Kave Home Gent",when:{always:true},where:"Gent",price:"€€",ok:true,desc:"Nieuwe interieurwinkel van het Spaanse merk in Gent.",links:[["Nieuws","https://www.interieurjournaal.com/kave-home-opent-in-gent/",1]]},
- {id:"sh-action",cat:"shop",sub:"Nieuwe winkel",newSince:"2026-10-17",title:"Action Korenmarkt",when:{always:true},where:"Korenmarkt",price:"€",ok:true,desc:"Derde Action-winkel in Gent, open sinds 17 oktober 2026 op de Korenmarkt.",links:[["Nieuws","https://www.retaildetail.be/nl/news/algemeen/action-opent-derde-gentse-winkel-op-korenmarkt/",1]]},
 
  // ───────── NIEUW: nog meer eten
  {id:"fe-lucychang",cat:"food",sub:"Wereldkeuken",title:"Lucy Chang",when:{always:true},where:"Jakobijnenstraat 1",price:"\u20ac\u20ac",ok:true,desc:"Aziatische keuken met kleine sharing plates en cocktails, ruime porties aan redelijke prijzen. Elke dag open vanaf 12u. Vraag het gerust minder pikant.",links:[["Route",maps("Lucy Chang Jakobijnenstraat 1 Gent"),1]]},
@@ -1724,7 +1700,7 @@ ITEMS.forEach(i=>{ if(i.cat==="shop"&&SHOP_MAP[i.sub]) i.sub=SHOP_MAP[i.sub]; })
 const NEW_DAYS=90;
 ITEMS.forEach(i=>{ i.orgs = ORGS.filter(o=>o.match(i)).map(o=>o.id);
   const age = i.newSince ? Math.round((TODAY-parse(i.newSince))/86400000) : null;
-  i.fresh = (i.cat==="new" && !isPast(i)) || (age!==null && age<=NEW_DAYS); });
+  i.fresh = ((i.cat==="new"||i.alsoNew) && !isPast(i)) || (age!==null && age<=NEW_DAYS); });
 
 /* ---------- storage (per viewer) ---------- */
 function load(k,def){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):def; }catch(e){ return def; } }
@@ -1875,6 +1851,30 @@ function renderCats(){
     document.getElementById("back").onclick=()=>{state.cat=null;state.sub=null;render();};
     return;
   }
+  if(state.cat==="new"){
+    const c=catById.new; const items=ITEMS.filter(i=>i.fresh);
+    const start=i=>i.when.once?parse(i.when.once):null, end=i=>i.when.once?parse(i.when.to||i.when.once):null;
+    const status=i=>{ const s=start(i), e=end(i), dd=x=>Math.round((x-TODAY)/86400000);
+      if(i.newSince&&!(s&&s>TODAY)) return {k:"open",t:"Net open · sinds "+fmt(parse(i.newSince)).replace(/^\S+ /,"")};
+      if(i.sub==="Net open"&&s&&s<=TODAY) return {k:"open",t:"Net open · sinds "+fmt(s).replace(/^\S+ /,"")};
+      if(s&&s>TODAY){ const n=dd(s); return {k:"soon",t:n===1?"Morgen!":n<=7?"Over "+n+" dagen":"Vanaf "+fmt(s).replace(/^\S+ /,"")}; }
+      if(s&&e&&e>=TODAY) return {k:"now",t:i.when.to?"Nu bezig · tot "+fmt(e).replace(/^\S+ /,""):"Vandaag!"};
+      return {k:"soon",t:"Binnenkort"}; };
+    const kind=i=>{ const st=status(i).k; return st; };
+    const order={now:0,open:1,soon:2};
+    const sorted=items.slice().sort((a,b)=>(order[kind(a)]-order[kind(b)])||((start(a)||TODAY)-(start(b)||TODAY)));
+    const f=state.nf||"";
+    const shown=sorted.filter(i=>!f||(f==="pop"? (i.sub==="Pop-up") : kind(i)===f));
+    const grads=[["#ff5f6d","#ffc371"],["#7f5af0","#2cb67d"],["#f72585","#7209b7"],["#00b4d8","#90e0ef"],["#f9c80e","#f86624"],["#06d6a0","#118ab2"],["#ef476f","#ffd166"]];
+    const cnt=k=>sorted.filter(i=>k==="pop"?i.sub==="Pop-up":kind(i)===k).length;
+    $view.innerHTML=`<button class="back" id="back">← Alle onderdelen</button>
+      <div class="newhero"><div class="nh-word" aria-hidden="true">NEW</div><div class="nh-txt"><h2>Nieuw in Gent</h2><p>${c.intro}</p></div>
+        <div class="nh-ticker" aria-hidden="true"><span>${sorted.map(i=>(i.emoji||"✨")+" "+esc(i.title)).join("  •  ")}  •  </span><span>${sorted.map(i=>(i.emoji||"✨")+" "+esc(i.title)).join("  •  ")}  •  </span></div></div>
+      <div class="subs nfilt" style="--cc:var(${c.c})">${[["","✨ Alles",sorted.length],["now","🔥 Nu bezig",cnt("now")],["open","🆕 Net open",cnt("open")],["soon","⏳ Binnenkort",cnt("soon")],["pop","🎪 Pop-ups",cnt("pop")]].map(([v,t,n])=>`<button data-nf="${v}" aria-pressed="${f===v}">${t} <small>${n}</small></button>`).join("")}</div>
+      <div class="ngrid">${shown.length?shown.map((i,ix)=>{const st=status(i); const g=grads[(i.id.length+ix)%grads.length]; return `<div class="ntile" style="--g1:${g[0]};--g2:${g[1]}"><div class="nhead"><span class="nemo">${i.emoji||"✨"}</span><span class="nstick ${st.k}">${esc(st.t)}</span></div>${card(i)}</div>`;}).join(""):`<div class="empty">Niets in deze selectie. Kijk morgen opnieuw: NEW wordt elke dag bijgewerkt.</div>`}</div>`;
+    document.getElementById("back").onclick=()=>{state.cat=null;state.nf="";render();};
+    return;
+  }
   if(state.cat==="deal" && !state.sub){
     const c=catById.deal; const up=ITEMS.filter(i=>i.cat==="deal"&&!isPast(i));
     $view.innerHTML=`<button class="back" id="back">← Alle onderdelen</button>
@@ -1998,6 +1998,7 @@ $view.addEventListener("click",e=>{
   const org=e.target.closest("[data-org]"); if(org){ const o=orgById[org.dataset.org]; state.view="cat"; if(!state.cat) state.cat=o.home; if(state.cat==="corp"&&!state.sector){ const f=ITEMS.find(i=>i.orgs.includes(o.id)&&i.cat==="corp"); state.sector=f?((f.sectors||["eco"])[0]):"eco"; } state.org=o.id; render(); window.scrollTo({top:0}); return; }
   const sc=e.target.closest("[data-sector]"); if(sc){ state.sector=sc.dataset.sector; state.sub=null; state.org=null; render(); window.scrollTo({top:0}); return; }
   const cat=e.target.closest("[data-cat]"); if(cat){ state.cat=cat.dataset.cat; state.sub=null; state.org=null; state.sector=null; render(); window.scrollTo({top:0}); return; }
+  const nfb=e.target.closest("[data-nf]"); if(nfb){ state.nf=nfb.dataset.nf; render(); return; }
   const mf=e.target.closest("[data-mf]"); if(mf){ state[mf.dataset.mf]=mf.dataset.mv; render(); return; }
   const pr=e.target.closest("[data-price]"); if(pr){ state.price=+pr.dataset.price; render(); return; }
   const ft=e.target.closest("[data-ftype]"); if(ft){ state.ftype=ft.dataset.ftype; render(); return; }
