@@ -79,7 +79,7 @@ nav.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);bord
 .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
 .dow{font-family:var(--mono);font-size:11px;color:var(--muted);text-align:center;padding-bottom:4px;text-transform:uppercase}
 .day{aspect-ratio:1/1;max-width:100%;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:5px;cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0;overflow:hidden;color:var(--ink);transition:transform .12s, box-shadow .12s}
-.day.has{background:color-mix(in srgb, var(--tc) 6%, var(--surface));border-color:color-mix(in srgb, var(--tc) 30%, var(--line))}
+.day.has{background:color-mix(in srgb, var(--tc) 7%, var(--surface));border-color:color-mix(in srgb, var(--tc) 22%, var(--line))}
 .day:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.06)}
 .day.out{opacity:.38}
 .day.wk:not(.has){background:color-mix(in srgb, var(--accent) 3%, var(--surface))}
@@ -89,15 +89,10 @@ nav.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);bord
 .dots{display:flex;flex-wrap:wrap;gap:3px;align-items:center}
 .dot{width:7px;height:7px;border-radius:50%;display:inline-block}
 .dots .more{font-family:var(--mono);font-size:9.5px;color:var(--muted);line-height:1}
-.evl{display:none}
-@media (min-width:640px){
-  .day{aspect-ratio:auto;min-height:92px}
-  .day .dots{display:none}
-  .evl{display:flex;flex-direction:column;gap:3px;width:100%;min-width:0}
-  .evl span{display:block;font-size:11px;line-height:1.25;padding:2px 5px;border-radius:5px;background:color-mix(in srgb, var(--ec) 16%, var(--surface));border-left:3px solid var(--ec);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left;font-weight:500}
-  .evl span.dl{--ec:var(--dl)}
-  .evl small{font-family:var(--mono);font-size:10px;color:var(--muted);text-align:left;padding-left:2px}
-}
+.day{position:relative}
+.day .cnt{display:none;position:absolute;font-family:var(--mono);color:var(--muted)}
+.dots .dot:nth-child(n+4):not(.dlm){display:none}
+@media (min-width:640px){ .day{aspect-ratio:auto;min-height:74px;padding:8px} .dot{width:8px;height:8px} .day .n{font-size:13px} .day .cnt{display:block;font-size:11px;right:8px;bottom:6px} .dots .dot:nth-child(n+4):not(.dlm){display:inline-block} }
 .cal-head h2 small{display:block;text-align:center;font-family:var(--mono);font-size:11px;font-weight:500;color:var(--muted);text-transform:none;margin-top:2px}
 .dow.we{color:var(--accent);font-weight:600}
 .legend span{background:color-mix(in srgb, var(--lc) 12%, var(--surface));color:var(--ink);border-radius:99px;padding:3px 9px 3px 7px;font-size:11.5px}
@@ -1859,7 +1854,7 @@ function renderCal(){
     const key=evs.filter(e=>rank(e)<3); const tally={}; (key.length?key:evs).forEach(e=>tally[e.cat]=(tally[e.cat]||0)+1); const top=Object.keys(tally).sort((a,b)=>tally[b]-tally[a])[0];
     if(evs.length) cls.push("has"); if(d.getDay()===0||d.getDay()===6) cls.push("wk");
     if(d.getMonth()!==mo)cls.push("out"); if(ymd(d)===ymd(TODAY))cls.push("is-today"); if(ymd(d)===ymd(state.sel))cls.push("sel");
-    cells+=`<button class="${cls.join(" ")}"${top?` style="--tc:var(${catById[top].c})"`:""} data-day="${ymd(d)}" aria-label="${d.getDate()} ${MON[d.getMonth()]}, ${evs.length} activiteiten${dls.length?", "+dls.length+" deadline":""}"><span class="n">${d.getDate()}</span><span class="dots">${evs.slice(0,6).map(e=>`<i class="dot" style="background:var(${catById[e.cat].c})"></i>`).join("")}${evs.length>6?`<span class="more">+${evs.length-6}</span>`:""}${dls.length?`<i class="dot dlm"></i>`:""}</span><span class="evl">${dls.slice(0,1).map(e=>`<span class="dl">⏰ ${esc(e.title)}</span>`).join("")}${evs.slice(0,dls.length?2:3).map(e=>`<span style="--ec:var(${catById[e.cat].c})">${esc(e.title)}</span>`).join("")}${evs.length>(dls.length?2:3)?`<small>+${evs.length-(dls.length?2:3)} meer</small>`:""}</span></button>`;
+    cells+=`<button class="${cls.join(" ")}"${top?` style="--tc:var(${catById[top].c})"`:""} data-day="${ymd(d)}" aria-label="${d.getDate()} ${MON[d.getMonth()]}, ${evs.length} activiteiten${dls.length?", "+dls.length+" deadline":""}"><span class="n">${d.getDate()}</span><span class="dots">${[...new Set(evs.map(e=>e.cat))].slice(0,4).map(cid=>`<i class="dot" style="background:var(${catById[cid].c})"></i>`).join("")}${dls.length?`<i class="dot dlm"></i>`:""}</span>${evs.length?`<span class="cnt">${evs.length}</span>`:""}</button>`;
   }
   const usedCats=[...new Set(dated.map(i=>i.cat))].sort((a,b)=>catById[a].name.localeCompare(catById[b].name,"nl"));
   let monthCount=0; for(let dd=1; dd<=new Date(y,mo+1,0).getDate(); dd++) monthCount+=eventsOn(new Date(y,mo,dd)).length;
