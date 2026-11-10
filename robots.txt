@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://juliettedmt.github.io/Bucket-Ghent/sitemap.xml
