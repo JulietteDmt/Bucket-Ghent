@@ -100,6 +100,17 @@ nav.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);bord
 .dl-row.soft{background:var(--surface);border:1px solid var(--line)}
 .dl-intro{margin:0 0 14px;color:var(--muted);max-width:65ch;font-size:14px}
 .orgbtn{font-size:13px;font-weight:600;border:1px dashed var(--cc);color:var(--cc);background:transparent;border-radius:999px;padding:5px 11px;cursor:pointer}
+.orginfo{background:var(--surface);border:1px dashed var(--line);border-radius:12px;padding:12px 14px;margin:0 0 18px}
+.orginfo summary{cursor:pointer;font-weight:600;font-size:14px}
+.info-list{display:flex;flex-direction:column;gap:2px;margin-top:8px}
+.info-row{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line)}
+.info-row:first-child{border-top:none}
+.info-row .ir-t{display:flex;flex-direction:column;min-width:0;flex:1 1 220px}
+.info-row .ir-t span{font-size:12.5px;color:var(--muted);line-height:1.35}
+.info-row .links{margin-top:0}
+.info-row .links a{font-size:12px;padding:4px 9px}
+.org-about{font-size:13.5px;color:var(--muted);margin:6px 0 0}
+.org-about summary{cursor:pointer;color:var(--ink);font-weight:600}
 .orgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-bottom:18px}
 .org{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--cc);border-radius:10px;padding:10px 12px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:2px}
 .org b{font-family:var(--display);font-size:15px}
@@ -1585,12 +1596,12 @@ const ORGS = [
   {id:"Schamper",name:"Schamper",home:"ver",match:i=>/^schamper|^v-schamper/.test(i.id)},
   {id:"Deliria",name:"Deliria",home:"ver",match:i=>/^v-deliria/.test(i.id)},
   {id:"Dulle Griet",name:"De Dulle Grieten",home:"ver",link:"https://www.instagram.com/dedullegrieten/",match:i=>/^dullegriet|^v-dullegriet/.test(i.id)},
-  {id:"GUK",name:"Gents Universitair Koor",home:"ver",link:"https://www.instagram.com/gentsuniversitairkoor/",match:i=>/^guk/.test(i.id)},
-  {id:"CenEka",name:"CenEka",home:"ver",intro:"Kring voor computerwetenschappen en elektrotechniek.",link:"https://www.instagram.com/cenekagent/",match:i=>/^cen-/.test(i.id)},
-  {id:"PKarus",name:"PKarus",home:"ver",link:"https://www.instagram.com/pkarusgent/",match:i=>/^pk-/.test(i.id)},
-  {id:"GSR",name:"Gentse Studentenraad",home:"ver",link:"https://www.instagram.com/gentsestudentenraad/",match:i=>/^gsr/.test(i.id)},
-  {id:"WVK",name:"WVK",home:"ver",intro:"Werkgroepen & Verenigingen Konvent.",link:"https://www.instagram.com/wvk.centraal/",match:i=>/^wvk/.test(i.id)},
-  {id:"HK",name:"Home Konvent",home:"ver",link:"https://www.instagram.com/homekonventgent/",match:i=>/^hk$/.test(i.id)},
+  {id:"GUK",name:"Gents Universitair Koor",home:"ver",link:"https://www.instagram.com/gentsuniversitairkoor/",match:i=>/^guk|^v-guk$/.test(i.id)},
+  {id:"CenEka",name:"CenEka",home:"ver",intro:"Kring voor computerwetenschappen en elektrotechniek.",link:"https://www.instagram.com/cenekagent/",match:i=>/^cen-|^v-ceneka$/.test(i.id)},
+  {id:"PKarus",name:"PKarus",home:"ver",link:"https://www.instagram.com/pkarusgent/",match:i=>/^pk-|^v-pkarus$/.test(i.id)},
+  {id:"GSR",name:"Gentse Studentenraad",home:"ver",link:"https://www.instagram.com/gentsestudentenraad/",match:i=>/^gsr|^v-gsr$/.test(i.id)},
+  {id:"WVK",name:"WVK",home:"ver",intro:"Werkgroepen & Verenigingen Konvent.",link:"https://www.instagram.com/wvk.centraal/",match:i=>/^wvk|^v-wvk$/.test(i.id)},
+  {id:"HK",name:"Home Konvent",home:"ver",link:"https://www.instagram.com/homekonventgent/",match:i=>/^hk$|^v-homekonvent$/.test(i.id)},
   {id:"ESN",name:"ESN Gent",home:"intl",intro:"Erasmus Student Network Gent.",match:i=>/^esn/.test(i.id)},
   {id:"HOGENT",name:"HOGENT",home:"ugent",intro:"Hogeschool Gent, inclusief KASK & Conservatorium.",link:"https://www.hogent.be/nieuws-info/agenda/",match:i=>/^hg-/.test(i.id)},
   {id:"Artevelde",name:"Arteveldehogeschool",home:"ugent",link:"https://www.arteveldehogeschool.be/en",match:i=>/^ar-|^artevelderesto/.test(i.id)},
@@ -1701,6 +1712,18 @@ const NEW_DAYS=90;
 ITEMS.forEach(i=>{ i.orgs = ORGS.filter(o=>o.match(i)).map(o=>o.id);
   const age = i.newSince ? Math.round((TODAY-parse(i.newSince))/86400000) : null;
   i.fresh = ((i.cat==="new"||i.alsoNew) && !isPast(i)) || (age!==null && age<=NEW_DAYS); });
+/* Profielen: info over een organisatie of handige link, GEEN event. Nooit als blokje tonen,
+   wel als info + links bovenaan de organisatie of in 'Organisaties & links'. */
+const PROFILE_IDS=new Set(["vek","capitant","afc","180dc","esn","pbu","durfplant","febduur","bioduur","ownmug","jobfairs","lies","vekver","kvhv","dullegriet","sk","vrgver","durfdoen","ug-infinitum","ug-agenda","bk-2dehands","dsa","hg-agenda","hg-kask","ar-agenda","kul-gent","odisee-gent","luca-gent","vlerick-gent","pol-verenigingen","gsr","wvk","hk","schamper-blad","vek-ic","fm-stages","gtp","pk-ugentflying","v-gentsevrouwen","v-mannenvandege","v-schamper","v-guk","v-deliria","v-ceneka","v-pkarus","v-gsr","v-wvk","v-homekonvent"]);
+ITEMS.forEach(i=>{ if(PROFILE_IDS.has(i.id)||/^fk-/.test(i.id)||i.profileTag) i.profile=true; });
+const isEv = i => !i.profile;
+const profilesOf = oid => ITEMS.filter(i=>i.profile&&i.orgs.includes(oid));
+function linkSet(list, extra){ const seen=new Set(), out=[];
+  const lbl=(t,u)=>/instagram\.com/.test(u)?"📸 Instagram":/facebook\.com/.test(u)?"Facebook":/luma\.com|lu\.ma/.test(u)?"Luma":t;
+  (extra||[]).concat(...list.map(i=>i.links||[])).forEach(l=>{ if(!l||!l[1]) return; const k=l[1].replace(/\/$/,""); if(seen.has(k)) return; seen.add(k); out.push([lbl(l[0],l[1]),l[1]]); });
+  return out.sort((a,b)=>(/Instagram/.test(a[0])?1:0)-(/Instagram/.test(b[0])?1:0)); }
+const linkBtns = ls => ls.map((l,ix)=>`<a href="${l[1]}" target="_blank" rel="noopener" class="${ix===0?"primary":""}">${esc(l[0])} ↗</a>`).join("");
+function infoRows(list){ return `<div class="info-list">${list.slice().sort((a,b)=>a.title.localeCompare(b.title,"nl")).map(p=>`<div class="info-row" id="c-${p.id}"><div class="ir-t"><b>${esc(p.title.replace(/:.*$/,""))}</b>${p.desc?`<span>${esc(p.desc)}</span>`:""}</div><div class="links">${linkBtns(linkSet([p]))}</div></div>`).join("")}</div>`; }
 
 /* ---------- storage (per viewer) ---------- */
 function load(k,def){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):def; }catch(e){ return def; } }
@@ -1785,7 +1808,7 @@ function card(it, dateLabel){
       ${it.how?`<dt>Inschrijven</dt><dd>${esc(it.how)}</dd>`:""}
       ${it.deadline?`<dt>Deadline</dt><dd>${esc(dlText)}</dd>`:""}
     </dl></details>`:""}
-    <div class="links">${(it.links||[]).map(l=>`<a href="${l[1]}" target="_blank" rel="noopener" class="${l[2]?"primary":""}">${esc(l[0])} ↗</a>`).join("")}${it.fresh?`<a class="photo" href="https://www.google.com/search?tbm=isch&q=${encodeURIComponent(it.title+" Gent")}" target="_blank" rel="noopener">📸 Foto's ↗</a>`:""}${(it.orgs||[]).filter(o=>state.org!==o && ITEMS.filter(x=>x.orgs.includes(o)&&!isPast(x)).length>1).map(o=>`<button class="orgbtn" data-org="${esc(o)}">Alles van ${esc(orgById[o].name)} →</button>`).join("")}</div>
+    <div class="links">${(it.links||[]).map(l=>`<a href="${l[1]}" target="_blank" rel="noopener" class="${l[2]?"primary":""}">${esc(l[0])} ↗</a>`).join("")}${it.fresh?`<a class="photo" href="https://www.google.com/search?tbm=isch&q=${encodeURIComponent(it.title+" Gent")}" target="_blank" rel="noopener">📸 Foto's ↗</a>`:""}${(it.orgs||[]).filter(o=>state.org!==o && ITEMS.filter(x=>isEv(x)&&x.orgs.includes(o)&&!isPast(x)).length>1).map(o=>`<button class="orgbtn" data-org="${esc(o)}">Alles van ${esc(orgById[o].name)} →</button>`).join("")}</div>
   </article>`;
 }
 
@@ -1832,17 +1855,18 @@ function sortItems(arr){
 function renderCats(){
   if(!state.cat){
     const q=state.q.trim().toLowerCase();
-    const hits=q?ITEMS.filter(i=>!isPast(i)&&[i.title,i.desc,i.where,i.sub,i.aud,i.what,(i.extras||[]).join(" ")].join(" ").toLowerCase().includes(q)):[];
+    const hitsAll=q?ITEMS.filter(i=>!isPast(i)&&[i.title,i.desc,i.where,i.sub,i.aud,i.what,(i.extras||[]).join(" ")].join(" ").toLowerCase().includes(q)):[];
+    const hits=hitsAll.filter(isEv), phits=hitsAll.filter(i=>i.profile);
     $view.innerHTML=`<input class="search" id="q" type="search" placeholder="Zoek in alles, bv. 'KPMG', 'yoga', 'boeken', 'gratis'" value="${esc(state.q)}">
-      ${q?`<div class="list">${hits.length?sortItems(hits).map(i=>card(i)).join(""):`<div class="empty">Geen resultaten voor "${esc(state.q)}".</div>`}</div>`:
-      `<div class="cats">${CATS.map(c=>`<button class="cat${c.isNew?" new":""}" data-cat="${c.id}" style="--cc:var(${c.c})"><span class="num">${c.n} · ${ITEMS.filter(i=>(c.id==="new"?i.fresh:i.cat===c.id)&&!isPast(i)).length} items</span><h3>${c.name}</h3><p>${c.short}</p></button>`).join("")}</div>`}`;
+      ${q?`${phits.length?`<div class="orginfo">${infoRows(phits)}</div>`:""}<div class="list">${hits.length?sortItems(hits).map(i=>card(i)).join(""):phits.length?"":`<div class="empty">Geen resultaten voor "${esc(state.q)}".</div>`}</div>`:
+      `<div class="cats">${CATS.map(c=>`<button class="cat${c.isNew?" new":""}" data-cat="${c.id}" style="--cc:var(${c.c})"><span class="num">${c.n} · ${ITEMS.filter(i=>isEv(i)&&(c.id==="new"?i.fresh:i.cat===c.id)&&!isPast(i)).length} items</span><h3>${c.name}</h3><p>${c.short}</p></button>`).join("")}</div>`}`;
     const inp=document.getElementById("q");
     inp.oninput=e=>{state.q=e.target.value;const pos=e.target.selectionStart;render();const n=document.getElementById("q");n.focus();n.setSelectionRange(pos,pos);};
     return;
   }
   if(state.org) return renderOrg();
   if(state.cat==="corp" && !state.sector){
-    const c=catById.corp; const all=ITEMS.filter(i=>i.cat==="corp"); const up=all.filter(i=>!isPast(i)); const np=all.length-up.length;
+    const c=catById.corp; const all=ITEMS.filter(i=>i.cat==="corp"&&isEv(i)); const up=all.filter(i=>!isPast(i)); const np=all.length-up.length;
     $view.innerHTML=`<button class="back" id="back">← Alle onderdelen</button>
       <div class="cat-hero"><div class="chip" style="color:var(${c.c})">${c.n}</div><h2>${c.name}</h2><p>${c.intro}</p></div>
       <div class="grp-title">Kies een sector</div>
@@ -1852,7 +1876,7 @@ function renderCats(){
     return;
   }
   if(state.cat==="new"){
-    const c=catById.new; const items=ITEMS.filter(i=>i.fresh);
+    const c=catById.new; const items=ITEMS.filter(i=>i.fresh&&isEv(i));
     const start=i=>i.when.once?parse(i.when.once):null, end=i=>i.when.once?parse(i.when.to||i.when.once):null;
     const status=i=>{ const s=start(i), e=end(i), dd=x=>Math.round((x-TODAY)/86400000);
       if(i.newSince&&!(s&&s>TODAY)) return {k:"open",t:"Net open · sinds "+fmt(parse(i.newSince)).replace(/^\S+ /,"")};
@@ -1898,19 +1922,21 @@ function renderCats(){
     document.getElementById("back").onclick=()=>{state.cat=null;render();};
     return;
   }
-  const c=catById[state.cat]; const sec=c.id==="corp"?secById[state.sector]:null; const grp=(c.id==="shop"||c.id==="deal")?state.sub:null; const allItems=ITEMS.filter(i=>(c.id==="new"? i.fresh : (i.cat===c.id||(c.id==="shop"&&i.alsoShop)))&&(!sec||inSector(i,sec.id))&&(!grp||i.sub===grp)); const items=allItems.filter(i=>!isPast(i)); const pastCount=allItems.length-items.length;
+  const c=catById[state.cat]; const sec=c.id==="corp"?secById[state.sector]:null; const grp=(c.id==="shop"||c.id==="deal")?state.sub:null; const profHere=ITEMS.filter(i=>i.profile&&i.cat===c.id&&(!sec||inSector(i,sec.id))); const allItems=ITEMS.filter(i=>isEv(i)&&(c.id==="new"? i.fresh : (i.cat===c.id||(c.id==="shop"&&i.alsoShop)))&&(!sec||inSector(i,sec.id))&&(!grp||i.sub===grp)); const items=allItems.filter(i=>!isPast(i)); const pastCount=allItems.length-items.length;
   const subs=[...new Set(items.map(i=>i.sub).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"nl"));
   let pick=state.sub?items.filter(i=>i.sub===state.sub):items;
   if(c.id==="match"){ pick=items; if(state.mlvl) pick=pick.filter(i=>i.lvl===state.mlvl); if(state.msport) pick=pick.filter(i=>i.sub===state.msport); if(state.mwatch) pick=pick.filter(i=>i.watch===state.mwatch); }
   if(c.id==="food"){ pick=items; if(state.ftype) pick=pick.filter(i=>i.sub===state.ftype); if(state.price) pick=pick.filter(i=>i.lvl===state.price);
     if(state.diet==="veg") pick=pick.filter(i=>i.veg); if(state.diet==="vlees") pick=pick.filter(i=>i.meat); }
   const shown=c.id==="food"?pick.slice().sort((a,b)=>a.title.localeCompare(b.title,"nl")):sortItems(pick);
-  const orgsHere=ORGS.filter(o=>sec? items.some(i=>i.orgs.includes(o.id)) : c.id==="ugent"? o.home==="ugent" : (o.home===c.id || items.some(i=>i.orgs.includes(o.id))))
-    .map(o=>({o,n:(sec?items:ITEMS).filter(i=>i.orgs.includes(o.id)&&!isPast(i)).length})).filter(x=>x.n>0)
+  const orgsHere=ORGS.filter(o=>sec? (items.some(i=>i.orgs.includes(o.id))||profHere.some(i=>i.orgs.includes(o.id))) : c.id==="ugent"? o.home==="ugent" : (o.home===c.id || items.some(i=>i.orgs.includes(o.id))))
+    .map(o=>({o,n:(sec?items:ITEMS).filter(i=>isEv(i)&&i.orgs.includes(o.id)&&!isPast(i)).length,p:profilesOf(o.id).length})).filter(x=>x.n>0||x.p>0)
     .sort((a,b)=>a.o.name.localeCompare(b.o.name,"nl"));
   $view.innerHTML=`<button class="back" id="back">← ${sec||grp?esc(c.name):"Alle onderdelen"}</button>
     <div class="cat-hero"><div class="chip" style="color:var(${c.c})">${sec?c.name+" · sector":grp?c.name+" · groepje":c.n}</div><h2>${sec?esc(sec.name):grp?esc(grp):c.name}</h2><p>${sec?esc(sec.short):grp?esc(([...SHOP_GROUPS,...DEAL_GROUPS].find(g=>g.id===grp)||{}).short||""):c.intro}</p></div>
-    ${orgsHere.length&&!["food","deal","sport","new","shop","match","pol"].includes(c.id)?`<div class="grp-title">Per organisatie</div><div class="orgs" style="--cc:var(${c.c})">${orgsHere.map(x=>`<button class="org" data-org="${esc(x.o.id)}"><b>${esc(x.o.name)}</b><span>${x.n} activiteit${x.n===1?"":"en"}</span></button>`).join("")}</div>`:""}
+    ${orgsHere.length&&!["food","deal","sport","new","shop","match","pol"].includes(c.id)?`<div class="grp-title">Per organisatie</div><div class="orgs" style="--cc:var(${c.c})">${orgsHere.map(x=>`<button class="org" data-org="${esc(x.o.id)}"><b>${esc(x.o.name)}</b><span>${x.n?x.n+" activiteit"+(x.n===1?"":"en"):"Info & links"}</span></button>`).join("")}</div>`:""}
+    ${(()=>{const hide=["food","deal","sport","new","shop","match","pol"].includes(c.id); const tileIds=hide?[]:orgsHere.map(x=>x.o.id); const loose=profHere.filter(p=>!p.orgs.some(o=>tileIds.includes(o)));
+      return loose.length?`<details class="orginfo"><summary>ℹ️ ${c.id==="ver"?"Alle kringen & verenigingen":c.id==="ugent"?"Hogescholen & agenda's":"Organisaties & handige links"} (${loose.length})</summary>${infoRows(loose)}</details>`:"";})()}
     ${grp?"":`<div class="grp-title">Alles in ${sec?esc(sec.name):c.name}</div>`}
     ${c.id==="food"||c.id==="match"||grp?"":`<div class="subs" style="--cc:var(${c.c})"><button data-sub="" aria-pressed="${!state.sub}">Alles (${items.length})</button>${subs.map(s=>`<button data-sub="${esc(s)}" aria-pressed="${state.sub===s}">${esc(s)} (${items.filter(i=>i.sub===s).length})</button>`).join("")}</div>`}
     ${c.id==="match"?[["mlvl","Niveau",[["","Alle"],["be","🇧🇪 België"],["eu","🇪🇺 Europa"],["world","🌍 Wereld"]]],["msport","Sport",[["","Alle"],["Voetbal","⚽ Voetbal"],["Wielrennen","🚴 Wielrennen"],["Veldrijden","🚵 Veldrijden"]]],["mwatch","Kijken",[["","Alle"],["gent","📍 Live in Gent"],["be","🚆 Live in België"],["tv","📺 Op tv / café"]]]].map(([k,l,opts])=>`<div class="subs" style="--cc:var(${c.c})"><span class="flt">${l}</span>${opts.map(([v,t])=>`<button data-mf="${k}" data-mv="${v}" aria-pressed="${state[k]===v}">${t}</button>`).join("")}</div>`).join(""):""}
@@ -1924,12 +1950,16 @@ function renderCats(){
 }
 
 function renderOrg(){
-  const o=orgById[state.org]; const items=ITEMS.filter(i=>i.orgs.includes(o.id)&&!isPast(i));
+  const o=orgById[state.org]; const items=ITEMS.filter(i=>isEv(i)&&i.orgs.includes(o.id)&&!isPast(i)); const profs=profilesOf(o.id);
+  const intro=o.intro||(profs[0]&&profs[0].desc)||""; const ls=linkSet(profs, o.link?[["Website / planning",o.link]]:[]);
+  const about=profs.map(p=>[p.what,p.how,(p.extras||[]).join(" · ")].filter(Boolean).join(" ")).filter(Boolean).join(" ");
   const c=catById[state.cat||o.home];
   const groups=CATS.map(cat=>({cat,its:sortItems(items.filter(i=>i.cat===cat.id))})).filter(g=>g.its.length);
   $view.innerHTML=`<button class="back" id="back">← ${esc(state.cat==="corp"&&state.sector?secById[state.sector].name:c.name)}</button>
-    <div class="cat-hero"><div class="chip" style="color:var(${c.c})">Organisatie · ${items.length} activiteit${items.length===1?"":"en"}</div><h2>${esc(o.name)}</h2>${o.intro?`<p>${esc(o.intro)}</p>`:""}
-    ${o.link?`<div class="links" style="margin:-4px 0 10px"><a class="primary" href="${o.link}" target="_blank" rel="noopener">Volledige planning ↗</a></div>`:""}</div>
+    <div class="cat-hero"><div class="chip" style="color:var(${c.c})">Organisatie · ${items.length} activiteit${items.length===1?"":"en"}</div><h2>${esc(o.name)}</h2>${intro?`<p>${esc(intro)}</p>`:""}
+    ${ls.length?`<div class="links" style="margin:-4px 0 10px">${linkBtns(ls)}</div>`:""}
+    ${about?`<details class="org-about"><summary>Meer over ${esc(o.name)}</summary><p>${esc(about)}</p></details>`:""}</div>
+    ${!groups.length?`<div class="empty">Nog geen events met een datum bekend. Volg ${esc(o.name)} via de links hierboven; nieuwe events komen er automatisch bij.</div>`:""}
     ${groups.map(g=>`<div class="grp-title">${g.cat.name} (${g.its.length})</div><div class="list">${g.its.map(i=>card(i)).join("")}</div>`).join("")}`;
   document.getElementById("back").onclick=()=>{state.org=null;render();window.scrollTo({top:0});};
 }
@@ -1939,7 +1969,7 @@ function renderDeadlines(){
   const withDate=ITEMS.filter(i=>i.deadline&&i.deadline.date);
   const up=withDate.filter(i=>parse(i.deadline.date)>=TODAY).sort((a,b)=>a.deadline.date.localeCompare(b.deadline.date));
   const past=withDate.filter(i=>{const d=parse(i.deadline.date);return d<TODAY&&d>=parse("2026-09-21");}).sort((a,b)=>b.deadline.date.localeCompare(a.deadline.date));
-  const soft=ITEMS.filter(i=>i.deadline&&!i.deadline.date&&!isPast(i));
+  const soft=ITEMS.filter(i=>isEv(i)&&i.deadline&&!i.deadline.date&&!isPast(i));
   const row=(i,cls,dLbl,cd)=>`<button class="dl-row ${cls}" data-goto="${i.id}"><span class="d">${dLbl}</span><span class="t">${esc(i.title)}${cls==="soft"?` <span style="font-weight:400;color:var(--muted)">· ${esc(i.deadline.text)}</span>`:""}</span>${cd?`<span class="cd">${cd}</span>`:""}</button>`;
   $view.innerHTML=`<p class="dl-intro">Alle inschrijvingsdeadlines op één plek. Tik op een deadline om de activiteit met alle info te openen.</p>
     <h2 class="sec-title">Komende deadlines<small>${up.length}</small></h2>
@@ -1986,8 +2016,9 @@ function render(){
 }
 function gotoItem(id){
   const it=ITEMS.find(i=>i.id===id); if(!it) return;
+  if(it.profile&&it.orgs.length){ const o=orgById[it.orgs[0]]; state.view="cat"; state.cat=it.cat; state.sector=it.cat==="corp"?(it.sectors||["eco"])[0]:null; state.sub=null; state.org=o.id; state.q=""; render(); window.scrollTo({top:0}); return; }
   state.view="cat"; state.cat=it.cat; state.sector=it.cat==="corp"?(it.sectors||["eco"])[0]:null; state.sub=(it.cat==="shop"||it.cat==="deal")?it.sub:null; state.org=null; state.q=""; render();
-  const el=document.getElementById("c-"+id); if(el){ const d=el.querySelector("details"); if(d) d.open=true; el.scrollIntoView({block:"start"}); el.classList.add("flash"); setTimeout(()=>el.classList.remove("flash"),1600); }
+  const el=document.getElementById("c-"+id); if(el){ const pd=el.closest("details"); if(pd) pd.open=true; const d=el.querySelector("details"); if(d) d.open=true; el.scrollIntoView({block:"start"}); el.classList.add("flash"); setTimeout(()=>el.classList.remove("flash"),1600); }
 }
 
 document.querySelector("nav.tabs").addEventListener("click",e=>{const b=e.target.closest("button[data-view]");if(!b)return;state.view=b.dataset.view;render();window.scrollTo({top:0});});
