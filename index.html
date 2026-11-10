@@ -155,6 +155,22 @@ nav.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);bord
 .sweek[open]>summary{margin-bottom:4px}
 .sfull{color:var(--dl);font-weight:600}
 .sn{font-size:12px;color:var(--muted)}
+.balloons{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:26px 14px;padding:10px 0 20px}
+.balloon{background:none;border:0;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--ink);font:inherit;animation:bfloat var(--t) ease-in-out var(--d) infinite}
+.balloon:nth-child(even){margin-top:28px}
+.b-title{font-family:var(--display);font-weight:700;font-size:15px;text-align:center}
+.b-ball{width:118px;height:132px;border-radius:50% 50% 48% 48% / 55% 55% 45% 45%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  background:radial-gradient(circle at 32% 28%, color-mix(in srgb, var(--cc) 6%, #fff) 0 12%, color-mix(in srgb, var(--cc) 20%, var(--surface)) 45%, color-mix(in srgb, var(--cc) 34%, var(--surface)) 100%);
+  border:1px solid color-mix(in srgb, var(--cc) 30%, var(--line));color:var(--cc);position:relative;transition:transform .2s ease, box-shadow .2s ease;box-shadow:0 8px 20px color-mix(in srgb, var(--cc) 14%, transparent)}
+.b-ball::after{content:"";position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:color-mix(in srgb, var(--cc) 34%, var(--surface));border-bottom:0}
+.b-ico{width:38px;height:38px;display:inline-flex}
+.b-n{font-family:var(--mono);font-size:11px;color:color-mix(in srgb, var(--cc) 75%, var(--ink))}
+.b-string{width:1px;height:26px;background:linear-gradient(var(--line),transparent);margin-top:2px}
+.b-next{font-size:11.5px;color:var(--muted);text-align:center;max-width:150px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.balloon:hover .b-ball{transform:scale(1.05);box-shadow:0 12px 26px color-mix(in srgb, var(--cc) 22%, transparent)}
+@keyframes bfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@media (prefers-reduced-motion: reduce){.balloon{animation:none}}
+@media (max-width:480px){.balloons{grid-template-columns:repeat(2,1fr)} .b-ball{width:104px;height:116px}}
 .orginfo{background:var(--surface);border:1px dashed var(--line);border-radius:12px;padding:12px 14px;margin:0 0 18px}
 .orginfo summary{cursor:pointer;font-weight:600;font-size:14px}
 .info-list{display:flex;flex-direction:column;gap:2px;margin-top:8px}
@@ -174,7 +190,7 @@ nav.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);bord
 .org .sd{font-family:var(--body);font-size:13px;line-height:1.35;margin:2px 0 4px}
 .grp-title{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:18px 0 8px}
 .linkbtn{border:none;background:none;padding:0;color:var(--dl);font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
-@media (max-width:480px){ nav.tabs{gap:4px} nav.tabs button{padding:8px 4px;font-size:12.5px} .count{display:none} }
+@media (max-width:480px){ nav.tabs{gap:3px} nav.tabs button{padding:8px 2px;font-size:11.5px} .count{display:none} }
 
 /* Cards */
 .list{display:flex;flex-direction:column;gap:10px}
@@ -259,7 +275,7 @@ details.more[open] summary::after{transform:rotate(180deg)}
 .card.done h3{text-decoration:line-through;text-decoration-thickness:2px}
 .note{font-size:13px;color:var(--muted);margin-top:24px;border-top:1px solid var(--line);padding-top:14px;max-width:65ch}
 
-@media (max-width:420px){ .card .row1{flex-direction:column} .side{flex-direction:row;align-items:center} nav.tabs button{font-size:13px;padding:8px 6px} }
+@media (max-width:420px){ .card .row1{flex-direction:column} .side{flex-direction:row;align-items:center} nav.tabs button{font-size:11.5px;padding:8px 2px} }
 @media (prefers-reduced-motion:no-preference){ .cat{transition:transform .15s ease} .cat:hover{transform:translateY(-2px)} }
 </style>
 
@@ -274,6 +290,7 @@ details.more[open] summary::after{transform:rotate(180deg)}
 
   <nav class="tabs" role="tablist">
     <button role="tab" id="tab-cal" aria-selected="true" data-view="cal">Kalender</button>
+    <button role="tab" id="tab-idee" aria-selected="false" data-view="idee">Ontdek</button>
     <button role="tab" id="tab-cat" aria-selected="false" data-view="cat">Onderdelen</button>
     <button role="tab" id="tab-dl" aria-selected="false" data-view="dl">Deadlines<span class="count" id="dlCount"></span></button>
     <button role="tab" id="tab-bucket" aria-selected="false" data-view="bucket">Mijn lijst<span class="count" id="bkCount"></span></button>
@@ -2073,6 +2090,20 @@ function renderOrg(){
   document.getElementById("back").onclick=()=>{state.org=null;render();window.scrollTo({top:0});};
 }
 
+function renderIdee(){
+  const up=i=>isEv(i)&&!isPast(i);
+  const next=c=>{ const l=sortItems(ITEMS.filter(i=>up(i)&&(c.id==="new"?i.fresh:i.cat===c.id)&&(i.when.once||i.when.dates))); return l[0]; };
+  const cats=CATS.slice();
+  $view.innerHTML=`<p class="dl-intro">Even rondkijken? Elke ballon is een onderdeel. Tik erop om alles te zien.</p>
+    <div class="balloons">${cats.map((c,ix)=>{ const n=ITEMS.filter(i=>up(i)&&(c.id==="new"?i.fresh:i.cat===c.id)).length; const nx=next(c);
+      return `<button class="balloon" data-goc="${c.id}" style="--cc:var(${c.c});--d:${(ix%5)*0.7}s;--t:${5+(ix%3)}s">
+        <span class="b-title">${esc(c.name)}</span>
+        <span class="b-ball"><span class="b-ico">${ico(c.id)}</span><span class="b-n">${n} ${n===1?"item":"items"}</span></span>
+        <span class="b-string" aria-hidden="true"></span>
+        ${nx?`<span class="b-next">Eerstvolgend: ${esc(nx.title)}</span>`:`<span class="b-next">${esc(c.short)}</span>`}
+      </button>`;}).join("")}</div>`;
+}
+
 function renderDeadlines(){
   const days=d=>Math.round((d-TODAY)/86400000);
   const withDate=ITEMS.filter(i=>i.deadline&&i.deadline.date);
@@ -2121,7 +2152,7 @@ function render(){
   document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.view===state.view));
   const n=Object.keys(bucket).length; document.getElementById("bkCount").textContent=n?n:"";
   const nd=ITEMS.filter(i=>i.deadline&&i.deadline.date&&parse(i.deadline.date)>=TODAY).length; document.getElementById("dlCount").textContent=nd?nd:"";
-  if(state.view==="cal")renderCal(); else if(state.view==="cat")renderCats(); else if(state.view==="dl")renderDeadlines(); else renderBucket();
+  if(state.view==="cal")renderCal(); else if(state.view==="idee")renderIdee(); else if(state.view==="cat")renderCats(); else if(state.view==="dl")renderDeadlines(); else renderBucket();
 }
 function gotoItem(id){
   const it=ITEMS.find(i=>i.id===id); if(!it) return;
@@ -2132,6 +2163,7 @@ function gotoItem(id){
 
 document.querySelector("nav.tabs").addEventListener("click",e=>{const b=e.target.closest("button[data-view]");if(!b)return;state.view=b.dataset.view;render();window.scrollTo({top:0});});
 $view.addEventListener("click",e=>{
+  const gc=e.target.closest("[data-goc]"); if(gc){ state.view="cat"; state.cat=gc.dataset.goc; state.sub=null; state.org=null; state.sector=null; render(); window.scrollTo({top:0}); return; }
   const cc=e.target.closest("[data-calcat]"); if(cc){ state.calCat=cc.dataset.calcat; render(); return; }
   const day=e.target.closest("[data-day]"); if(day){ state.sel=parse(day.dataset.day); if(state.sel.getMonth()!==state.month.getMonth()) state.month=new Date(state.sel.getFullYear(),state.sel.getMonth(),1); render(); return; }
   const go=e.target.closest("[data-goto]"); if(go){ gotoItem(go.dataset.goto); return; }
