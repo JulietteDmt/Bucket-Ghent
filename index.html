@@ -78,13 +78,34 @@ nav.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);bord
 .iconbtn{border:1px solid var(--line);background:var(--surface);border-radius:10px;width:38px;height:38px;cursor:pointer;font-size:18px}
 .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
 .dow{font-family:var(--mono);font-size:11px;color:var(--muted);text-align:center;padding-bottom:4px;text-transform:uppercase}
-.day{aspect-ratio:1/1;max-width:100%;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:5px;cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:0;overflow:hidden}
-.day.out{opacity:.35}
-.day.is-today{border-color:var(--ink);border-width:2px}
-.day.sel{background:var(--ink);color:var(--bg)}
-.day .n{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums}
-.dots{display:flex;flex-wrap:wrap;gap:2px}
-.dot{width:6px;height:6px;border-radius:50%;display:inline-block}
+.day{aspect-ratio:1/1;max-width:100%;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:5px;cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0;overflow:hidden;color:var(--ink);transition:transform .12s, box-shadow .12s}
+.day.has{background:color-mix(in srgb, var(--tc) 6%, var(--surface));border-color:color-mix(in srgb, var(--tc) 30%, var(--line))}
+.day:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.06)}
+.day.out{opacity:.38}
+.day.wk:not(.has){background:color-mix(in srgb, var(--accent) 3%, var(--surface))}
+.day .n{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums;min-width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;border-radius:99px;margin:-1px 0 0 -1px}
+.day.is-today .n{background:var(--accent);color:var(--accent-ink);font-weight:700}
+.day.sel{border:2px solid var(--tc,var(--accent));box-shadow:0 0 0 3px color-mix(in srgb, var(--tc,var(--accent)) 18%, transparent)}
+.dots{display:flex;flex-wrap:wrap;gap:3px;align-items:center}
+.dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+.dots .more{font-family:var(--mono);font-size:9.5px;color:var(--muted);line-height:1}
+.evl{display:none}
+@media (min-width:640px){
+  .day{aspect-ratio:auto;min-height:92px}
+  .day .dots{display:none}
+  .evl{display:flex;flex-direction:column;gap:3px;width:100%;min-width:0}
+  .evl span{display:block;font-size:11px;line-height:1.25;padding:2px 5px;border-radius:5px;background:color-mix(in srgb, var(--ec) 16%, var(--surface));border-left:3px solid var(--ec);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left;font-weight:500}
+  .evl span.dl{--ec:var(--dl)}
+  .evl small{font-family:var(--mono);font-size:10px;color:var(--muted);text-align:left;padding-left:2px}
+}
+.cal-head h2 small{display:block;text-align:center;font-family:var(--mono);font-size:11px;font-weight:500;color:var(--muted);text-transform:none;margin-top:2px}
+.dow.we{color:var(--accent);font-weight:600}
+.legend span{background:color-mix(in srgb, var(--lc) 12%, var(--surface));color:var(--ink);border-radius:99px;padding:3px 9px 3px 7px;font-size:11.5px}
+.exp-more{margin-top:22px}
+.exp-more>summary{cursor:pointer;font-family:var(--display);font-size:18px;font-weight:700;list-style:none;display:flex;align-items:baseline;gap:8px}
+.exp-more>summary::after{content:"▾";font-size:13px;color:var(--muted)}
+.exp-more[open]>summary::after{content:"▴"}
+.exp-more>summary small{font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:500}
 .dot.dlm{background:transparent!important;border:1.5px solid var(--dl);width:7px;height:7px}
 .legend{display:flex;flex-wrap:wrap;gap:6px 12px;margin:12px 0 4px;font-size:12px;color:var(--muted)}
 .legend span{display:inline-flex;align-items:center;gap:5px}
@@ -100,6 +121,14 @@ nav.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);bord
 .dl-row.soft{background:var(--surface);border:1px solid var(--line)}
 .dl-intro{margin:0 0 14px;color:var(--muted);max-width:65ch;font-size:14px}
 .orgbtn{font-size:13px;font-weight:600;border:1px dashed var(--cc);color:var(--cc);background:transparent;border-radius:999px;padding:5px 11px;cursor:pointer}
+.sched{display:flex;flex-direction:column;gap:3px;margin:10px 0 4px;padding:8px 10px;border-radius:10px;background:color-mix(in srgb, var(--cc) 6%, var(--surface));border:1px solid color-mix(in srgb, var(--cc) 18%, var(--line))}
+.srow{display:flex;gap:10px;align-items:baseline;padding:2px 0}
+.srow .sd{font-family:var(--mono);font-size:11.5px;color:var(--muted);width:20px;flex:none;text-transform:uppercase}
+.srow.snow .sd{color:var(--cc);font-weight:700}
+.srow .sl{display:flex;flex-wrap:wrap;gap:4px}
+.sc{font-size:12px;padding:1px 7px;border-radius:99px;background:color-mix(in srgb, var(--sc) 14%, var(--surface));border:1px solid color-mix(in srgb, var(--sc) 30%, transparent)}
+.sc b{font-family:var(--mono);font-weight:600;font-size:11.5px}
+.sn{font-size:12px;color:var(--muted)}
 .orginfo{background:var(--surface);border:1px dashed var(--line);border-radius:12px;padding:12px 14px;margin:0 0 18px}
 .orginfo summary{cursor:pointer;font-weight:600;font-size:14px}
 .info-list{display:flex;flex-direction:column;gap:2px;margin-top:8px}
@@ -763,10 +792,12 @@ const ITEMS = [
   desc:"Fitnessclub met Reformer Pilates inbegrepen in het lidmaatschap.",
   extras:["Groepslessen: pilates, yoga, Bodypump, boksen en cycling","Ook squash, indoor klimmen en CrossTraining","Neem antislipsokken mee naar Reformer"],
   links:[["Reformer bij Stadium","https://stadiumcoupure.stadium.be/en/offer/new-pilates-reformer",1]]},
- {id:"sp-hotyoga",cat:"sport",sub:"Yoga",title:"Hot Yoga Gent",when:{always:true},where:"Nederkouter 113A",price:"Starterweek €29; studentenkorting",ok:true,
-  desc:"Hot yoga in het Engels: HOT90, HOT60, Absolute & Yin en HOT+ op vrijdagavond.",
+ {id:"sp-hotyoga",cat:"sport",sub:"Yoga",title:"Hot Yoga Gent",when:{weekly:[0,1,2,3,4,5,6],time:"rooster hieronder"},where:"Nederkouter 113A",price:"Starterweek €29; studentenkorting",ok:true,noCal:true,
+  desc:"Hot yoga in een verwarmde zaal, alle lessen in het Engels. HOT90 is de klassieke reeks van 26 houdingen en 2 ademhalingsoefeningen in 90 minuten; HOT60 is een kortere, intensere versie; Absolute & Yin combineert een vaste reeks met 30 minuten rustige yin.",
+  sched:[[1,"10:00–11:30","HOT90"],[1,"18:15–19:45","HOT90"],[1,"20:15–21:15","HOT60"],[2,"18:15–19:45","HOT90"],[2,"20:15–21:45","Absolute & Yin"],[3,"10:00–11:30","HOT90"],[3,"18:15–19:45","HOT90"],[3,"20:15–21:45","HOT90"],[4,"18:15–19:45","HOT90"],[4,"20:15–21:45","HOT90"],[5,"12:15–13:15","HOT60"],[5,"19:00–20:00","HOT+"],[6,"12:15–13:15","HOT60"],[0,"10:00–11:30","HOT90"],[0,"17:00–18:30","HOT90"]],
+  how:"Eerste keer: boek per telefoon of mail en kom 20 minuten vroeger om een inschrijvingsformulier in te vullen. Neem water en wisselkleren mee.",
   extras:["Starterweek €29, handdoek en mat inbegrepen","Maandkaart €100 voor studenten (gewoon €130)","10-beurtenkaart €140 voor studenten (gewoon €170)","Losse les €25"],
-  links:[["Website","https://www.hotyogagent.be/",1]]},
+  links:[["Website","https://www.hotyogagent.be/",1],["Instagram","https://www.instagram.com/hotyogagent/"]]},
  {id:"sp-bleau",cat:"sport",sub:"Klimmen",title:"Klimzaal Bleau",when:{always:true},where:"Campinglaan 2 (Blaarmeersen)",price:"Zie tarieven; huur schoenen €4",ok:true,
   desc:"Boulderen en touwklimmen; boulderen kan zonder reservatie.",
   extras:["Open ma–vr 10–23u, weekend 10–21u45 (boulder vanaf 12u)","Elke maand een initiatie touwklimmen voor beginners","Huur: schoenen €4, gordel €4, samen €7","Ook keuken; groepen vanaf 10 reserveren","VTK organiseert geregeld initiaties boulderen"],
@@ -1667,13 +1698,14 @@ function occursOn(it,d){
   if(w.nthSun){ if(d.getDay()!==0) return false; return w.nthSun.includes(Math.ceil(d.getDate()/7)); }
   return false;
 }
-const dated = ITEMS.filter(i=>i.when.once||i.when.weekly||i.when.nthSun||i.when.dates);
+const dated = ITEMS.filter(i=>!i.noCal&&(i.when.once||i.when.weekly||i.when.nthSun||i.when.dates));
 const eventsOn = d => dated.filter(i=>occursOn(i,d));
 const deadlinesOn = d => ITEMS.filter(i=>i.deadline&&i.deadline.date===ymd(d));
 function whenText(it){
   const w=it.when;
   if(w.once){ const d=parse(w.once); let s=fmt(d); if(w.to){const e=parse(w.to); s+=" – "+fmt(e)+" "+e.getFullYear();} else s+=" "+d.getFullYear(); return s+(w.time?" · "+w.time:""); }
   if(w.dates){ const up=w.dates.map(parse).filter(d=>d>=TODAY); const list=(up.length?up:w.dates.map(parse)).map(fmt); return list.join(", ")+(w.time?" · "+w.time:""); }
+  if(it.sched){ const t=it.sched.filter(x=>x[0]===TODAY.getDay()); return "Elke dag lessen"+(t.length?" · vandaag "+t.map(x=>x[1].split("–")[0]).join(", "):""); }
   if(w.weekly) return "Elke "+w.weekly.map(x=>DOWL[x]).join(" & ")+(w.time?" · "+w.time:"");
   if(w.nthSun) return "Elke "+w.nthSun.join("e & ")+"e zondag"+(w.time?" · "+w.time:"");
   if(w.always) return "Altijd";
@@ -1776,6 +1808,9 @@ function deadlineBadge(it){
     return `<span class="dlb${past?" past":""}">${past?"Deadline verstreken":"Inschrijven tot "+fmt(d)+" "+d.getFullYear()}</span>`; }
   return "";
 }
+function schedHtml(it){ const order=[1,2,3,4,5,6,0], td=TODAY.getDay();
+  const kinds=[...new Set(it.sched.map(x=>x[2]))]; const hue=k=>["var(--c1)","var(--c6)","var(--c3)","var(--c9)","var(--c8)"][kinds.indexOf(k)%5];
+  return `<div class="sched">${order.map(d=>{const cl=it.sched.filter(x=>x[0]===d); return `<div class="srow${d===td?" snow":""}"><span class="sd">${DOW[d]}</span><span class="sl">${cl.length?cl.map(x=>`<span class="sc" style="--sc:${hue(x[2])}"><b>${esc(x[1].split("–")[0])}</b> ${esc(x[2])}</span>`).join(""):`<span class="sn">geen les</span>`}</span></div>`;}).join("")}</div>`; }
 function card(it, dateLabel){
   const c=catById[it.cat]; const inB=!!bucket[it.id]; const done=inB&&bucket[it.id].done;
   const hasMore = it.what||it.extras||it.who||it.how||it.deadline;
@@ -1800,6 +1835,7 @@ function card(it, dateLabel){
     </div>
     ${deadlineBadge(it)}
     ${it.desc?`<p class="desc">${esc(it.desc)}</p>`:""}
+    ${it.sched?schedHtml(it):""}
     ${(it.theme||it.partner||it.after)?`<ul class="runinfo">${it.theme?`<li><b>Thema</b>${esc(it.theme)}</li>`:""}${it.partner?`<li><b>Samenwerking</b>${esc(it.partner)}</li>`:""}${it.after?`<li><b>Afterrun</b>${esc(it.after)}</li>`:""}</ul>`:""}
     ${hasMore?`<details class="more"><summary>Meer info</summary><dl class="info">
       ${it.what?`<dt>Wat</dt><dd>${esc(it.what)}</dd>`:""}
@@ -1818,32 +1854,36 @@ function renderCal(){
   let cells="";
   for(let i=0;i<42;i++){
     const d=new Date(start); d.setDate(start.getDate()+i);
-    const evs=eventsOn(d), dls=deadlinesOn(d); const cls=["day"];
+    const rank=e=>{const w=e.when; if(w.once&&!w.to) return 0; if(w.dates) return 1; if(w.once&&w.to) return (parse(w.to)-parse(w.once))/86400000>3?4:1; return 3;};
+    const evs=eventsOn(d).sort((a,b)=>rank(a)-rank(b)), dls=deadlinesOn(d); const cls=["day"];
+    const key=evs.filter(e=>rank(e)<3); const tally={}; (key.length?key:evs).forEach(e=>tally[e.cat]=(tally[e.cat]||0)+1); const top=Object.keys(tally).sort((a,b)=>tally[b]-tally[a])[0];
+    if(evs.length) cls.push("has"); if(d.getDay()===0||d.getDay()===6) cls.push("wk");
     if(d.getMonth()!==mo)cls.push("out"); if(ymd(d)===ymd(TODAY))cls.push("is-today"); if(ymd(d)===ymd(state.sel))cls.push("sel");
-    cells+=`<button class="${cls.join(" ")}" data-day="${ymd(d)}" aria-label="${d.getDate()} ${MON[d.getMonth()]}, ${evs.length} activiteiten${dls.length?", "+dls.length+" deadline":""}"><span class="n">${d.getDate()}</span><span class="dots">${evs.slice(0,8).map(e=>`<i class="dot" style="background:var(${catById[e.cat].c})"></i>`).join("")}${dls.map(()=>`<i class="dot dlm"></i>`).join("")}</span></button>`;
+    cells+=`<button class="${cls.join(" ")}"${top?` style="--tc:var(${catById[top].c})"`:""} data-day="${ymd(d)}" aria-label="${d.getDate()} ${MON[d.getMonth()]}, ${evs.length} activiteiten${dls.length?", "+dls.length+" deadline":""}"><span class="n">${d.getDate()}</span><span class="dots">${evs.slice(0,6).map(e=>`<i class="dot" style="background:var(${catById[e.cat].c})"></i>`).join("")}${evs.length>6?`<span class="more">+${evs.length-6}</span>`:""}${dls.length?`<i class="dot dlm"></i>`:""}</span><span class="evl">${dls.slice(0,1).map(e=>`<span class="dl">⏰ ${esc(e.title)}</span>`).join("")}${evs.slice(0,dls.length?2:3).map(e=>`<span style="--ec:var(${catById[e.cat].c})">${esc(e.title)}</span>`).join("")}${evs.length>(dls.length?2:3)?`<small>+${evs.length-(dls.length?2:3)} meer</small>`:""}</span></button>`;
   }
-  const usedCats=[...new Set(dated.map(i=>i.cat))];
+  const usedCats=[...new Set(dated.map(i=>i.cat))].sort((a,b)=>catById[a].name.localeCompare(catById[b].name,"nl"));
+  let monthCount=0; for(let dd=1; dd<=new Date(y,mo+1,0).getDate(); dd++) monthCount+=eventsOn(new Date(y,mo,dd)).length;
   const selEvs=eventsOn(state.sel), selDl=deadlinesOn(state.sel);
   let up="";
   for(let i=0;i<14;i++){ const d=new Date(TODAY); d.setDate(TODAY.getDate()+i); eventsOn(d).forEach(e=>{ up+=card(e, fmt(d)+(e.when.time?" · "+e.when.time:"")); }); }
   const dlUp=ITEMS.filter(i=>i.deadline&&i.deadline.date&&parse(i.deadline.date)>=TODAY).sort((a,b)=>a.deadline.date.localeCompare(b.deadline.date));
   const dlSoft=ITEMS.filter(i=>i.deadline&&!i.deadline.date&&!isPast(i)&&(i.when.once?true:false));
-  const expected=ITEMS.filter(i=>i.when.expect && /20(26|27)|januari|februari|maart|april|mei|augustus|november|voorjaar|najaar/i.test(i.when.expect));
+  const expected=ITEMS.filter(i=>isEv(i)&&i.when.expect && /20(26|27)|januari|februari|maart|april|mei|augustus|november|voorjaar|najaar/i.test(i.when.expect));
   $view.innerHTML = `
     <div class="cal-head">
       <button class="iconbtn" id="prev" aria-label="Vorige maand">‹</button>
-      <h2>${MON[mo]} ${y}</h2>
+      <h2>${MON[mo]} ${y}<small>${monthCount} activiteiten deze maand</small></h2>
       <button class="iconbtn" id="next" aria-label="Volgende maand">›</button>
     </div>
-    <div class="grid">${["ma","di","wo","do","vr","za","zo"].map(x=>`<div class="dow">${x}</div>`).join("")}${cells}</div>
-    <div class="legend">${usedCats.map(id=>`<span><i class="dot" style="background:var(${catById[id].c})"></i>${catById[id].name}</span>`).join("")}<span><i class="dot dlm"></i>Deadline</span></div>
+    <div class="grid">${["ma","di","wo","do","vr","za","zo"].map(x=>`<div class="dow${x==="za"||x==="zo"?" we":""}">${x}</div>`).join("")}${cells}</div>
+    <div class="legend">${usedCats.map(id=>`<span style="--lc:var(${catById[id].c})"><i class="dot" style="background:var(${catById[id].c})"></i>${catById[id].name}</span>`).join("")}<span style="--lc:var(--dl)"><i class="dot dlm"></i>Deadline</span></div>
     <h2 class="sec-title">${DOWL[state.sel.getDay()]} ${state.sel.getDate()} ${MON[state.sel.getMonth()]}<small>${selEvs.length} activiteit${selEvs.length===1?"":"en"}${selDl.length?" · "+selDl.length+" deadline":""}</small></h2>
     <div class="list">${selDl.map(e=>card(e,"Deadline vandaag: "+whenText(e))).join("")}${selEvs.length?selEvs.map(e=>card(e, fmt(state.sel)+(e.when.time?" · "+e.when.time:""))).join(""):(selDl.length?"":`<div class="empty">Niets gepland op deze dag. Kies een dag met gekleurde bolletjes, of kijk bij Onderdelen.</div>`)}</div>
     ${dlUp.length?`<p style="margin:14px 0 0;font-size:14px">⏰ Eerstvolgende deadline: <b>${esc(dlUp[0].title)}</b> op ${fmt(parse(dlUp[0].deadline.date))}. <button class="linkbtn" data-view-go="dl">Alle deadlines</button></p>`:""}
     <h2 class="sec-title">Komende 14 dagen</h2>
     <div class="list">${up||`<div class="empty">Geen activiteiten in de komende 14 dagen.</div>`}</div>
-    <h2 class="sec-title">Verwacht, nog zonder vaste datum<small>${expected.length}</small></h2>
-    <div class="list">${expected.map(e=>card(e)).join("")}</div>`;
+    <details class="exp-more"><summary>Verwacht, nog zonder vaste datum<small>${expected.length}</small></summary>
+    <div class="list" style="margin-top:10px">${expected.map(e=>card(e)).join("")}</div></details>`;
   document.getElementById("prev").onclick=()=>{state.month=new Date(y,mo-1,1);render();};
   document.getElementById("next").onclick=()=>{state.month=new Date(y,mo+1,1);render();};
 }
