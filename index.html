@@ -91,8 +91,8 @@ nav.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);bord
 .dots .more{font-family:var(--mono);font-size:9.5px;color:var(--muted);line-height:1}
 .day{position:relative}
 .day .cnt{display:none;position:absolute;font-family:var(--mono);color:var(--muted)}
-.dots .dot:nth-child(n+4):not(.dlm){display:none}
-@media (min-width:640px){ .day{aspect-ratio:auto;min-height:74px;padding:8px} .dot{width:8px;height:8px} .day .n{font-size:13px} .day .cnt{display:block;font-size:11px;right:8px;bottom:6px} .dots .dot:nth-child(n+4):not(.dlm){display:inline-block} }
+.dots .ci:nth-child(n+4){display:none}
+@media (min-width:640px){ .day{aspect-ratio:auto;min-height:74px;padding:8px} .dot{width:8px;height:8px} .day .n{font-size:13px} .day .cnt{display:block;font-size:11px;right:8px;bottom:6px} .dots .ci:nth-child(n+4){display:inline-flex} .ci .ico{width:16px;height:16px} }
 .cal-head h2 small{display:block;text-align:center;font-family:var(--mono);font-size:11px;font-weight:500;color:var(--muted);text-transform:none;margin-top:2px}
 .dow.we{color:var(--accent);font-weight:600}
 .legend span{background:color-mix(in srgb, var(--lc) 12%, var(--surface));color:var(--ink);border-radius:99px;padding:3px 9px 3px 7px;font-size:11.5px}
@@ -190,6 +190,15 @@ details.more[open] summary::after{transform:rotate(180deg)}
 .cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
 .cat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:6px;min-height:118px;position:relative;overflow:hidden}
 .cat .num{font-family:var(--mono);font-size:11px;color:var(--cc)}
+.ico{width:100%;height:100%;display:block}
+.cat-ico{width:30px;height:30px;padding:6px;border-radius:9px;color:var(--cc);background:color-mix(in srgb, var(--cc) 11%, var(--surface));display:inline-flex}
+.hero-ico{display:inline-flex;width:34px;height:34px;padding:7px;border-radius:10px;background:color-mix(in srgb, currentColor 11%, var(--surface));margin-bottom:6px}
+.ci{display:inline-flex;width:13px;height:13px;flex:none}
+.legend .ci{width:14px;height:14px;padding:0;background:none;border-radius:0}
+.cat{transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease}
+.cat:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.06);border-color:color-mix(in srgb, var(--cc) 35%, var(--line))}
+.cat-ico{transition:background .18s ease, color .18s ease}
+.cat:hover .cat-ico{background:var(--cc);color:var(--surface)}
 .cat h3{font-size:16px;line-height:1.2}
 .cat p{margin:0;font-size:12.5px;color:var(--muted)}
 .cat::after{content:"";position:absolute;right:-18px;bottom:-18px;width:56px;height:56px;border-radius:50%;background:var(--cc);opacity:.16}
@@ -262,9 +271,9 @@ const CATS = [
    intro:"Kies eerst je sector, dan de organisatie. Recruitment-events, dinners, trips naar het buitenland en jobbeurzen in heel België. Strategy consultants zoals McKinsey, BCG en Bain nemen studenten mee op volledig betaalde weekends in Rome, Parijs of Amsterdam. Veel events zijn op selectie (cv + motivatie), dus let op de deadlines. Bij jobbeurzen van andere universiteiten staat voor wie ze open zijn."},
   {id:"food", n:"08", name:"Eten in Gent", short:"Nieuwe en originele zaakjes om te proberen", c:"--c8",
    intro:"De food-bucketlist: nieuwe of originele zaken. Elke kaart linkt naar de zaak zodat je menu en openingsuren kan bekijken."},
-  {id:"sport",n:"09", name:"Zelf sporten", short:"Faciliteiten, studentenprijzen en specials", c:"--c9",
+  {id:"sport",n:"09", name:"Sport", short:"Faciliteiten, studentenprijzen en specials", c:"--c9",
    intro:"Sportfaciliteiten in Gent met prijzen voor studenten. Bij 'Meer info' staan speciale edities, zoals outdoor-lessen of lessen met DJ, als die er zijn."},
-  {id:"match", n:"14", name:"Sport", short:"Enkel de grote: voetbaltoppers, Champions League, Rode Duivels, koersen en crossen", c:"--c14",
+  {id:"match", n:"14", name:"Matches", short:"Enkel de grote: voetbaltoppers, Champions League, Rode Duivels, koersen en crossen", c:"--c14",
    intro:"Enkel de grote matchen en koersen, in België, Europa en de wereld: Belgische toppers, Champions League en Europese finales, de Rode Duivels, de Zesdaagse in 't Kuipke, de grote crossen en de voorjaarsklassiekers. Uren van voetbalmatchen kunnen nog schuiven door de tv-planning."},
   {id:"pol", n:"15", name:"Politiek", short:"Debatten en lezingen met politici op campus", c:"--c15",
    intro:"Politici en opiniemakers op campus: het Groot Kopstukkendebat met de partijkopstukken, openingscolleges, lezingen en debatten van alle strekkingen. Ga luisteren, stel je vragen en vorm je eigen mening."},
@@ -1675,6 +1684,25 @@ ITEMS.forEach(i=>{ if(i.cat!=="food") return;
 const orgById = Object.fromEntries(ORGS.map(o=>[o.id,o]));
 
 /* ---------- helpers ---------- */
+
+/* Iconen per onderdeel: lijniconen, kleur via currentColor */
+const ICONS={
+ corp:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8.5 7V5.5A1.5 1.5 0 0 1 10 4h4a1.5 1.5 0 0 1 1.5 1.5V7"/><path d="M3 13h18"/>',
+ intl:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/>',
+ biz:'<path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0 0 12 3z"/>',
+ ugent:'<path d="M3 21h18"/><path d="M4 10h16"/><path d="M12 3l8 5H4z"/><path d="M6.5 10v8M10.2 10v8M13.8 10v8M17.5 10v8"/>',
+ cert:'<circle cx="12" cy="9" r="5.5"/><path d="M8.7 13.5 7.5 21l4.5-2.5 4.5 2.5-1.2-7.5"/>',
+ duur:'<path d="M5 20c0-8.5 5.5-14.5 15-16 0 9.5-5.5 15-13 15"/><path d="M5 20l7.5-7.5"/>',
+ food:'<path d="M6 3v6a3 3 0 0 0 6 0V3"/><path d="M9 3v18"/><path d="M18 21V3c-2.2 1.2-3.5 4-3.5 8H18"/>',
+ deal:'<rect x="2.5" y="5.5" width="19" height="13" rx="3.5"/><path d="M6.3 10.2 7.8 9v6"/><path d="M10.2 12h3.6M12 10.2v3.6"/><path d="M16.2 10.2 17.7 9v6"/>',
+ new:'<ellipse cx="8" cy="12" rx="3.6" ry="5.2"/><ellipse cx="16" cy="12" rx="3.6" ry="5.2"/><circle cx="9" cy="13" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="13" r="1.4" fill="currentColor" stroke="none"/>',
+ pol:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0"/><path d="M12 17.5V21M8.5 21h7"/>',
+ run:'<circle cx="15" cy="4.5" r="1.8"/><path d="M13.5 8 11 14"/><path d="M7 10.5l3-2.5h3.5l2 3.5H19"/><path d="M11 14l3 3v4"/><path d="M11 14l-2.5 3.5H5"/>',
+ match:'<circle cx="12" cy="12" r="9"/><path d="M12 7.6l4.2 3-1.6 5h-5.2l-1.6-5z"/><path d="M12 3v4.6M16.2 10.6l4.3-1.4M14.6 15.6l2.7 3.7M9.4 15.6l-2.7 3.7M7.8 10.6 3.5 9.2"/>',
+ sport:'<circle cx="7" cy="7" r="1.8"/><path d="M8 10.5l2.2 5.5H20"/><path d="M9.2 12.5H17"/><path d="M3.5 20h17"/>',
+ ver:'<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 5.2a3 3 0 0 1 0 5.6"/><path d="M18 14.5c1.8.7 3 2.6 3 4.8"/>'
+};
+const ico=(id,cls)=>`<svg class="ico ${cls||""}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[id]||""}</svg>`;
 const catById = Object.fromEntries(CATS.map(c=>[c.id,c]));
 const pad = n => String(n).padStart(2,"0");
 const ymd = d => d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
@@ -1854,7 +1882,7 @@ function renderCal(){
     const key=evs.filter(e=>rank(e)<3); const tally={}; (key.length?key:evs).forEach(e=>tally[e.cat]=(tally[e.cat]||0)+1); const top=Object.keys(tally).sort((a,b)=>tally[b]-tally[a])[0];
     if(evs.length) cls.push("has"); if(d.getDay()===0||d.getDay()===6) cls.push("wk");
     if(d.getMonth()!==mo)cls.push("out"); if(ymd(d)===ymd(TODAY))cls.push("is-today"); if(ymd(d)===ymd(state.sel))cls.push("sel");
-    cells+=`<button class="${cls.join(" ")}"${top?` style="--tc:var(${catById[top].c})"`:""} data-day="${ymd(d)}" aria-label="${d.getDate()} ${MON[d.getMonth()]}, ${evs.length} activiteiten${dls.length?", "+dls.length+" deadline":""}"><span class="n">${d.getDate()}</span><span class="dots">${[...new Set(evs.map(e=>e.cat))].slice(0,4).map(cid=>`<i class="dot" style="background:var(${catById[cid].c})"></i>`).join("")}${dls.length?`<i class="dot dlm"></i>`:""}</span>${evs.length?`<span class="cnt">${evs.length}</span>`:""}</button>`;
+    cells+=`<button class="${cls.join(" ")}"${top?` style="--tc:var(${catById[top].c})"`:""} data-day="${ymd(d)}" aria-label="${d.getDate()} ${MON[d.getMonth()]}, ${evs.length} activiteiten${dls.length?", "+dls.length+" deadline":""}"><span class="n">${d.getDate()}</span><span class="dots">${[...new Set(evs.map(e=>e.cat))].slice(0,4).map(cid=>`<span class="ci" style="color:var(${catById[cid].c})" title="${esc(catById[cid].name)}">${ico(cid)}</span>`).join("")}${dls.length?`<i class="dot dlm"></i>`:""}</span>${evs.length?`<span class="cnt">${evs.length}</span>`:""}</button>`;
   }
   const usedCats=[...new Set(dated.map(i=>i.cat))].sort((a,b)=>catById[a].name.localeCompare(catById[b].name,"nl"));
   let monthCount=0; for(let dd=1; dd<=new Date(y,mo+1,0).getDate(); dd++) monthCount+=eventsOn(new Date(y,mo,dd)).length;
@@ -1871,7 +1899,7 @@ function renderCal(){
       <button class="iconbtn" id="next" aria-label="Volgende maand">›</button>
     </div>
     <div class="grid">${["ma","di","wo","do","vr","za","zo"].map(x=>`<div class="dow${x==="za"||x==="zo"?" we":""}">${x}</div>`).join("")}${cells}</div>
-    <div class="legend">${usedCats.map(id=>`<span style="--lc:var(${catById[id].c})"><i class="dot" style="background:var(${catById[id].c})"></i>${catById[id].name}</span>`).join("")}<span style="--lc:var(--dl)"><i class="dot dlm"></i>Deadline</span></div>
+    <div class="legend">${usedCats.map(id=>`<span style="--lc:var(${catById[id].c})"><span class="ci" style="color:var(${catById[id].c})">${ico(id)}</span>${catById[id].name}</span>`).join("")}<span style="--lc:var(--dl)"><i class="dot dlm"></i>Deadline</span></div>
     <h2 class="sec-title">${DOWL[state.sel.getDay()]} ${state.sel.getDate()} ${MON[state.sel.getMonth()]}<small>${selEvs.length} activiteit${selEvs.length===1?"":"en"}${selDl.length?" · "+selDl.length+" deadline":""}</small></h2>
     <div class="list">${selDl.map(e=>card(e,"Deadline vandaag: "+whenText(e))).join("")}${selEvs.length?selEvs.map(e=>card(e, fmt(state.sel)+(e.when.time?" · "+e.when.time:""))).join(""):(selDl.length?"":`<div class="empty">Niets gepland op deze dag. Kies een dag met gekleurde bolletjes, of kijk bij Onderdelen.</div>`)}</div>
     ${dlUp.length?`<p style="margin:14px 0 0;font-size:14px">⏰ Eerstvolgende deadline: <b>${esc(dlUp[0].title)}</b> op ${fmt(parse(dlUp[0].deadline.date))}. <button class="linkbtn" data-view-go="dl">Alle deadlines</button></p>`:""}
@@ -1894,7 +1922,7 @@ function renderCats(){
     const hits=hitsAll.filter(isEv), phits=hitsAll.filter(i=>i.profile);
     $view.innerHTML=`<input class="search" id="q" type="search" placeholder="Zoek in alles, bv. 'KPMG', 'yoga', 'boeken', 'gratis'" value="${esc(state.q)}">
       ${q?`${phits.length?`<div class="orginfo">${infoRows(phits)}</div>`:""}<div class="list">${hits.length?sortItems(hits).map(i=>card(i)).join(""):phits.length?"":`<div class="empty">Geen resultaten voor "${esc(state.q)}".</div>`}</div>`:
-      `<div class="cats">${CATS.map(c=>`<button class="cat${c.isNew?" new":""}" data-cat="${c.id}" style="--cc:var(${c.c})"><span class="num">${c.n} · ${ITEMS.filter(i=>isEv(i)&&(c.id==="new"?i.fresh:i.cat===c.id)&&!isPast(i)).length} items</span><h3>${c.name}</h3><p>${c.short}</p></button>`).join("")}</div>`}`;
+      `<div class="cats">${CATS.map(c=>`<button class="cat${c.isNew?" new":""}" data-cat="${c.id}" style="--cc:var(${c.c})"><span class="cat-ico">${ico(c.id)}</span><span class="num">${c.n} · ${ITEMS.filter(i=>isEv(i)&&(c.id==="new"?i.fresh:i.cat===c.id)&&!isPast(i)).length} items</span><h3>${c.name}</h3><p>${c.short}</p></button>`).join("")}</div>`}`;
     const inp=document.getElementById("q");
     inp.oninput=e=>{state.q=e.target.value;const pos=e.target.selectionStart;render();const n=document.getElementById("q");n.focus();n.setSelectionRange(pos,pos);};
     return;
@@ -1903,7 +1931,7 @@ function renderCats(){
   if(state.cat==="corp" && !state.sector){
     const c=catById.corp; const all=ITEMS.filter(i=>i.cat==="corp"&&isEv(i)); const up=all.filter(i=>!isPast(i)); const np=all.length-up.length;
     $view.innerHTML=`<button class="back" id="back">← Alle onderdelen</button>
-      <div class="cat-hero"><div class="chip" style="color:var(${c.c})">${c.n}</div><h2>${c.name}</h2><p>${c.intro}</p></div>
+      <div class="cat-hero"><span class="hero-ico" style="color:var(${c.c})">${ico(c.id)}</span><div class="chip" style="color:var(${c.c})">${c.n}</div><h2>${c.name}</h2><p>${c.intro}</p></div>
       <div class="grp-title">Kies een sector</div>
       <div class="orgs secs" style="--cc:var(${c.c})">${SECTORS.map(s=>{const n=up.filter(i=>inSector(i,s.id)).length;return `<button class="org" data-sector="${s.id}"><b>${esc(s.name)}</b><span class="sd">${esc(s.short)}</span><span>${n} activiteit${n===1?"":"en"}</span></button>`;}).join("")}</div>
       ${np?`<p class="dl-intro" style="margin-top:14px">${np} voorbije bedrijfsevent${np===1?"":"s"} sinds 21 september vind je terug in de <button class="linkbtn" data-view-go="cal">kalender</button>.</p>`:""}`;
@@ -1937,7 +1965,7 @@ function renderCats(){
   if(state.cat==="deal" && !state.sub){
     const c=catById.deal; const up=ITEMS.filter(i=>i.cat==="deal"&&!isPast(i));
     $view.innerHTML=`<button class="back" id="back">← Alle onderdelen</button>
-      <div class="cat-hero"><div class="chip" style="color:var(${c.c})">${c.n}</div><h2>${c.name}</h2><p>${c.intro}</p></div>
+      <div class="cat-hero"><span class="hero-ico" style="color:var(${c.c})">${ico(c.id)}</span><div class="chip" style="color:var(${c.c})">${c.n}</div><h2>${c.name}</h2><p>${c.intro}</p></div>
       <div class="grp-title">Kies een type</div>
       <div class="orgs secs" style="--cc:var(${c.c})">${DEAL_GROUPS.map(g=>{const n=up.filter(i=>i.sub===g.id).length;return `<button class="org" data-sub="${esc(g.id)}"><b>${esc(g.id)}</b><span class="sd">${esc(g.short)}</span><span>${n} deal${n===1?"":"s"}</span></button>`;}).join("")}</div>
       <div class="grp-title">Alle deals</div>
@@ -1948,7 +1976,7 @@ function renderCats(){
   if(state.cat==="shop" && !state.sub){
     const c=catById.shop; const all=ITEMS.filter(i=>i.cat==="shop"||i.alsoShop); const up=all.filter(i=>!isPast(i)); const np=all.length-up.length;
     $view.innerHTML=`<button class="back" id="back">← Alle onderdelen</button>
-      <div class="cat-hero"><div class="chip" style="color:var(${c.c})">${c.n}</div><h2>${c.name}</h2><p>${c.intro}</p></div>
+      <div class="cat-hero"><span class="hero-ico" style="color:var(${c.c})">${ico(c.id)}</span><div class="chip" style="color:var(${c.c})">${c.n}</div><h2>${c.name}</h2><p>${c.intro}</p></div>
       <div class="grp-title">Kies een groepje</div>
       <div class="orgs secs" style="--cc:var(${c.c})">${SHOP_GROUPS.map(g=>{const n=up.filter(i=>i.sub===g.id).length;return `<button class="org" data-sub="${esc(g.id)}"><b>${esc(g.id)}</b><span class="sd">${esc(g.short)}</span><span>${n} item${n===1?"":"s"}</span></button>`;}).join("")}</div>
       <div class="grp-title">Binnenkort</div>
@@ -1968,7 +1996,7 @@ function renderCats(){
     .map(o=>({o,n:(sec?items:ITEMS).filter(i=>isEv(i)&&i.orgs.includes(o.id)&&!isPast(i)).length,p:profilesOf(o.id).length})).filter(x=>x.n>0||x.p>0)
     .sort((a,b)=>a.o.name.localeCompare(b.o.name,"nl"));
   $view.innerHTML=`<button class="back" id="back">← ${sec||grp?esc(c.name):"Alle onderdelen"}</button>
-    <div class="cat-hero"><div class="chip" style="color:var(${c.c})">${sec?c.name+" · sector":grp?c.name+" · groepje":c.n}</div><h2>${sec?esc(sec.name):grp?esc(grp):c.name}</h2><p>${sec?esc(sec.short):grp?esc(([...SHOP_GROUPS,...DEAL_GROUPS].find(g=>g.id===grp)||{}).short||""):c.intro}</p></div>
+    <div class="cat-hero"><span class="hero-ico" style="color:var(${c.c})">${ico(c.id)}</span><div class="chip" style="color:var(${c.c})">${sec?c.name+" · sector":grp?c.name+" · groepje":c.n}</div><h2>${sec?esc(sec.name):grp?esc(grp):c.name}</h2><p>${sec?esc(sec.short):grp?esc(([...SHOP_GROUPS,...DEAL_GROUPS].find(g=>g.id===grp)||{}).short||""):c.intro}</p></div>
     ${orgsHere.length&&!["food","deal","sport","new","shop","match","pol"].includes(c.id)?`<div class="grp-title">Per organisatie</div><div class="orgs" style="--cc:var(${c.c})">${orgsHere.map(x=>`<button class="org" data-org="${esc(x.o.id)}"><b>${esc(x.o.name)}</b><span>${x.n?x.n+" activiteit"+(x.n===1?"":"en"):"Info & links"}</span></button>`).join("")}</div>`:""}
     ${(()=>{const hide=["food","deal","sport","new","shop","match","pol"].includes(c.id); const tileIds=hide?[]:orgsHere.map(x=>x.o.id); const loose=profHere.filter(p=>!p.orgs.some(o=>tileIds.includes(o)));
       return loose.length?`<details class="orginfo"><summary>${c.id==="ver"?"Alle kringen & verenigingen":c.id==="ugent"?"Hogescholen & agenda's":"Organisaties & handige links"} (${loose.length})</summary>${infoRows(loose)}</details>`:"";})()}
@@ -1991,7 +2019,7 @@ function renderOrg(){
   const c=catById[state.cat||o.home];
   const groups=CATS.map(cat=>({cat,its:sortItems(items.filter(i=>i.cat===cat.id))})).filter(g=>g.its.length);
   $view.innerHTML=`<button class="back" id="back">← ${esc(state.cat==="corp"&&state.sector?secById[state.sector].name:c.name)}</button>
-    <div class="cat-hero"><div class="chip" style="color:var(${c.c})">Organisatie · ${items.length} activiteit${items.length===1?"":"en"}</div><h2>${esc(o.name)}</h2>${intro?`<p>${esc(intro)}</p>`:""}
+    <div class="cat-hero"><span class="hero-ico" style="color:var(${c.c})">${ico(c.id)}</span><div class="chip" style="color:var(${c.c})">Organisatie · ${items.length} activiteit${items.length===1?"":"en"}</div><h2>${esc(o.name)}</h2>${intro?`<p>${esc(intro)}</p>`:""}
     ${ls.length?`<div class="links" style="margin:-4px 0 10px">${linkBtns(ls)}</div>`:""}
     ${about?`<details class="org-about"><summary>Meer over ${esc(o.name)}</summary><p>${esc(about)}</p></details>`:""}</div>
     ${!groups.length?`<div class="empty">Nog geen events met een datum bekend. Volg ${esc(o.name)} via de links hierboven; nieuwe events komen er automatisch bij.</div>`:""}
