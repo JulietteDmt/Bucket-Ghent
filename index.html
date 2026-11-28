@@ -2926,7 +2926,7 @@ const ITEMS = [
  {"id": "food-lechouchou", "cat": "food", "sub": "Restaurant", "title": "Le Chouchou: Franse bistro aan de Burgstraat", "when": {"always": true}, "where": "Burgstraat 20, 9000 Gent", "price": "Niet vermeld", "ok": true, "desc": "Bistro met Franse klassiekers in een moderne versie, nieuw in Gault&Millau. Open van woensdag tot zondag.", "links": [["Website", "https://lechouchou.be/contact/", 1], ["Gault&Millau", "https://www.gaultmillau.be/en/restaurants/le-chouchou-gent"]]},
 ];
 /* verborgen onderdelen (Food deals, 28/11/2026): data blijft bewaard, enkel niet getoond */
-for(let k=ITEMS.length-1;k>=0;k--) if(ITEMS[k].hidden) ITEMS.splice(k,1);
+for(let k=ITEMS.length-1;k>=0;k--){ const it=ITEMS[k]; if(it.hidden||it.cat==="deal"){ITEMS.splice(k,1);continue;} if(it.cat==="intl") it.cat=/^(vek|esn|dsa)/.test(it.id)?"ver":"ugent"; if(it.cat==="cert") it.cat="biz"; if(it.cat==="match"||it.cat==="shop") ITEMS.splice(k,1); }
 
 /* Organisaties: elke activiteit hangt aan een organisator, zodat je per vereniging/bedrijf alles ziet */
 const ORGS = [
