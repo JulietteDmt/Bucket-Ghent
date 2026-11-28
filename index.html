@@ -2,6 +2,7 @@
 <title>Ghent × Unlocked</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,400;1,500;1,600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&display=swap">
 <style>
 /* Layout: app-shell — sticky tabbar, one column of "ticket" cards with expandable details, max 760px */
@@ -991,6 +992,17 @@ nav.tabs button[aria-selected="true"] .tl,.subs button[aria-pressed="true"],.cal
 /* kalender: gewoon de maand, geen extra knoppen */
 .caltools{display:none!important}
 .cal-head{background:var(--grad)}
+/* ═════ de twee letters uit het Canva-voorbeeld: Playfair italic + Montserrat ═════ */
+:root{--body:"Montserrat",system-ui,sans-serif;--display:"Montserrat",system-ui,sans-serif;--grot:"Montserrat",system-ui,sans-serif;--mono:"Montserrat",system-ui,sans-serif;--serif:"Playfair Display",Georgia,serif}
+body,button,input{font-family:var(--body);font-size:14.5px}
+h1,h2,h3,.dsc-sec h2,.bk-sec,.spl-h,.cal-head h2,.cat-hero h2,.sec-title.cal-day,.dsc-hero.cv h1,.bt .bh,.ct .bh{font-family:var(--grot)!important;font-weight:700!important;letter-spacing:-.04em!important}
+h1 em,h2 em,h3 em,.dsc-sec h2 em,.bk-sec em,.spl-h em,.dsc-hero.cv h1 em,.bt.big .bh,.cal-head h2 span{font-family:var(--serif)!important;font-style:italic!important;font-weight:500!important;letter-spacing:-.03em!important}
+.dsc-hero.cv h1{font-weight:800!important}
+.dsc-ev .dd b,.cv-stats b,.bk-wrap .stat b,.agdh b,.spl-switch button small,.cv-pill,.sidenav h2{font-family:var(--serif)!important;font-style:italic!important;font-weight:500!important}
+.chip,.grp-title,.dsc-ev .ec,.when,.dsc-ev .dd span{letter-spacing:.14em}
+.lg-pill b{font-weight:800}.lg-pill span{font-family:var(--serif);font-style:italic;font-weight:500;text-transform:none;font-size:16px}
+.card h3{font-weight:700;letter-spacing:-.02em}
+.dsc-ev .et{font-weight:600}
 </style>
 
 <div class="wrap">
