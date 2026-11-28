@@ -862,6 +862,31 @@ h1 em,h2 em,.dsc-hero h1 em,.dsc-sec h2 em,.cal-head h2 em,.bk-sec em,.sec-title
 header.top{display:none!important}
 .bt[data-goc="food"] img,.ct[data-cat="food"] img{transform:none;object-position:50% 45%}
 .bt[data-goc="food"]:hover img,.ct[data-cat="food"]:hover img{transform:scale(1.06)}
+/* ═════ Canva-framework: petrol met oranje gloed, glinster, grote kapitalen, lange pijl ═════ */
+:root{--grad:radial-gradient(38% 55% at 50% 48%,rgba(236,118,60,.95) 0%,rgba(236,118,60,0) 100%),radial-gradient(45% 60% at 22% 70%,rgba(214,186,190,.95) 0%,rgba(214,186,190,0) 100%),radial-gradient(35% 50% at 70% 25%,rgba(222,150,120,.55) 0%,rgba(222,150,120,0) 100%),linear-gradient(120deg,#6fa7a2 0%,#7fb0ab 45%,#5f9f99 100%)}
+.dsc-hero.cv{display:block;text-align:left;padding:clamp(20px,3vw,34px);min-height:clamp(440px,52vw,580px)}
+.dsc-hero.cv>img{opacity:.28}
+.cv-top{display:flex;align-items:flex-start;gap:clamp(18px,6vw,90px);flex-wrap:wrap}
+.cv-pill{border:2px solid rgba(255,255,255,.85);border-radius:999px;padding:6px 22px;font-size:clamp(18px,2.2vw,26px);font-weight:500;color:#fff}
+.cv-meta{display:flex;flex-direction:column;color:#fff;font-size:14px;line-height:1.3;margin-top:6px}
+.cv-meta b{font-weight:700}
+@media (max-width:640px){.cv-meta{display:none}}
+.cv-star{position:absolute;left:clamp(14px,4vw,60px);top:50%;width:clamp(120px,17vw,220px);transform:translateY(-36%);filter:drop-shadow(0 0 28px rgba(255,255,255,.55))}
+.cv-main{margin:clamp(40px,8vw,90px) 0 0 clamp(150px,24vw,300px);position:relative}
+.dsc-hero.cv h1{font-family:var(--display);margin:0;color:#fff;font-size:clamp(46px,7.6vw,104px);line-height:.92;letter-spacing:-.035em;display:flex;flex-direction:column}
+.dsc-hero.cv h1 b{font-weight:800}
+.dsc-hero.cv h1 span{font-weight:400}
+.dsc-hero.cv p.lead{margin:18px 0 0;font-size:clamp(14.5px,1.4vw,17px);max-width:46ch}
+.dsc-hero.cv .dsc-sub{margin-top:20px}
+.cv-arrow{position:absolute;right:clamp(18px,3vw,40px);bottom:clamp(16px,2.6vw,30px);display:flex;align-items:center;gap:12px;border:0;background:none;color:#fff;cursor:pointer;font:inherit;font-weight:600;font-size:14px}
+.cv-arrow svg{width:clamp(80px,9vw,120px);transition:transform .25s ease}
+.cv-arrow:hover svg{transform:translateX(6px)}
+@media (max-width:640px){.cv-star{top:auto;bottom:70px;width:90px;transform:none;opacity:.8}.cv-main{margin:36px 0 70px}.cv-arrow span{display:none}}
+.dsc-hero.cv h1{font-size:clamp(40px,5.4vw,82px)}.dsc-hero.cv h1 b,.dsc-hero.cv h1 span{white-space:nowrap}
+.cv-main{margin-left:clamp(150px,21vw,270px);padding-bottom:64px}
+.dsc-hero.cv>img{opacity:.16}
+.cv-arrow span{display:none}
+.cv-star{top:56%}
 </style>
 
 <div class="wrap">
@@ -3661,19 +3686,20 @@ function renderIdee(){
   const cats=CATS.slice().sort((x,y)=>{const a=BORDER.indexOf(x.id),b=BORDER.indexOf(y.id);return (a<0?99:a)-(b<0?99:b);});
   const heroPh=catPhoto("run");
   $view.innerHTML=`
-    <section class="dsc-hero">
+    <section class="dsc-hero cv">
       ${heroPh?`<img src="${heroPh}" alt="" aria-hidden="true">`:""}
-      <button class="dsc-pill" data-view-go="cal">Open de kalender</button>
-      <h1>Jouw stad,<em>jouw jaren</em></h1>
-      <p class="lead">Dit is jouw bucketlist voor je studentenjaren in Gent. Maak er gevarieerde jaren van, met iets voor elke interesse: een cantus, een business case bij een Big Four-kantoor, een lezing op campus of een run door de stad. Voilà!</p>
-      <div class="hero-badge" aria-hidden="true"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="hbSg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7eaaa6"/><stop offset=".5" stop-color="#e3bcc2"/><stop offset="1" stop-color="#ee9a74"/></linearGradient><path id="hbSt" d="M17,50 a33,33 0 0,1 66,0"/><path id="hbSb" d="M10,50 a40,40 0 0,0 80,0"/></defs><circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="2.2"/><text font-family="Inter Tight, Helvetica, Arial, sans-serif" font-weight="800" font-size="11" fill="#fff" letter-spacing="2.2" text-anchor="middle"><textPath href="#hbSt" startOffset="50%">GHENT</textPath></text><text font-family="Inter Tight, Helvetica, Arial, sans-serif" font-weight="800" font-size="11" fill="#fff" letter-spacing="2.2" text-anchor="middle"><textPath href="#hbSb" startOffset="50%">UNLOCKED</textPath></text><g transform="translate(50 47) scale(1.05)"><path d="M-8 2v-9a9 9 0 0 1 17.3-3.5" fill="none" stroke="#fff" stroke-width="4.6" stroke-linecap="round"/><rect x="-13" y="0" width="26" height="20" rx="6" fill="#fff"/></g><text x="21" y="54.5" font-family="Inter Tight, Helvetica, Arial, sans-serif" font-size="9" font-weight="700" fill="#fff" text-anchor="middle">×</text><text x="79" y="54.5" font-family="Inter Tight, Helvetica, Arial, sans-serif" font-size="9" font-weight="700" fill="#fff" text-anchor="middle">×</text></svg></div>
-      <div class="hero-sticker" aria-hidden="true"><b>${week.length}</b>events deze week</div>
-      <div class="dsc-sub">
-        <button data-view-go="cal"><b>${week.length}</b> events deze week</button>
-        <button data-view-go="dl"><b>${dlUp.length}</b> open deadlines</button>
-        <button data-view-go="bucket">Mijn lijst</button>
+      <div class="cv-top"><span class="cv-pill">2026–2027</span><span class="cv-meta"><b>Voor wie</b>Studenten in Gent</span><span class="cv-meta"><b>Wat</b>Events, deadlines &amp; plekken</span></div>
+      <svg class="cv-star" viewBox="0 0 100 100" aria-hidden="true"><defs><radialGradient id="cvS" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#e9e4df"/><stop offset=".55" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity=".85"/></radialGradient><filter id="cvB"><feGaussianBlur stdDeviation="1.4"/></filter></defs><path d="M50 0C53 30 70 47 100 50 70 53 53 70 50 100 47 70 30 53 0 50 30 47 47 30 50 0Z" fill="url(#cvS)" filter="url(#cvB)"/></svg>
+      <div class="cv-main">
+        <h1><b>JOUW STAD,</b><span>JOUW JAREN</span></h1>
+        <p class="lead">Alles wat je in Gent kan doen tijdens je studentenjaren: cantussen, business cases, lezingen, runs en nieuwe plekken. Voilà!</p>
+        <div class="dsc-sub">
+          <button data-view-go="cal"><b>${week.length}</b> events deze week</button>
+          <button data-view-go="dl"><b>${dlUp.length}</b> open deadlines</button>
+          <button data-view-go="bucket">Mijn lijst</button>
+        </div>
       </div>
-      ${week.length?(()=>{const t=week.slice(0,18).map(([d,i])=>`${d.getDate()} ${MON[d.getMonth()].slice(0,3)} · ${esc(i.title)}`).join(' <i>↗</i> ');return `<div class="hero-tick" aria-hidden="true"><span>${t} <i>↗</i></span><span>${t} <i>↗</i></span></div>`;})():""}
+      <button class="cv-arrow" data-view-go="cal" aria-label="Open de kalender"><span>Open de kalender</span><svg viewBox="0 0 120 40" aria-hidden="true"><path d="M2 20h112M96 4l18 16-18 16" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     </section>
     <div class="dsc-wash">
 
