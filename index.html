@@ -794,6 +794,13 @@ nav.tabs .tl{padding:4px 6px 5px}
 .nfilt button{background:var(--rose);color:var(--rose-ink);border:0}
 .nfilt button[aria-pressed="true"]{background:#3c7672;color:#fff}
 .newhero{background:var(--grad)!important;border-radius:28px}
+.be-tag{position:absolute;top:44px;right:12px;background:#3c7672;color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:999px;transform:rotate(-4deg);box-shadow:0 6px 14px -6px rgba(0,0,0,.4)}
+/* onderdelen: foto's in hun eigen kleuren (geen duotone) */
+.bt img,.ct img,.bt:hover img,.ct:hover img{filter:none}
+.bt::after,.ct::after{background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(20,18,16,.72) 100%);mix-blend-mode:normal;opacity:1}
+.bt:hover::after,.ct:hover::after{opacity:.85}
+.bt::before,.ct::before{display:none}
+.bt .bb,.ct .bb{padding-right:34px}.bt:not(.big):not(.full) .bh{font-size:clamp(19px,2vw,26px)}
 </style>
 
 <div class="wrap">
@@ -844,7 +851,7 @@ const CATS = [
   {id:"duur", n:"05", name:"Duurzaamheid", short:"Plant-based, commissies, groene lezingen", c:"--c5",
    intro:"Duurzaamheidscampagnes, -commissies en -lezingen. Veel van deze groepen communiceren vooral via Instagram."},
   {id:"corp", n:"07", name:"Bedrijfsevents", short:"Heel België, per sector: economie, recht, zorg, industrie, tech, overheid", c:"--c7",
-   intro:"Kies eerst je sector, dan de organisatie. Recruitment-events, dinners, trips naar het buitenland en jobbeurzen in heel België. Strategy consultants zoals McKinsey, BCG en Bain nemen studenten mee op volledig betaalde weekends in Rome, Parijs of Amsterdam. Veel events zijn op selectie (cv + motivatie), dus let op de deadlines. Bij jobbeurzen van andere universiteiten staat voor wie ze open zijn."},
+   intro:"Let op: dit onderdeel gaat niet enkel over Gent. Je vindt hier bedrijfsevents uit heel België (Brussel, Antwerpen, Leuven, Luik ...), want veel recruitment gebeurt buiten Gent. Kies eerst je sector, dan de organisatie. Recruitment-events, dinners, trips naar het buitenland en jobbeurzen in heel België. Strategy consultants zoals McKinsey, BCG en Bain nemen studenten mee op volledig betaalde weekends in Rome, Parijs of Amsterdam. Veel events zijn op selectie (cv + motivatie), dus let op de deadlines. Bij jobbeurzen van andere universiteiten staat voor wie ze open zijn."},
   {id:"food", n:"08", name:"Eten in Gent", short:"Nieuwe en originele zaakjes om te proberen", c:"--c8",
    intro:"De food-bucketlist: nieuwe of originele zaken. Elke kaart linkt naar de zaak zodat je menu en openingsuren kan bekijken."},
   {id:"sport",n:"09", name:"Sport", short:"Faciliteiten, studentenprijzen en specials", c:"--c9",
@@ -3464,7 +3471,7 @@ function renderCats(){
     const hits=hitsAll.filter(isEv), phits=hitsAll.filter(i=>i.profile);
     $view.innerHTML=`<div class="cats-wrap"><input class="search" id="q" type="search" placeholder="Zoek in alles, bv. 'KPMG', 'yoga', 'boeken', 'gratis'" value="${esc(state.q)}">
       ${q?`${phits.length?`<div class="orginfo">${infoRows(phits)}</div>`:""}<div class="list">${hits.length?sortItems(hits).map(i=>card(i)).join(""):phits.length?"":`<div class="empty">Geen resultaten voor "${esc(state.q)}".</div>`}</div>`:
-      `<div class="dsc-sec"><h2>Alle <em>onderdelen</em><small>${CATS.length}</small></h2></div><div class="ctiles">${CATS.map(c=>{const n=ITEMS.filter(i=>isEv(i)&&(c.id==="new"?i.fresh:i.cat===c.id)&&!isPast(i)).length,ph=catPhoto(c.id);return `<button class="ct" data-cat="${c.id}" style="--cc:var(${c.c})">${ph?`<img src="${ph}" alt="" loading="lazy" onerror="this.remove()">`:""}<span class="bn">${c.n}</span><span class="bc">${n} ${n===1?"item":"items"}</span><span class="bb"><span class="bh">${esc(c.name)}</span><span class="bs">${esc(c.short)}</span></span></button>`;}).join("")}</div>`}</div>`;
+      `<div class="dsc-sec"><h2>Alle <em>onderdelen</em><small>${CATS.length}</small></h2></div><div class="ctiles">${CATS.map(c=>{const n=ITEMS.filter(i=>isEv(i)&&(c.id==="new"?i.fresh:i.cat===c.id)&&!isPast(i)).length,ph=catPhoto(c.id);return `<button class="ct" data-cat="${c.id}" style="--cc:var(${c.c})">${ph?`<img src="${ph}" alt="" loading="lazy" onerror="this.remove()">`:""}<span class="bn">${c.n}</span><span class="bc">${n} ${n===1?"item":"items"}</span>${c.id==="corp"?`<span class="be-tag">Heel België</span>`:""}<span class="bb"><span class="bh">${esc(c.name)}</span><span class="bs">${esc(c.short)}</span></span></button>`;}).join("")}</div>`}</div>`;
     const inp=document.getElementById("q");
     inp.oninput=e=>{state.q=e.target.value;const pos=e.target.selectionStart;render();const n=document.getElementById("q");n.focus();n.setSelectionRange(pos,pos);};
     return;
@@ -3617,7 +3624,7 @@ function renderIdee(){
     <div class="dsc-sec"><h2>Alle <em>onderdelen</em><small>${cats.length}</small></h2><button class="linkbtn" data-view-go="cat">Lijstweergave →</button></div>
     <div class="bento">${cats.map((c,ix)=>{const ph=catPhoto(c.id),nx=next(c),n=cnt(c);return `<button class="bt ${BSIZE[c.id]||""}" data-goc="${c.id}" style="--cc:var(${c.c})">
       ${ph?`<img src="${ph}" alt="" loading="lazy" onerror="this.remove()">`:""}
-      <span class="bn">${c.n}</span><span class="bc">${n} ${n===1?"item":"items"}</span>
+      <span class="bn">${c.n}</span><span class="bc">${n} ${n===1?"item":"items"}</span>${c.id==="corp"?`<span class="be-tag">Heel België</span>`:""}
       <span class="bb"><span class="bh">${esc(c.name)}</span><span class="bs">${esc(c.short)}</span>${nx?`<span class="bx"><b>Eerstvolgend</b> · ${esc(nx.title)}</span>`:""}</span></button>`;}).join("")}</div>
 
     ${dlUp.length?`<section class="band band-teal"><div class="dsc-sec"><h2>Niet <em>vergeten</em></h2><button class="linkbtn" data-view-go="dl">Alle deadlines →</button></div>
