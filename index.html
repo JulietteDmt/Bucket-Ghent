@@ -962,6 +962,35 @@ nav.tabs button[aria-selected="true"] .tl{background:var(--accent)}
 .cv-main{max-width:64%!important}
 .cv-pill{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(22px,2.6vw,32px);letter-spacing:-.01em;padding:4px 22px 6px}
 @media (max-width:560px){.cv-fp3{width:36%!important;top:44%!important;right:10px!important}.cv-main{max-width:66%!important}.dsc-hero.cv h1{font-size:clamp(38px,11vw,52px)}.cv-stats{flex-direction:column;gap:10px}}
+/* ═════ één palet (logo/hero) en maar twee letters (28/11/2026) ═════ */
+:root{--body:"Inter Tight",system-ui,sans-serif;--display:"Inter Tight",system-ui,sans-serif;--grot:"Inter Tight",system-ui,sans-serif;--mono:"Inter Tight",system-ui,sans-serif;--serif:"Instrument Serif",Georgia,serif;
+ --teal:#5f9f99;--teal-d:#3f7c77;--glow:#e8743c;--pinkg:#d9b5ba;--accent:#3f7c77;--rosedeep:#c0705a}
+body,button,input{font-family:var(--body)}
+.when,.dsc-ev .dd span,.dl-row .d,.dl-row .cd,.agt,.today,.bt .bn,.ct .bn,.chip,.grp-title,.cv-meta,.count,.sc b,.srow .sd{font-family:var(--grot)!important}
+h1 em,h2 em,h3 em,.dsc-sec h2 em,.bk-sec em,.spl-h em{font-family:var(--serif)!important;font-style:italic!important;font-weight:400!important;color:var(--rosedeep)}
+.spl-h{font-family:var(--grot)!important;font-weight:500!important}
+.spl-switch button{font-family:var(--grot);font-weight:500}
+.spl-switch button small{font-family:var(--serif);font-style:italic;font-size:22px;font-weight:400}
+/* banden in de kleuren van het logo */
+.band-orange,.band-teal{background:var(--grad)!important;color:#fff}
+.band .dsc-sec h2,.band .dsc-sec h2 small,.band .linkbtn{color:#fff!important}
+.band .dsc-sec h2 em{color:#fff!important}
+/* My list: logo-kleuren, blauw donkerder */
+.bk-wrap .stat.todo{background:#f2c4ae!important}.bk-wrap .stat.todo b,.bk-wrap .stat.todo span{color:#6e3420!important}
+.bk-wrap .stat.miss{background:#ecd0d4!important}.bk-wrap .stat.miss b{color:#a5525e!important}
+.bk-wrap .stat.ok{background:#5f9f99!important}.bk-wrap .stat.ok b,.bk-wrap .stat.ok span{color:#fff!important}
+nav.tabs button[aria-selected="true"] .tl,.subs button[aria-pressed="true"],.calf button[aria-pressed="true"],.calf button[data-calcat][aria-pressed="true"],.calf button[data-calcat=""][aria-pressed="true"],.spl-switch button[aria-pressed="true"],.links a.primary,.bk[aria-pressed="true"]{background:var(--teal-d)!important;border-color:var(--teal-d)!important;color:#fff!important}
+.ntile:nth-child(3n) .nhead{background:#5f9f99!important}.ntile:nth-child(3n+2) .nhead{background:#e9b9a2!important}.ntile:nth-child(4n) .nhead{background:#e6c6ca!important}
+.ntile:nth-child(3n) .nhead::after{color:#fff}
+/* sport: geen weekrooster bij de gewone lessen */
+.sport-split .sched{display:none}
+/* deadlines: komende 3 dagen donkerder oranje, de rest oranje-roos */
+.dl-up .dl-row .cd{background:#f3d2c3!important;color:#7a3a22!important}
+.dl-up .dl-row.urgent .cd{background:#d96f45!important;color:#fff!important}
+.dl-up .dl-row.urgent{background:#fbe7dc!important;border-color:#f0c6b2!important}
+/* kalender: gewoon de maand, geen extra knoppen */
+.caltools{display:none!important}
+.cal-head{background:var(--grad)}
 </style>
 
 <div class="wrap">
@@ -3720,8 +3749,8 @@ function renderCats(){
     <div class="subs" style="--cc:var(${c.c})"><span class="flt">Type</span>${[["","Alles"],["Brunch","Brunch"],["Bar","Bar"],["Koffie","Koffie"],["Wereldkeuken","Wereldkeuken"],["Restaurant","Restaurant"],["Lunch & snacks","Lunch & snacks"],["Zoet & bakkerij","Zoet & bakkerij"]].map(([v,l])=>`<button data-ftype="${v}" aria-pressed="${state.ftype===v}">${l}</button>`).join("")}</div>`:""}
     ${(()=>{const up=shown, np=pastCount;
       if(c.id==="sport"){ const isSpec=isSpecSport; const sp=state.sgrp==="reg"?[]:up.filter(isSpec), reg=state.sgrp==="spec"?[]:up.filter(i=>!isSpec(i));
-        return `<div class="sport-split">${state.sgrp==="reg"?"":`<h3 class="spl-h">Speciale events <small>${sp.length}</small></h3><p class="spl-p">Eenmalige edities, samenwerkingen en wedstrijden met een vaste datum.</p><div class="list">${sp.length?sp.map(i=>card(i)).join(""):`<div class="empty">Nu geen speciale sportevents gepland.</div>`}</div>`}
-        ${state.sgrp==="spec"?"":`<h3 class="spl-h">Gewone lessen & plekken <small>${reg.length}</small></h3><p class="spl-p">Waar je altijd terecht kan: studio's, klimzalen en sportfaciliteiten, met weekroosters waar die er zijn.</p><div class="list">${reg.map(i=>card(i)).join("")}</div>`}</div>`; }
+        return `<div class="sport-split">${state.sgrp==="reg"?"":`<h3 class="spl-h">Speciale <em>events</em> <small>${sp.length}</small></h3><p class="spl-p">Eenmalige edities, samenwerkingen en wedstrijden met een vaste datum.</p><div class="list">${sp.length?sp.map(i=>card(i)).join(""):`<div class="empty">Nu geen speciale sportevents gepland.</div>`}</div>`}
+        ${state.sgrp==="spec"?"":`<h3 class="spl-h">Gewone lessen <em>&amp; plekken</em> <small>${reg.length}</small></h3><p class="spl-p">Waar je altijd terecht kan: studio's, klimzalen en sportfaciliteiten, met weekroosters waar die er zijn.</p><div class="list">${reg.map(i=>card(i)).join("")}</div>`}</div>`; }
       return `<div class="list">${up.length?up.map(i=>card(i)).join(""):`<div class="empty">Geen komende items met deze filters.</div>`}</div>`+
       (np?`<p class="dl-intro" style="margin-top:14px">${np} voorbije activiteit${np===1?"":"en"} sinds 21 september vind je terug in de <button class="linkbtn" data-view-go="cal">kalender</button>.</p>`:"");})()}`;
   document.getElementById("back").onclick=()=>{ if(sec){state.sector=null;state.sub=null;render();return;} if(grp){state.sub=null;render();window.scrollTo({top:0});return;} state.cat=null;state.sub=null;state.sgrp="";state.price=0;state.diet="";state.ftype="";state.mlvl="";state.msport="";state.mwatch="";render();};
