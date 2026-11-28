@@ -637,11 +637,168 @@ nav.tabs button[aria-selected="true"] .tl{border-bottom-color:var(--accent)}
 .spl-h{font-size:clamp(24px,3.4vw,32px);font-weight:700;letter-spacing:-.035em;margin:26px 0 2px}.spl-h small{font-size:14px;color:var(--accent)}.spl-p{margin:0 0 12px;color:var(--muted);font-size:14px}
 .spl-switch{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:4px 0 8px}.spl-switch button{border:0;border-radius:16px;background:var(--card2);padding:16px 14px;text-align:left;font-weight:700;font-size:16px;letter-spacing:-.02em;cursor:pointer;color:var(--ink);display:flex;flex-direction:column;gap:4px}.spl-switch button small{font-size:13px;font-weight:600;color:var(--accent)}.spl-switch button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}.spl-switch button[aria-pressed="true"] small{color:inherit}@media (max-width:560px){.spl-switch{grid-template-columns:1fr 1fr}.spl-switch button:first-child{grid-column:1/-1}}
 @media (max-width:560px){ .agday{grid-template-columns:1fr;gap:8px} .agdh{position:static} .agr>summary{grid-template-columns:52px minmax(0,1fr) auto} }
+
+/* ═════ "INSANE"-LAAG: logo, kleurbanden, duotone foto's, ticker, badge (28/11/2026) ═════ */
+::selection{background:var(--accent);color:#fff}
+html{scrollbar-color:var(--accent) var(--bg)}
+body::after{content:"";position:fixed;inset:-20vh -20vw;z-index:-2;pointer-events:none;opacity:.22;filter:blur(40px);
+  background:radial-gradient(40vw 40vw at 8% 12%,#3c7672,transparent 70%),radial-gradient(38vw 38vw at 92% 30%,#e0561f,transparent 70%),radial-gradient(34vw 34vw at 30% 96%,#d7a9b3,transparent 70%);
+  animation:blobs 26s ease-in-out infinite alternate}
+@keyframes blobs{to{transform:translate3d(4vw,-3vh,0) rotate(8deg)}}
+body{background:var(--bg)}
+.wrap{position:relative}
+/* logo */
+.logo{display:inline-flex;align-items:center;gap:10px;background:none;border:0;padding:0;color:var(--ink)}
+.lg-mark{width:42px;height:42px;flex:none;display:block;border-radius:13px;overflow:hidden;box-shadow:0 6px 18px -6px rgba(207,79,27,.55);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.lg-mark svg{display:block;width:100%;height:100%}
+.logo:hover .lg-mark{transform:rotate(-8deg) scale(1.06)}
+.lg-word{font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:-.04em;line-height:.95;text-align:left}
+.lg-word b{color:var(--accent);font-weight:800;margin:0 2px}
+.lg-word small{display:block;font-family:var(--mono);font-size:9.5px;font-weight:500;letter-spacing:.14em;color:var(--teal);text-transform:uppercase;margin-top:3px}
+/* topbalk: glas */
+.topbar{background:color-mix(in srgb,var(--bg) 78%,transparent);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:0}
+.topbar::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:linear-gradient(90deg,#3c7672,#c9a7ae 40%,#e0561f 75%,#cf4f1b)}
+nav.tabs button[aria-selected="true"] .tl{border-bottom:0;background:var(--accent);color:#fff;border-radius:999px;padding:4px 12px 5px}
+nav.tabs .tl{padding:4px 6px 5px}
+/* zijbalk: gradiëntblok */
+@media (min-width:960px){
+  .sidenav h2{font-size:34px}
+  .sidenav h2::after{content:" ↗";color:var(--accent)}
+  .sn-card{background:var(--grad);position:relative;overflow:hidden;isolation:isolate;padding:12px}
+  .sn-card::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--grain);opacity:.25;mix-blend-mode:overlay}
+  .sn-card button{color:rgba(255,255,255,.88)}
+  .sn-card button:hover{background:rgba(255,255,255,.14);color:#fff}
+  .sn-card button[aria-selected="true"]{background:var(--bg);color:var(--accent)}
+  .sn-card .count{background:rgba(255,255,255,.25)!important;color:#fff!important}
+  .sn-card button[aria-selected="true"] .count{background:var(--accent)!important}
+}
+/* algemene titels groter en strakker */
+.brand h1{font-size:clamp(36px,6vw,64px);font-weight:800;letter-spacing:-.055em}
+.dsc-sec h2,.bk-sec,.spl-h{font-size:clamp(34px,5.4vw,60px);font-weight:800;letter-spacing:-.055em;line-height:.95}
+.dsc-sec h2 em{color:var(--accent)}
+.grp-title,.chip{font-family:var(--display);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);font-size:11.5px}
+/* hero */
+.dsc-hero{min-height:clamp(520px,66vw,720px);border-radius:28px;padding-bottom:84px}
+.dsc-hero h1{font-size:clamp(58px,11vw,150px);font-weight:800;letter-spacing:-.065em;line-height:.86}
+.dsc-hero h1 em{font-weight:300;font-style:italic;letter-spacing:-.05em}
+.hero-badge{position:absolute;top:clamp(18px,3vw,36px);right:clamp(18px,3vw,36px);width:clamp(110px,14vw,160px);aspect-ratio:1;color:#fff;pointer-events:none}
+.hero-badge svg{width:100%;height:100%;animation:spin 22s linear infinite}
+.hero-badge .hb-arrow{position:absolute;inset:0;display:grid;place-items:center;font-size:clamp(34px,4.4vw,48px);font-weight:700}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero-tick{position:absolute;left:0;right:0;bottom:0;display:flex;overflow:hidden;white-space:nowrap;background:rgba(20,18,16,.22);backdrop-filter:blur(6px);border-top:1px solid rgba(255,255,255,.18);padding:13px 0;font-weight:600;font-size:14px;color:#fff}
+.hero-tick span{flex:none;padding-right:40px;animation:tick 60s linear infinite}
+.hero-tick span i{font-style:normal;color:#ffd2bd;margin:0 14px}
+@keyframes tick{to{transform:translateX(-100%)}}
+.hero-sticker{position:absolute;right:clamp(20px,9vw,140px);bottom:110px;background:#fff;color:var(--accent);font-weight:800;font-size:15px;letter-spacing:-.02em;padding:10px 16px;border-radius:999px;transform:rotate(-7deg);box-shadow:0 10px 24px -8px rgba(0,0,0,.35)}
+.hero-sticker b{display:block;font-size:30px;line-height:1;letter-spacing:-.05em}
+@media (max-width:640px){.hero-sticker{display:none}.hero-badge{width:86px}}
+/* kleurbanden zoals de oranje slides */
+.band{position:relative;isolation:isolate;overflow:hidden;border-radius:28px;padding:clamp(20px,3.4vw,40px);margin:36px 0}
+.band .dsc-sec{margin-top:0}
+.band-orange{background:var(--accent);color:#fff}
+.band-teal{background:#3c7672;color:#fff}
+.band::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--grain);opacity:.18;mix-blend-mode:overlay}
+.band .dsc-sec h2,.band .dsc-sec h2 em,.band .dsc-sec h2 small,.band .linkbtn{color:#fff}
+.band .dsc-sec h2 em{font-style:italic;font-weight:300}
+.band .dsc-ev,.band .dsc-ev:nth-child(4n+2){background:#f3efe7;color:#1f1d1a}
+.band .dsc-ev .dd b,.band .dsc-ev::after,.band .dsc-ev:nth-child(4n+2) .dd b,.band .dsc-ev:nth-child(4n+2)::after{color:#cf4f1b}
+.band .dsc-ev .dd span,.band .dsc-ev .ew,.band .dsc-ev:nth-child(4n+2) .dd span,.band .dsc-ev:nth-child(4n+2) .ew{color:#6b645b}
+.band .dsc-ev .ec,.band .dsc-ev:nth-child(4n+2) .ec{color:#3c7672}
+.band .dsc-ev:hover{transform:translateY(-6px) rotate(-1deg);box-shadow:0 18px 36px -14px rgba(0,0,0,.45)}
+.band .dsc-week{scrollbar-color:rgba(255,255,255,.6) transparent}
+.band .dsc-dl button{background:#f3efe7;color:#1f1d1a}
+.band .dsc-dl .dn{color:#cf4f1b}
+.band .dsc-dl button:hover{background:#fff;transform:translateY(-4px)}
+.dsc-dl button{transition:transform .2s ease,background .2s}
+/* duotone-foto's in de tegels */
+.bt img,.ct img{filter:grayscale(1) contrast(1.15) brightness(1.05)}
+.bt::after,.ct::after{background:linear-gradient(150deg,#3c7672 0%,#9a8e85 45%,#e0561f 100%);mix-blend-mode:multiply;opacity:.95}
+.bt::before,.ct::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,transparent 40%,rgba(20,18,16,.55));pointer-events:none}
+.bt:hover img,.ct:hover img{filter:grayscale(0) contrast(1.05);transform:scale(1.07)}
+.bt:hover::after,.ct:hover::after{opacity:.55}
+.bt::after,.ct::after,.bt img,.ct img{transition:opacity .5s,filter .5s,transform .7s cubic-bezier(.2,.7,.2,1)}
+.bt .bh,.ct .bh{font-size:clamp(22px,2.4vw,30px);font-weight:800;letter-spacing:-.05em}
+.bt.big .bh{font-size:clamp(40px,5vw,68px)}
+.bt .bn,.ct .bn{font-family:var(--display);font-weight:800;font-size:15px;letter-spacing:-.02em;opacity:1}
+/* outro */
+.outro{position:relative;isolation:isolate;overflow:hidden;border-radius:28px;background:var(--grad);color:#fff;padding:clamp(28px,6vw,72px);margin:40px 0 0}
+.outro::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--grain);opacity:.22;mix-blend-mode:overlay}
+.outro h2{font-size:clamp(44px,8vw,110px);font-weight:800;letter-spacing:-.065em;line-height:.88;color:#fff}
+.outro p{margin:16px 0 22px;font-size:16px;opacity:.92;max-width:46ch}
+.outro .ob{display:inline-flex;gap:10px;flex-wrap:wrap}
+.outro button{border:1.5px solid #fff;background:transparent;color:#fff;border-radius:999px;padding:11px 22px;font-weight:600;cursor:pointer;font-size:15px}
+.outro button:first-child{background:#fff;color:var(--accent)}
+.outro .oarrow{position:absolute;right:clamp(20px,4vw,56px);bottom:clamp(16px,3vw,40px);font-size:clamp(60px,9vw,120px);font-weight:300;line-height:1}
+/* kaarten: meer pit */
+.card{transition:transform .2s ease,box-shadow .2s ease}
+.card:hover{transform:translateY(-3px);box-shadow:0 0 0 1px var(--line),0 16px 32px -18px rgba(207,79,27,.5)}
+.card h3{font-size:19px;letter-spacing:-.03em}
+.links a.primary:hover{filter:brightness(1.08)}
+/* categoriepagina: reuzennummer */
+.cat-hero{min-height:220px;display:flex;flex-direction:column;justify-content:flex-end;padding-top:70px}
+.cat-hero h2{font-size:clamp(44px,8vw,96px);font-weight:800;letter-spacing:-.065em;line-height:.9}
+.cat-hero .chip{position:absolute;top:22px;right:24px;font-size:clamp(60px,11vw,140px)!important;font-weight:800;letter-spacing:-.07em!important;line-height:.8;border:0!important;padding:0!important;color:transparent!important;-webkit-text-stroke:1.5px rgba(255,255,255,.75);text-transform:none}
+.cat-hero .hero-ico{position:absolute;top:22px;left:24px}
+/* kalender: gradiëntkop */
+.cal-head{background:var(--grad);border-radius:24px;padding:22px 18px;color:#fff;position:relative;isolation:isolate;overflow:hidden}
+.cal-head::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--grain);opacity:.22;mix-blend-mode:overlay}
+.cal-head h2{color:#fff;font-size:clamp(36px,6vw,64px);font-weight:800;letter-spacing:-.06em}
+.cal-head h2 span{color:#ffd2bd;font-weight:300;font-style:italic}
+.cal-head h2 small{color:rgba(255,255,255,.85)}
+.cal-head .iconbtn{background:rgba(255,255,255,.18);color:#fff}
+.cal-head .iconbtn:hover{background:#fff;color:var(--accent)}
+.day.has:hover{transform:translateY(-2px)}
+/* deadlines en mijn lijst: kop als band */
+.dl-wrap>.dsc-sec:first-child,.bk-wrap>.dsc-sec:first-child,.cats-wrap>.dsc-sec{padding:4px 2px}
+.credit{font-family:var(--display);font-weight:700;letter-spacing:-.02em;font-size:13px}
+.credit::before{content:"↗ ";color:var(--accent)}
+@media (prefers-reduced-motion: reduce){body::after,.hero-badge svg,.hero-tick span{animation:none}}
+:root[data-theme="dark"] .band .dsc-ev,:root[data-theme="dark"] .band .dsc-dl button{background:#211e1b;color:#f3eee6}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .band .dsc-ev,:root:not([data-theme="light"]) .band .dsc-ev:nth-child(4n+2),:root:not([data-theme="light"]) .band .dsc-dl button{background:#211e1b;color:#f3eee6}}
+/* roos-knoppen en petrolblauw voor speciale dingen */
+:root{--rose:#f2d4d8;--rose-2:#e8bcc3;--rose-ink:#5b2731}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--rose:#4a2c31;--rose-2:#5d363d;--rose-ink:#f6d9dd}}
+:root[data-theme="dark"]{--rose:#4a2c31;--rose-2:#5d363d;--rose-ink:#f6d9dd}
+.subs button,.calf button,.links a:not(.primary),.bk,.done-btn,.orgbtn,.back,.tbtn,.seg,.iconbtn:not(.cal-head .iconbtn),.spl-switch button,.search{background:var(--rose);border-color:transparent;color:var(--rose-ink)}
+.seg button{color:var(--rose-ink)}
+.seg button[aria-pressed="true"]{background:#3c7672;color:#fff}
+.subs button:hover,.calf button:hover,.links a:not(.primary):hover,.bk:hover,.orgbtn:hover,.tbtn:hover,.spl-switch button:hover{background:var(--rose-2)}
+.subs button[aria-pressed="true"],.calf button[aria-pressed="true"],.calf button[data-calcat][aria-pressed="true"],.calf button[data-calcat=""][aria-pressed="true"],.spl-switch button[aria-pressed="true"],.bk[aria-pressed="true"],.done-btn[aria-pressed="true"]{background:#3c7672;border-color:#3c7672;color:#fff}
+.spl-switch button small{color:#3c7672}.spl-switch button[aria-pressed="true"] small{color:#ffd2bd}
+.dsc-hero .dsc-sub button{background:rgba(242,212,216,.9);color:var(--rose-ink);border:0}
+.orgbtn{border-style:solid}
+.search{border:0}
+.agr{border-left-color:var(--cc)}
+.status.ok{background:#dcebea;color:#2f6b67}
+.newb{background:#3c7672;color:#fff}
+.org{background:var(--rose);color:var(--rose-ink)}
+.org span{color:var(--rose-ink);opacity:.75}
+/* Eten in Gent: foto dichterbij */
+.bt[data-goc="food"] img,.ct[data-cat="food"] img{transform:scale(1.55);object-position:50% 60%}
+.bt[data-goc="food"]:hover img,.ct[data-cat="food"]:hover img{transform:scale(1.65)}
+/* New: kadertjes in de presentatiekleuren */
+.ntile{background:var(--surface);border-radius:22px;box-shadow:0 0 0 1px var(--line);transition:transform .2s ease,box-shadow .2s}
+.ntile:hover{transform:translateY(-4px) rotate(-.4deg);box-shadow:0 0 0 1px var(--line),0 18px 34px -18px rgba(207,79,27,.55)}
+.ntile .nhead{position:relative;isolation:isolate;min-height:84px;background:var(--grad)!important}
+.ntile:nth-child(3n+2) .nhead{background:#cf4f1b!important}
+.ntile:nth-child(3n) .nhead{background:#3c7672!important}
+.ntile:nth-child(4n) .nhead{background:#e8bcc3!important}
+.ntile .nhead::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--grain);opacity:.25;mix-blend-mode:overlay}
+.ntile .nhead::after{content:"↗";position:absolute;left:14px;bottom:14px;font-size:24px;font-weight:700;color:#fff}
+.ntile:nth-child(4n) .nhead::after{color:#5b2731}
+.ntile .nstick{background:var(--rose);color:var(--rose-ink);border:0}
+.ntile .nstick.now{background:#3c7672;color:#fff}
+.ntile .nstick.soon{background:#fff;color:#cf4f1b}
+.ntile .card{box-shadow:none}
+.ntile .card::before{display:none}
+.nfilt button{background:var(--rose);color:var(--rose-ink);border:0}
+.nfilt button[aria-pressed="true"]{background:#3c7672;color:#fff}
+.newhero{background:var(--grad)!important;border-radius:28px}
 </style>
 
 <div class="wrap">
   <div class="topbar">
-    <button class="logo" data-view-go="idee" aria-label="Ghent × Unlocked, naar Discover"><small>Ghent</small>× Unlocked</button>
+    <button class="logo" data-view-go="idee" aria-label="Ghent × Unlocked, naar Discover"><span class="lg-mark"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="lgG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3c7672"/><stop offset=".5" stop-color="#c9a7ae"/><stop offset="1" stop-color="#e0561f"/></linearGradient><radialGradient id="lgR" cx=".85" cy=".2" r=".7"><stop offset="0" stop-color="#d2401c"/><stop offset="1" stop-color="#d2401c" stop-opacity="0"/></radialGradient><filter id="lgN"><feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .35 0"/><feComposite in2="SourceGraphic" operator="in"/></filter></defs><rect width="64" height="64" fill="url(#lgG)"/><rect width="64" height="64" fill="url(#lgR)"/><rect width="64" height="64" filter="url(#lgN)" opacity=".6"/><path d="M41 20.5A15 15 0 1 0 47 33H32.5" fill="none" stroke="#fff" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M44 12h9v9M53 12 43 22" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="lg-word">Ghent<b>×</b>Unlocked<small>bucketlist · gent</small></span></button>
   <nav class="tabs" role="tablist" data-nav>
     <button role="tab" id="tab-idee" aria-selected="true" data-view="idee"><span class="tl">Discover</span></button>
     <button role="tab" id="tab-cal" aria-selected="false" data-view="cal"><span class="tl">Calendar</span></button>
@@ -3441,18 +3598,21 @@ function renderIdee(){
       <button class="dsc-pill" data-view-go="cal">Open de kalender</button>
       <h1>Jouw stad,<em>jouw jaren</em></h1>
       <p class="lead">Dit is jouw bucketlist voor je studentenjaren in Gent. Maak er gevarieerde jaren van, met iets voor elke interesse: een cantus, een business case bij een Big Four-kantoor, een lezing op campus of een run door de stad. Voilà!</p>
+      <div class="hero-badge" aria-hidden="true"><svg viewBox="0 0 200 200"><defs><path id="hbC" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs><text font-size="17" font-weight="700" letter-spacing="5" fill="#fff"><textPath href="#hbC">GHENT × UNLOCKED · JOUW STUDENTENJAREN · </textPath></text></svg><span class="hb-arrow">↗</span></div>
+      <div class="hero-sticker" aria-hidden="true"><b>${week.length}</b>events deze week</div>
       <div class="dsc-sub">
         <button data-view-go="cal"><b>${week.length}</b> events deze week</button>
         <button data-view-go="dl"><b>${dlUp.length}</b> open deadlines</button>
         <button data-view-go="bucket">Mijn lijst</button>
       </div>
+      ${week.length?(()=>{const t=week.slice(0,18).map(([d,i])=>`${d.getDate()} ${MON[d.getMonth()].slice(0,3)} · ${esc(i.title)}`).join(' <i>↗</i> ');return `<div class="hero-tick" aria-hidden="true"><span>${t} <i>↗</i></span><span>${t} <i>↗</i></span></div>`;})():""}
     </section>
     <div class="dsc-wash">
 
-    ${weekShow.length?`<div class="dsc-sec"><h2>Deze <em>week</em><small>${week.length}</small></h2><button class="linkbtn" data-view-go="cal">Alles in de kalender →</button></div>
+    ${weekShow.length?`<section class="band band-orange"><div class="dsc-sec"><h2>Deze <em>week</em><small>${week.length}</small></h2><button class="linkbtn" data-view-go="cal">Alles in de kalender →</button></div>
     <div class="dsc-week">${weekShow.map(([d,i])=>{const c=catById[i.cat];return `<button class="dsc-ev" data-goto="${i.id}" style="--cc:var(${c.c})">
       <span class="dd"><b>${d.getDate()}</b><span>${DOW[d.getDay()]} · ${MON[d.getMonth()].slice(0,3)}${i.when.time?" · "+esc(String(i.when.time).split(/[ (,–-]/)[0]):""}</span></span>
-      <span class="ec">${esc(c.name)}</span><span class="et">${esc(i.title)}</span><span class="ew">${esc(i.where||"")}</span></button>`;}).join("")}</div>`:""}
+      <span class="ec">${esc(c.name)}</span><span class="et">${esc(i.title)}</span><span class="ew">${esc(i.where||"")}</span></button>`;}).join("")}</div></section>`:""}
 
     <div class="dsc-sec"><h2>Alle <em>onderdelen</em><small>${cats.length}</small></h2><button class="linkbtn" data-view-go="cat">Lijstweergave →</button></div>
     <div class="bento">${cats.map((c,ix)=>{const ph=catPhoto(c.id),nx=next(c),n=cnt(c);return `<button class="bt ${BSIZE[c.id]||""}" data-goc="${c.id}" style="--cc:var(${c.c})">
@@ -3460,8 +3620,9 @@ function renderIdee(){
       <span class="bn">${c.n}</span><span class="bc">${n} ${n===1?"item":"items"}</span>
       <span class="bb"><span class="bh">${esc(c.name)}</span><span class="bs">${esc(c.short)}</span>${nx?`<span class="bx"><b>Eerstvolgend</b> · ${esc(nx.title)}</span>`:""}</span></button>`;}).join("")}</div>
 
-    ${dlUp.length?`<div class="dsc-sec"><h2>Niet <em>vergeten</em></h2><button class="linkbtn" data-view-go="dl">Alle deadlines →</button></div>
-    <div class="dsc-dl">${dlUp.slice(0,3).map(i=>`<button data-goto="${i.id}"><span class="dn">Deadline ${inDays(i.deadline.date)} · ${fmt(parse(i.deadline.date))}</span><span class="dt">${esc(i.title)}</span></button>`).join("")}</div>`:""}
+    ${dlUp.length?`<section class="band band-teal"><div class="dsc-sec"><h2>Niet <em>vergeten</em></h2><button class="linkbtn" data-view-go="dl">Alle deadlines →</button></div>
+    <div class="dsc-dl">${dlUp.slice(0,3).map(i=>`<button data-goto="${i.id}"><span class="dn">Deadline ${inDays(i.deadline.date)} · ${fmt(parse(i.deadline.date))}</span><span class="dt">${esc(i.title)}</span></button>`).join("")}</div></section>`:""}
+    <section class="outro"><h2>Tot op het<br>volgende event</h2><p>Zet wat je wil doen op je bucketlist en vink het af als je erbij was. Gent wacht op je.</p><div class="ob"><button data-view-go="cal">Open de kalender</button><button data-view-go="bucket">Mijn lijst</button></div><span class="oarrow" aria-hidden="true">↗</span></section>
     </div>`;
 }
 
