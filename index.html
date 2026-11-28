@@ -635,6 +635,7 @@ nav.tabs button[aria-selected="true"] .tl{border-bottom-color:var(--accent)}
 .agt{font-family:var(--mono)!important;font-size:12px}
 .agdh span{text-transform:capitalize!important}
 .spl-h{font-size:clamp(24px,3.4vw,32px);font-weight:700;letter-spacing:-.035em;margin:26px 0 2px}.spl-h small{font-size:14px;color:var(--accent)}.spl-p{margin:0 0 12px;color:var(--muted);font-size:14px}
+.spl-switch{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:4px 0 8px}.spl-switch button{border:0;border-radius:16px;background:var(--card2);padding:16px 14px;text-align:left;font-weight:700;font-size:16px;letter-spacing:-.02em;cursor:pointer;color:var(--ink);display:flex;flex-direction:column;gap:4px}.spl-switch button small{font-size:13px;font-weight:600;color:var(--accent)}.spl-switch button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}.spl-switch button[aria-pressed="true"] small{color:inherit}@media (max-width:560px){.spl-switch{grid-template-columns:1fr 1fr}.spl-switch button:first-child{grid-column:1/-1}}
 @media (max-width:560px){ .agday{grid-template-columns:1fr;gap:8px} .agdh{position:static} .agr>summary{grid-template-columns:52px minmax(0,1fr) auto} }
 </style>
 
@@ -690,7 +691,7 @@ const CATS = [
   {id:"food", n:"08", name:"Eten in Gent", short:"Nieuwe en originele zaakjes om te proberen", c:"--c8",
    intro:"De food-bucketlist: nieuwe of originele zaken. Elke kaart linkt naar de zaak zodat je menu en openingsuren kan bekijken."},
   {id:"sport",n:"09", name:"Sport", short:"Faciliteiten, studentenprijzen en specials", c:"--c9",
-   intro:"Sportfaciliteiten in Gent met prijzen voor studenten. Bij 'Meer info' staan speciale edities, zoals outdoor-lessen of lessen met DJ, als die er zijn."},
+   intro:"Sport in Gent in twee groepen: speciale events met een datum (zoals glow-lessen, wedstrijden en samenwerkingen) en gewone lessen en plekken met studentenprijzen."},
   {id:"pol", n:"15", name:"Politiek", short:"Debatten en lezingen met politici op campus", c:"--c15",
    intro:"Politici en opiniemakers op campus: het Groot Kopstukkendebat met de partijkopstukken, openingscolleges, lezingen en debatten van alle strekkingen. Ga luisteren, stel je vragen en vorm je eigen mening."},
   {id:"ver",  n:"10", name:"Verenigingen", short:"Studentenverenigingen en hun events", c:"--c10",
@@ -3241,6 +3242,7 @@ function card(it, dateLabel){
   </article>`;
 }
 
+const isSpecSport=i=>!i.sched&&!i.when.weekly&&!i.when.always&&!i.when.expect&&!!(i.when.once||i.when.dates);
 function renderCal(){
   const rank=e=>{const w=e.when; if(w.once&&!w.to) return 0; if(w.dates) return 1; if(w.once&&w.to) return (parse(w.to)-parse(w.once))/86400000>3?4:1; return 3;};
   const tmin=e=>{const m=String(e.when.time||"").match(/(\d{1,2})[:.u](\d{2})/); return m?(+m[1])*60+(+m[2]):-1;};
@@ -3384,18 +3386,19 @@ function renderCats(){
     ${(()=>{const hide=["food","deal","sport","new","shop","match","pol"].includes(c.id); const tileIds=hide?[]:orgsHere.map(x=>x.o.id); const loose=profHere.filter(p=>!p.orgs.some(o=>tileIds.includes(o)));
       return loose.length?`<details class="orginfo"><summary>${c.id==="ver"?"Alle kringen & verenigingen":c.id==="ugent"?"Hogescholen & agenda's":"Organisaties & handige links"} (${loose.length})</summary>${infoRows(loose)}</details>`:"";})()}
     ${grp?"":`<div class="grp-title">Alles in ${sec?esc(sec.name):c.name}</div>`}
-    ${c.id==="food"||c.id==="match"||grp?"":`<div class="subs" style="--cc:var(${c.c})"><button data-sub="" aria-pressed="${!state.sub}">Alles (${items.length})</button>${subs.map(s=>`<button data-sub="${esc(s)}" aria-pressed="${state.sub===s}">${esc(s)} (${items.filter(i=>i.sub===s).length})</button>`).join("")}</div>`}
+    ${c.id==="sport"?`<div class="spl-switch">${[["","Alles",items.length],["spec","Speciale events",items.filter(isSpecSport).length],["reg","Gewone lessen & plekken",items.filter(i=>!isSpecSport(i)).length]].map(([v,l,n])=>`<button type="button" aria-pressed="${(state.sgrp||"")===v}" onclick="state.sgrp='${v}';render()">${l} <small>${n}</small></button>`).join("")}</div>`:""}
+    ${c.id==="food"||c.id==="match"||c.id==="sport"||grp?"":`<div class="subs" style="--cc:var(${c.c})"><button data-sub="" aria-pressed="${!state.sub}">Alles (${items.length})</button>${subs.map(s=>`<button data-sub="${esc(s)}" aria-pressed="${state.sub===s}">${esc(s)} (${items.filter(i=>i.sub===s).length})</button>`).join("")}</div>`}
     ${c.id==="match"?[["mlvl","Niveau",[["","Alle"],["be","🇧🇪 België"],["eu","🇪🇺 Europa"],["world","🌍 Wereld"]]],["msport","Sport",[["","Alle"],["Voetbal","⚽ Voetbal"],["Wielrennen","🚴 Wielrennen"],["Veldrijden","🚵 Veldrijden"]]],["mwatch","Kijken",[["","Alle"],["gent","📍 Live in Gent"],["be","🚆 Live in België"],["tv","📺 Op tv / café"]]]].map(([k,l,opts])=>`<div class="subs" style="--cc:var(${c.c})"><span class="flt">${l}</span>${opts.map(([v,t])=>`<button data-mf="${k}" data-mv="${v}" aria-pressed="${state[k]===v}">${t}</button>`).join("")}</div>`).join(""):""}
     ${c.id==="food"?`<div class="subs" style="--cc:var(${c.c})"><span class="flt">Prijs</span>${[[0,"Alle"],[1,"€ Goedkoop"],[2,"€€ Middel"],[3,"€€€ Duur"]].map(([v,l])=>`<button data-price="${v}" aria-pressed="${state.price===v}">${l}</button>`).join("")}</div>
     <div class="subs" style="--cc:var(${c.c})"><span class="flt">Eten</span>${[["","Alles"],["veg","🌱 Veggie"],["vlees","🍖 Vlees"]].map(([v,l])=>`<button data-diet="${v}" aria-pressed="${state.diet===v}">${l}</button>`).join("")}</div>
     <div class="subs" style="--cc:var(${c.c})"><span class="flt">Type</span>${[["","Alles"],["Brunch","Brunch"],["Bar","Bar"],["Koffie","Koffie"],["Wereldkeuken","Wereldkeuken"],["Restaurant","Restaurant"],["Lunch & snacks","Lunch & snacks"],["Zoet & bakkerij","Zoet & bakkerij"]].map(([v,l])=>`<button data-ftype="${v}" aria-pressed="${state.ftype===v}">${l}</button>`).join("")}</div>`:""}
     ${(()=>{const up=shown, np=pastCount;
-      if(c.id==="sport"){ const isSpec=i=>!i.sched&&!i.when.weekly&&!i.when.always&&!i.when.expect&&(i.when.once||i.when.dates); const sp=up.filter(isSpec), reg=up.filter(i=>!isSpec(i));
-        return `<div class="sport-split"><h3 class="spl-h">Speciale events <small>${sp.length}</small></h3><p class="spl-p">Eenmalige edities, samenwerkingen en wedstrijden met een vaste datum.</p><div class="list">${sp.length?sp.map(i=>card(i)).join(""):`<div class="empty">Nu geen speciale sportevents gepland.</div>`}</div>
-        <h3 class="spl-h">Gewone lessen & plekken <small>${reg.length}</small></h3><p class="spl-p">Waar je altijd terecht kan: studio's, klimzalen en sportfaciliteiten, met weekroosters waar die er zijn.</p><div class="list">${reg.map(i=>card(i)).join("")}</div></div>`; }
+      if(c.id==="sport"){ const isSpec=isSpecSport; const sp=state.sgrp==="reg"?[]:up.filter(isSpec), reg=state.sgrp==="spec"?[]:up.filter(i=>!isSpec(i));
+        return `<div class="sport-split">${state.sgrp==="reg"?"":`<h3 class="spl-h">Speciale events <small>${sp.length}</small></h3><p class="spl-p">Eenmalige edities, samenwerkingen en wedstrijden met een vaste datum.</p><div class="list">${sp.length?sp.map(i=>card(i)).join(""):`<div class="empty">Nu geen speciale sportevents gepland.</div>`}</div>`}
+        ${state.sgrp==="spec"?"":`<h3 class="spl-h">Gewone lessen & plekken <small>${reg.length}</small></h3><p class="spl-p">Waar je altijd terecht kan: studio's, klimzalen en sportfaciliteiten, met weekroosters waar die er zijn.</p><div class="list">${reg.map(i=>card(i)).join("")}</div>`}</div>`; }
       return `<div class="list">${up.length?up.map(i=>card(i)).join(""):`<div class="empty">Geen komende items met deze filters.</div>`}</div>`+
       (np?`<p class="dl-intro" style="margin-top:14px">${np} voorbije activiteit${np===1?"":"en"} sinds 21 september vind je terug in de <button class="linkbtn" data-view-go="cal">kalender</button>.</p>`:"");})()}`;
-  document.getElementById("back").onclick=()=>{ if(sec){state.sector=null;state.sub=null;render();return;} if(grp){state.sub=null;render();window.scrollTo({top:0});return;} state.cat=null;state.sub=null;state.price=0;state.diet="";state.ftype="";state.mlvl="";state.msport="";state.mwatch="";render();};
+  document.getElementById("back").onclick=()=>{ if(sec){state.sector=null;state.sub=null;render();return;} if(grp){state.sub=null;render();window.scrollTo({top:0});return;} state.cat=null;state.sub=null;state.sgrp="";state.price=0;state.diet="";state.ftype="";state.mlvl="";state.msport="";state.mwatch="";render();};
 }
 
 function renderOrg(){
